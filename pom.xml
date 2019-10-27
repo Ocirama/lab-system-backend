@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>lt.ocirama</groupId>
-    <artifactId>LeiSystem</artifactId>
+    <artifactId>lei-system</artifactId>
     <version>1.0</version>
 
     <properties>

@@ -1,8 +1,8 @@
-package lt.ocirama.leiSystem.Utils;
+package lt.ocirama.labsystembackend.Utils;
 
-import lt.ocirama.leiSystem.Models.OrderEntity;
-import lt.ocirama.leiSystem.Models.SampleEntity;
-import lt.ocirama.leiSystem.Models.TrayEntity;
+import lt.ocirama.labsystembackend.Models.OrderEntity;
+import lt.ocirama.labsystembackend.Models.SampleEntity;
+import lt.ocirama.labsystembackend.Models.TrayEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

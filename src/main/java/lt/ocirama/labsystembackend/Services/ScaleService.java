@@ -1,4 +1,4 @@
-package lt.ocirama.leiSystem.Services;
+package lt.ocirama.labsystembackend.Services;
 
 import com.fazecast.jSerialComm.SerialPort;
 

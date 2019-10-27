@@ -1,4 +1,4 @@
-package lt.ocirama.leiSystem.Models;
+package lt.ocirama.labsystembackend.Models;
 
 
 import javax.persistence.*;
@@ -8,9 +8,11 @@ import java.util.List;
 @Entity
 @Table(name = "SampleLog")
 public class SampleEntity extends AbstractEntity implements Serializable {
+
     @Column(name = "sampleId", length = 50, nullable = false, unique = true)
     private String SampleId;
-    @Column(name = "sampleWeight")
+
+    @Column(name = "sample_weight", nullable = false)
     private double SampleWeight;
 
     @ManyToOne

@@ -1,9 +1,7 @@
-package lt.ocirama.leiSystem.Repositories;
+package lt.ocirama.labsystembackend.Repositories;
 
-import com.fazecast.jSerialComm.SerialPort;
-import lt.ocirama.leiSystem.Models.OrderEntity;
-import lt.ocirama.leiSystem.Models.SampleEntity;
-import lt.ocirama.leiSystem.Services.ScaleService;
+import lt.ocirama.labsystembackend.Models.SampleEntity;
+import lt.ocirama.labsystembackend.Services.ScaleService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -55,7 +53,7 @@ public class WeightLogRepository {
             List<SampleEntity> samples = (List<SampleEntity>) session.createQuery("from SampleEntity where protocol_Id=" + protocol).getResultList();
             Row row1 = null;
             for (SampleEntity sampleEntity : samples) {
-                for (int i = 1; i <= samples.size(); i++) {
+                for (int i =1;i<=samples.size();i++) {
                     row1 = sheet.createRow(i);
                     row1.createCell(0).setCellValue(sampleEntity.getSampleId());
                     System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
@@ -65,11 +63,10 @@ public class WeightLogRepository {
                     row1.createCell(1).setCellValue(sampleEntity.getSampleWeight());
                     //ss.ClosePort(serialPort);
                     em.merge(sampleEntity);
-                    transaction.commit();
                 }
             }
             row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
-
+            transaction.commit();
             FileOutputStream fileOut = new FileOutputStream(path);
             workbook.write(fileOut);
             fileOut.flush();

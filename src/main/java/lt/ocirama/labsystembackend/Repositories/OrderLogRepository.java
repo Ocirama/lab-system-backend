@@ -1,7 +1,7 @@
-package lt.ocirama.leiSystem.Repositories;
+package lt.ocirama.labsystembackend.Repositories;
 
-import lt.ocirama.leiSystem.Models.OrderEntity;
-import lt.ocirama.leiSystem.Models.SampleEntity;
+import lt.ocirama.labsystembackend.Models.OrderEntity;
+import lt.ocirama.labsystembackend.Models.SampleEntity;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class OrderLogRepository {
+
     XSSFSheet sheet;
     XSSFWorkbook workbook;
     Scanner sc = new Scanner(System.in);

@@ -1,12 +1,13 @@
-package lt.ocirama.leiSystem.Cli;
+package lt.ocirama.labsystembackend.Cli;
 
-import lt.ocirama.leiSystem.Repositories.OrderLogRepository;
-import lt.ocirama.leiSystem.Repositories.WeightLogRepository;
-import lt.ocirama.leiSystem.Utils.HibernateUtils;
+import lt.ocirama.labsystembackend.Repositories.OrderLogRepository;
+import lt.ocirama.labsystembackend.Repositories.WeightLogRepository;
+import lt.ocirama.labsystembackend.Utils.HibernateUtils;
 
 import java.util.Scanner;
 
 public class Client {
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 

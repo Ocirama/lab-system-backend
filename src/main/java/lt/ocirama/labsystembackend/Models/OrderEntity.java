@@ -1,4 +1,4 @@
-package lt.ocirama.leiSystem.Models;
+package lt.ocirama.labsystembackend.Models;
 
 
 import javax.persistence.*;
@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "OrderLog")
 public class OrderEntity extends AbstractEntity implements Serializable {
+
     @Column(name = "protocolId", length = 50, nullable = false, unique = true)
     private String protocolId;
 

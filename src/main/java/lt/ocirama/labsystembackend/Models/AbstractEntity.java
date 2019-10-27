@@ -1,4 +1,4 @@
-package lt.ocirama.leiSystem.Models;
+package lt.ocirama.labsystembackend.Models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -6,11 +6,16 @@ import java.util.Date;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
+
     private static final int ODD_PRIME = 31;
+
     @Id
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "date", nullable = false)
+    private Date date = java.sql.Date.valueOf(LocalDate.now());
 
     public Integer getId() {
         return id;
@@ -19,10 +24,6 @@ public abstract class AbstractEntity {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    @Column(name = "date", nullable = false)
-    private Date date = java.sql.Date.valueOf(LocalDate.now());
-
 
     @Override
     public int hashCode() {

@@ -1,4 +1,4 @@
-package lt.ocirama.leiSystem.Repositories;
+package lt.ocirama.labsystembackend.Repositories;
 
 public class FileRepository {
 

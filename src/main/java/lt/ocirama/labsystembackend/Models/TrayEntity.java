@@ -1,4 +1,4 @@
-package lt.ocirama.leiSystem.Models;
+package lt.ocirama.labsystembackend.Models;
 
 import javax.persistence.*;
 
@@ -8,6 +8,7 @@ public class TrayEntity extends AbstractEntity {
 
     @Column(name = "trayId", length = 50, nullable = false, unique = true)
     private String trayId;
+
     @Column(name = "trayWeight")
     private double trayWeight;
 
