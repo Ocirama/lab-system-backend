@@ -1,4 +1,4 @@
-package lt.ocirama.labsystembackend.Repositories;
+package lt.ocirama.labsystembackend.repositories;
 
 public class FileRepository {
 
@@ -12,7 +12,7 @@ public class FileRepository {
     LocalDate date = LocalDate.now();
     ScaleService svarstykles = new ScaleService();
     MeginysEntity m = new MeginysEntity();
-    TrayEntity t = new TrayEntity();
+    TrayLogEntity t = new TrayLogEntity();
 
 
     public void WeightLogGenerate() {

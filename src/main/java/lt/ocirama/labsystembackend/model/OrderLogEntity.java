@@ -1,4 +1,4 @@
-package lt.ocirama.labsystembackend.Models;
+package lt.ocirama.labsystembackend.model;
 
 
 import javax.persistence.*;
@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "OrderLog")
-public class OrderEntity extends AbstractEntity implements Serializable {
+@Table(name = "order_log")
+public class OrderLogEntity extends AbstractEntity implements Serializable {
 
-    @Column(name = "protocolId", length = 50, nullable = false, unique = true)
+    @Column(name = "protocol_id", length = 50, nullable = false, unique = true)
     private String protocolId;
 
     @Column(name = "customer", length = 50, nullable = false)
@@ -19,23 +19,23 @@ public class OrderEntity extends AbstractEntity implements Serializable {
     @Column(name = "test", length = 50, nullable = false)
     private String test;
 
-    @Column(name = "sampleType", length = 50, nullable = false)
+    @Column(name = "sample_type", length = 50, nullable = false)
     private String sampleType;
 
-    @Column(name = "orderAmount", nullable = false)
+    @Column(name = "order_amount", nullable = false)
     private int orderAmount;
 
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @OneToMany(targetEntity = SampleEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
-    private List<SampleEntity> samples;
+    @OneToMany(targetEntity = SampleLogEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
+    private List<SampleLogEntity> samples;
 
-    public List<SampleEntity> getSamples() {
+    public List<SampleLogEntity> getSamples() {
         return samples;
     }
 
-    public void setSamples(List<SampleEntity> samples) {
+    public void setSamples(List<SampleLogEntity> samples) {
         this.samples = samples;
     }
 
@@ -89,7 +89,7 @@ public class OrderEntity extends AbstractEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderEntity{" +
+        return "OrderLogEntity{" +
                 "protocolId='" + protocolId + '\'' +
                 ", customer='" + customer + '\'' +
                 ", test=" + test + '\'' +

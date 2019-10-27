@@ -1,8 +1,8 @@
-package lt.ocirama.labsystembackend.Utils;
+package lt.ocirama.labsystembackend.utils;
 
-import lt.ocirama.labsystembackend.Models.OrderEntity;
-import lt.ocirama.labsystembackend.Models.SampleEntity;
-import lt.ocirama.labsystembackend.Models.TrayEntity;
+import lt.ocirama.labsystembackend.model.OrderLogEntity;
+import lt.ocirama.labsystembackend.model.SampleLogEntity;
+import lt.ocirama.labsystembackend.model.TrayLogEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -24,11 +24,11 @@ public class HibernateUtils {
         settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
         settings.put(Environment.SHOW_SQL, "true");
         settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-        settings.put(Environment.HBM2DDL_AUTO, "update");
+        settings.put(Environment.HBM2DDL_AUTO, "validate");
         configuration.setProperties(settings);
-        configuration.addAnnotatedClass(OrderEntity.class);
-        configuration.addAnnotatedClass(SampleEntity.class);
-        configuration.addAnnotatedClass(TrayEntity.class);
+        configuration.addAnnotatedClass(OrderLogEntity.class);
+        configuration.addAnnotatedClass(SampleLogEntity.class);
+        configuration.addAnnotatedClass(TrayLogEntity.class);
         sessionFactory = configuration.buildSessionFactory(
                 new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build()
         );

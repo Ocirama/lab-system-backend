@@ -1,8 +1,8 @@
-package lt.ocirama.labsystembackend.Cli;
+package lt.ocirama.labsystembackend.cli;
 
-import lt.ocirama.labsystembackend.Repositories.OrderLogRepository;
-import lt.ocirama.labsystembackend.Repositories.WeightLogRepository;
-import lt.ocirama.labsystembackend.Utils.HibernateUtils;
+import lt.ocirama.labsystembackend.repositories.OrderLogRepository;
+import lt.ocirama.labsystembackend.repositories.WeightLogRepository;
+import lt.ocirama.labsystembackend.utils.HibernateUtils;
 
 import java.util.Scanner;
 
@@ -15,8 +15,8 @@ public class Client {
         OrderLogRepository olr = new OrderLogRepository(HibernateUtils.getSessionFactory());
         WeightLogRepository wlr = new WeightLogRepository(HibernateUtils.getSessionFactory());
 
-        //olr.OrderLogGenerate();
-        wlr.WeightLogGenerate();
+        olr.OrderLogGenerate();
+        //wlr.WeightLogGenerate();
         //wlr.findAll();
     }
 }

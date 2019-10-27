@@ -1,88 +1,72 @@
 Create database kuro_bandymu_sistema;
 use kuro_bandymu_sistema;
 
-CREATE TABLE  Order_Log ( 
+CREATE TABLE  order_log (
 id int PRIMARY KEY AUTO_INCREMENT,
-protocol_Id varchar(50) unique ,
-customer varchar(50),
-test varchar(50),
-sample_type varchar(50),
-order_amount int,
-data date
+protocol_Id varchar(50) not null,
+customer varchar(50) not null,
+test varchar(50)not null,
+sample_type varchar(50) not null,
+order_amount int not null,
+data date not null
 );
 
-CREATE TABLE  Sample_Log ( 
+CREATE TABLE  sample_log (
 id int PRIMARY KEY AUTO_INCREMENT,
-sample_id varchar(50) unique,
+sample_id varchar(50) not null,
 sample_weight double,
-order_id varchar(50) unique,
+order_id  int not null,
 data date,
-FOREIGN KEY (Order_ID) REFERENCES Order_Log (protocol_Id)
+FOREIGN KEY (order_id) REFERENCES order_log (id)
 );
 
 
-CREATE TABLE Tray_Log ( 
+CREATE TABLE tray_log (
 id int PRIMARY KEY AUTO_INCREMENT,
-tray_id varchar(50) unique,
-sample_id varchar(50) unique,
-FOREIGN KEY (sample_id) REFERENCES Sample_Log (sample_id)
+tray_id varchar(50) not null,
+sample_id int not null,
+FOREIGN KEY (sample_id) REFERENCES sample_log (id)
 );
 
- CREATE TABLE  Reference_Tray_Log ( 
+ CREATE TABLE  reference_tray_log (
  id int PRIMARY KEY AUTO_INCREMENT,
- reference_tray_id varchar(50),
- reference_tray_weight_before double,
- reference_tray_weight_after double
+ reference_tray_id varchar(50) not null,
+ reference_tray_weight_before double not null,
+ reference_tray_weight_after double not null
+
  );
  
 
- CREATE TABLE  Total_Moisture_Log ( 
+ CREATE TABLE  total_moisture_log (
  id int PRIMARY KEY AUTO_INCREMENT,
- tray_id varchar(50) unique,
- tray_weight double,
- total_tray_weight_before double,
- total_tray_weight_after double,
- total_tray_weight_after_plus double,
+ tray_id int not null,
+ tray_weight double not null,
+ total_tray_weight_before double not null,
+ total_tray_weight_after double not null,
+ total_tray_weight_after_plus double not null,
  date date,
- FOREIGN KEY (tray_id) REFERENCES Tray_Log (tray_Id)
+ FOREIGN KEY (tray_id) REFERENCES tray_log (id)
  );
  
- CREATE TABLE  General_Moisture_Log ( 
+ CREATE TABLE  general_moisture_log (
  id int PRIMARY KEY AUTO_INCREMENT,
- tray_id varchar(50) unique,
- general_tray_weight double,
- general_tray_weight_before double,
- general_tray_weight_after double,
- general_tray_weight_after_plus double,
+ tray_id int  not null,
+ general_tray_weight double not null,
+ general_tray_weight_before double not null,
+ general_tray_weight_after double not null,
+ general_tray_weight_after_plus double not null,
  date date,
- FOREIGN KEY (tray_id) REFERENCES Tray_Log (tray_Id)
+ FOREIGN KEY (tray_id) REFERENCES tray_log (id)
  );
  
  
- CREATE TABLE  Ash_Log ( 
+ CREATE TABLE  ash_log (
  id int PRIMARY KEY AUTO_INCREMENT,
- tray_id varchar(50) unique,
- sample_id varchar(50) unique,
- ash_tray_weight double,
- ash_tray_weight_before double,
- ash_tray_weight_after double,
+ tray_id int not null,
+ ash_tray_weight double not null,
+ ash_tray_weight_before double not null,
+ ash_tray_weight_after double not null,
  date date,
- FOREIGN KEY (tray_id) REFERENCES Tray_Log (tray_Id)
+ FOREIGN KEY (tray_id) REFERENCES tray_log (id)
  );
- 
-show tables;
-select * from ash_log;
-select * from general_moisture_log;
-select * from order_log;
-select * from reference_tray_log;
-select * from sample_log;
-select * from total_moisture_log;
-select * from tray_log;
 
-drop table ash_log;
-drop table general_moisture_log;
-drop table order_log;
-drop table reference_tray_log;
-drop table sample_log;
-drop table total_moisture_log;
-drop table tray_log;

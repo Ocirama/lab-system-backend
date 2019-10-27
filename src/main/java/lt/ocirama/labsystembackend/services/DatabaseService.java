@@ -1,4 +1,4 @@
-package lt.ocirama.labsystembackend.Services;
+package lt.ocirama.labsystembackend.services;
 
 public class DatabaseService {
     /*int year = Calendar.getInstance().get(Calendar.YEAR);

@@ -1,7 +1,7 @@
-package lt.ocirama.labsystembackend.Repositories;
+package lt.ocirama.labsystembackend.repositories;
 
-import lt.ocirama.labsystembackend.Models.OrderEntity;
-import lt.ocirama.labsystembackend.Models.SampleEntity;
+import lt.ocirama.labsystembackend.model.OrderLogEntity;
+import lt.ocirama.labsystembackend.model.SampleLogEntity;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -22,7 +22,7 @@ public class OrderLogRepository {
     XSSFWorkbook workbook;
     Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
-    String path = "C:\\Users\\Justas\\Desktop\\Output\\Užsakymųžurnalas_" + LocalDate.now() + ".xlsx";
+    String path = "C:\\Users\\Justas\\Desktop\\Output\\Užsakymųžurnalas.xlsx";
 
     public OrderLogRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
@@ -45,7 +45,7 @@ public class OrderLogRepository {
                 System.out.println("Sekantis protokolas? Taip/Ne");
                 if (sc.nextLine().equals("Taip")) {
                     Row row = sheet.createRow(i);
-                    OrderEntity order = new OrderEntity();
+                    OrderLogEntity order = new OrderLogEntity();
                     row.createCell(0).setCellValue(i);
 
                     System.out.println("Protokolo numeris:");
@@ -84,10 +84,10 @@ public class OrderLogRepository {
                     sc.nextLine();
 
                     System.out.println("Mėginių Id:");
-                    List<SampleEntity> list = new ArrayList<>();
+                    List<SampleLogEntity> list = new ArrayList<>();
 
                     for (int j = 1; j <= order.getOrderAmount(); j++) {
-                        SampleEntity se = new SampleEntity();
+                        SampleLogEntity se = new SampleLogEntity();
                         list.add(se);
                         se.setSampleId(sc.nextLine());
                         se.setOrder(order);

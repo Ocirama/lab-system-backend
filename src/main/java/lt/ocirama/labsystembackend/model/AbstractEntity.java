@@ -1,4 +1,4 @@
-package lt.ocirama.labsystembackend.Models;
+package lt.ocirama.labsystembackend.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;

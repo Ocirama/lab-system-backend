@@ -1,7 +1,7 @@
-package lt.ocirama.labsystembackend.Repositories;
+package lt.ocirama.labsystembackend.repositories;
 
-import lt.ocirama.labsystembackend.Models.SampleEntity;
-import lt.ocirama.labsystembackend.Services.ScaleService;
+import lt.ocirama.labsystembackend.model.SampleLogEntity;
+import lt.ocirama.labsystembackend.services.ScaleService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -29,7 +29,7 @@ public class WeightLogRepository {
     }
 
     public void WeightLogGenerate() {
-        SampleEntity sample = new SampleEntity();
+        SampleLogEntity sample = new SampleLogEntity();
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -50,19 +50,19 @@ public class WeightLogRepository {
             rowhead.createCell(1).setCellValue("Svoris, g");
             rowhead.createCell(2).setCellValue("Data");
             Session session = em.unwrap(Session.class);
-            List<SampleEntity> samples = (List<SampleEntity>) session.createQuery("from SampleEntity where protocol_Id=" + protocol).getResultList();
+            List<SampleLogEntity> samples = (List<SampleLogEntity>) session.createQuery("from SampleLogEntity where protocol_Id=" + protocol).getResultList();
             Row row1 = null;
-            for (SampleEntity sampleEntity : samples) {
+            for (SampleLogEntity sampleLogEntity : samples) {
                 for (int i =1;i<=samples.size();i++) {
                     row1 = sheet.createRow(i);
-                    row1.createCell(0).setCellValue(sampleEntity.getSampleId());
-                    System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
+                    row1.createCell(0).setCellValue(sampleLogEntity.getSampleId());
+                    System.out.println("Sverkite mėginį : " + sampleLogEntity.getSampleId());
                     /*SerialPort serialPort = ss.SvarstykliuJungtis();
-                    sampleEntity.setSampleWeight(ss.Pasverti(serialPort));*/
-                    sampleEntity.setSampleWeight(sc.nextDouble());
-                    row1.createCell(1).setCellValue(sampleEntity.getSampleWeight());
+                    sampleLogEntity.setSampleWeight(ss.Pasverti(serialPort));*/
+                    sampleLogEntity.setSampleWeight(sc.nextDouble());
+                    row1.createCell(1).setCellValue(sampleLogEntity.getSampleWeight());
                     //ss.ClosePort(serialPort);
-                    em.merge(sampleEntity);
+                    em.merge(sampleLogEntity);
                 }
             }
             row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));

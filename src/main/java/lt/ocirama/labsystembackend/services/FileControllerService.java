@@ -1,4 +1,4 @@
-package lt.ocirama.labsystembackend.Services;
+package lt.ocirama.labsystembackend.services;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
