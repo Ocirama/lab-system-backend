@@ -15,7 +15,7 @@ public class Client {
         WeightLogRepository wlr = new WeightLogRepository(HibernateUtils.getSessionFactory());
 
         //olr.OrderLogGenerate();
-        wlr.save(wlr.WeightLogGenerate());
+        wlr.WeightLogGenerate();
         //wlr.findAll();
-        }
     }
+}

@@ -1,9 +1,5 @@
 package lt.ocirama.leiSystem.Services;
 
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.Calendar;
-
 public class DatabaseService {
     /*int year = Calendar.getInstance().get(Calendar.YEAR);
     int month = Calendar.getInstance().get(Calendar.MONTH);

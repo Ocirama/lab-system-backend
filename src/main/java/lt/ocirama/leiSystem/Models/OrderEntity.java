@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "OrderLog")
 public class OrderEntity extends AbstractEntity implements Serializable {
-    @Column(name = "protocolId", length = 50, nullable = false,unique = true)
+    @Column(name = "protocolId", length = 50, nullable = false, unique = true)
     private String protocolId;
 
     @Column(name = "customer", length = 50, nullable = false)

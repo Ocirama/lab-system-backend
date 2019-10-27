@@ -2,12 +2,13 @@ package lt.ocirama.leiSystem.Models;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "SampleLog")
-public class SampleEntity extends AbstractEntity {
-    @Column(name = "sampleId", length = 50, nullable = false,unique = true)
+public class SampleEntity extends AbstractEntity implements Serializable {
+    @Column(name = "sampleId", length = 50, nullable = false, unique = true)
     private String SampleId;
     @Column(name = "sampleWeight")
     private double SampleWeight;

@@ -1,7 +1,5 @@
 package lt.ocirama.leiSystem.Controllers;
 
-import com.fazecast.jSerialComm.SerialPort;
-import lt.ocirama.leiSystem.Services.ScaleService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;

@@ -7,18 +7,13 @@ import lt.ocirama.leiSystem.Services.ScaleService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hibernate.MultiIdentifierLoadAccess;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,16 +23,15 @@ public class WeightLogRepository {
     XSSFWorkbook workbook;
     Scanner sc = new Scanner(System.in);
     ScaleService ss = new ScaleService();
-    String path = "C:\\Users\\Justas\\Desktop\\Lab-system output\\" + LocalDate.now() + "(Svoriai).xlsx";
+    String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + "(Svoriai).xlsx";
     private final EntityManagerFactory entityManagerFactory;
 
     public WeightLogRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-    public SampleEntity WeightLogGenerate() {
+    public void WeightLogGenerate() {
         SampleEntity sample = new SampleEntity();
-        OrderEntity order = new OrderEntity();
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -58,57 +52,34 @@ public class WeightLogRepository {
             rowhead.createCell(1).setCellValue("Svoris, g");
             rowhead.createCell(2).setCellValue("Data");
             Session session = em.unwrap(Session.class);
-            MultiIdentifierLoadAccess<SampleEntity> multiLoadAccess = session.byMultipleIds(SampleEntity.class);
-            List<SampleEntity> samples = multiLoadAccess.multiLoad(1L, 2L, 3L);
-            session.createQuery("from sample where protocol_Id="+protocol);
-           /* List<SampleEntity> samples = entityManagerFactory.createEntityManager().createQuery("from sample where protocol_Id =" + protocol, SampleEntity.class).getResultList();*/
-
+            List<SampleEntity> samples = (List<SampleEntity>) session.createQuery("from SampleEntity where protocol_Id=" + protocol).getResultList();
+            Row row1 = null;
             for (SampleEntity sampleEntity : samples) {
-                System.out.println(sample);
-            }
-
-            for (int i = 1; i < 5; i++) {
-                //order.getProtocolId().equals(protocol);
-                System.out.println("-------");
-                System.out.println();
-                System.out.println("Sekantis mėginys? Taip/Ne");
-                String TaipNe = sc.nextLine();
-                if (TaipNe.equals("Taip")) {
-                    System.out.println("Skenuokite mėginio ID:");
-                    //weightLog.setSampleId(sc.nextLine());
-                    Row row1 = sheet.createRow(i);
-                    //row1.createCell(0).setCellValue(weightLog.getSampleId());
-                    System.out.println("Mėginio masės svėrimas:");
-                    SerialPort serialPort = ss.SvarstykliuJungtis();
-                    // weightLog.setSampleWeight(ss.Pasverti(serialPort));
-                    //row1.createCell(1).setCellValue(weightLog.getSampleWeight());
-                    ss.ClosePort(serialPort);
-                    row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
-                } else if (TaipNe.equals("Ne")) {
-                    break;
+                for (int i = 1; i <= samples.size(); i++) {
+                    row1 = sheet.createRow(i);
+                    row1.createCell(0).setCellValue(sampleEntity.getSampleId());
+                    System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
+                    /*SerialPort serialPort = ss.SvarstykliuJungtis();
+                    sampleEntity.setSampleWeight(ss.Pasverti(serialPort));*/
+                    sampleEntity.setSampleWeight(sc.nextDouble());
+                    row1.createCell(1).setCellValue(sampleEntity.getSampleWeight());
+                    //ss.ClosePort(serialPort);
+                    em.merge(sampleEntity);
+                    transaction.commit();
                 }
             }
+            row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
+
             FileOutputStream fileOut = new FileOutputStream(path);
             workbook.write(fileOut);
             fileOut.flush();
             fileOut.close();
-
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public void save(SampleEntity sample) {
-        EntityManager em = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        try {
-            em.persist(sample);
-            transaction.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            transaction.rollback();
-        }
     }
 }
+
+

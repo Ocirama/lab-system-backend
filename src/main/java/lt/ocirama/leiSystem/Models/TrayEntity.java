@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "TrayLog")
 public class TrayEntity extends AbstractEntity {
 
-    @Column(name = "trayId", length = 50, nullable = false,unique = true)
+    @Column(name = "trayId", length = 50, nullable = false, unique = true)
     private String trayId;
     @Column(name = "trayWeight")
     private double trayWeight;
