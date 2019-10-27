@@ -1,4 +1,4 @@
-package lt.ocirama.labsystembackend.Controllers;
+package lt.ocirama.labsystembackend.Services;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-public class FileControllersService {
+public class FileControllerService {
 
     public static Sheet findSheetByProtocol(XSSFWorkbook workbook, String protocolName) {
         for (Sheet sheet : workbook)

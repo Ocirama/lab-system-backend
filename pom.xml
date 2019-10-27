@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>lt.ocirama</groupId>
-    <artifactId>lei-system</artifactId>
+    <artifactId>lab-system-backend</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -28,12 +28,7 @@
         <dependency>
             <groupId>com.fazecast</groupId>
             <artifactId>jSerialComm</artifactId>
-            <version>[2.0.0,3.0.0)</version>
-        </dependency>
-        <dependency>
-            <groupId>name.prokop.bart.rxtx</groupId>
-            <artifactId>rxtx</artifactId>
-            <version>2.2.2</version>
+            <version>[2.0.0)</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
