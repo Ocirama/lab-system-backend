@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -49,8 +50,12 @@ public class WeightLogRepository {
             rowhead.createCell(0).setCellValue("Mėginio Nr.");
             rowhead.createCell(1).setCellValue("Svoris, g");
             rowhead.createCell(2).setCellValue("Data");
+
             Session session = em.unwrap(Session.class);
-            List<SampleLogEntity> samples = (List<SampleLogEntity>) session.createQuery("from SampleLogEntity where protocol_Id=" + protocol).getResultList();
+            //select o from orderentitiy o where o.protocol = protocol
+            Query query = session.createQuery("Select ol.samples from OrderLogEntity ol where ol.protocolId=:protocol");
+            query.setParameter("protocol",protocol);
+            List<SampleLogEntity> samples = query.getResultList();
             Row row1 = null;
             for (SampleLogEntity sampleLogEntity : samples) {
                 for (int i =1;i<=samples.size();i++) {
