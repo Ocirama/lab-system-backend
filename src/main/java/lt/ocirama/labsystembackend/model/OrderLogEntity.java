@@ -22,6 +22,8 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
     @Column(name = "sample_type", length = 50, nullable = false)
     private String sampleType;
 
+
+
     @Column(name = "order_amount", nullable = false)
     private int orderAmount;
 
@@ -35,9 +37,11 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
         return samples;
     }
 
+
     public void setSamples(List<SampleLogEntity> samples) {
         this.samples = samples;
     }
+
 
     public String getProtocolId() {
         return protocolId;

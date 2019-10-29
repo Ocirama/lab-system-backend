@@ -54,6 +54,7 @@ public class WeightLogRepository {
             Row row1 = null;
             for (SampleLogEntity sampleLogEntity : samples) {
                 for (int i =1;i<=samples.size();i++) {
+
                     row1 = sheet.createRow(i);
                     row1.createCell(0).setCellValue(sampleLogEntity.getSampleId());
                     System.out.println("Sverkite mėginį : " + sampleLogEntity.getSampleId());
