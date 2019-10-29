@@ -30,7 +30,7 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @OneToMany(targetEntity = SampleLogEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<SampleLogEntity> samples;
 
     public List<SampleLogEntity> getSamples() {

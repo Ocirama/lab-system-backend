@@ -10,40 +10,32 @@ import java.util.List;
 public class SampleLogEntity extends AbstractEntity implements Serializable {
 
     @Column(name = "sample_id", length = 50, nullable = false, unique = true)
-    private String SampleId;
+    private String sampleId;
 
     @Column(name = "sample_weight", nullable = false)
-    private double SampleWeight;
+    private double sampleWeight;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     private OrderLogEntity order;
 
-    @OneToMany(targetEntity = TrayLogEntity.class, mappedBy = "sample", cascade = CascadeType.ALL)
-    private List<SampleLogEntity> trays;
-
-    public List<SampleLogEntity> getTrays() {
-        return trays;
-    }
-
-    public void setTrays(List<SampleLogEntity> trays) {
-        this.trays = trays;
-    }
+    @OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
+    private List<TrayLogEntity> trays;
 
     public String getSampleId() {
-        return SampleId;
+        return sampleId;
     }
 
     public void setSampleId(String sampleId) {
-        SampleId = sampleId;
+        this.sampleId = sampleId;
     }
 
     public double getSampleWeight() {
-        return SampleWeight;
+        return sampleWeight;
     }
 
     public void setSampleWeight(double sampleWeight) {
-        SampleWeight = sampleWeight;
+        this.sampleWeight = sampleWeight;
     }
 
     public OrderLogEntity getOrder() {
@@ -52,5 +44,13 @@ public class SampleLogEntity extends AbstractEntity implements Serializable {
 
     public void setOrder(OrderLogEntity order) {
         this.order = order;
+    }
+
+    public List<TrayLogEntity> getTrays() {
+        return trays;
+    }
+
+    public void setTrays(List<TrayLogEntity> trays) {
+        this.trays = trays;
     }
 }
