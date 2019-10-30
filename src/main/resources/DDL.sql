@@ -8,7 +8,7 @@ customer varchar(50) not null,
 test varchar(50)not null,
 sample_type varchar(50) not null,
 order_amount int not null,
-data date not null
+date date not null
 );
 
 CREATE TABLE  sample_log (

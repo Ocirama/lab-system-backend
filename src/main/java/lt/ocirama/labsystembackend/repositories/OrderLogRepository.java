@@ -22,7 +22,7 @@ public class OrderLogRepository {
     XSSFWorkbook workbook;
     Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
-    String path = "C:\\Users\\Justas\\Desktop\\Output\\Užsakymųžurnalas.xlsx";
+    String path = "C:\\Users\\lei12\\Desktop\\Output\\Užsakymų Žurnalas.xlsx";
 
     public OrderLogRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
