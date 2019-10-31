@@ -3,7 +3,6 @@ package lt.ocirama.labsystembackend.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +20,6 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
 
     @Column(name = "sample_type", length = 50, nullable = false)
     private String sampleType;
-
 
 
     @Column(name = "order_amount", nullable = false)

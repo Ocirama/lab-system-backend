@@ -4,12 +4,10 @@ import lt.ocirama.labsystembackend.model.OrderLogEntity;
 import lt.ocirama.labsystembackend.repositories.*;
 import lt.ocirama.labsystembackend.utils.HibernateUtils;
 
-import java.util.Scanner;
 
 public class Client {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
         HibernateUtils.init(args[0], args[1], args[2]);
 

@@ -25,6 +25,8 @@ public class SampleLogEntity extends AbstractEntity implements Serializable {
     @OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
     private List<TotalMoistureEntity> totalTrays;
 
+
+
     public List<TotalMoistureEntity> getTotalTrays() {
         return totalTrays;
     }
@@ -64,4 +66,6 @@ public class SampleLogEntity extends AbstractEntity implements Serializable {
     public void setTrays(List<TrayLogEntity> trays) {
         this.trays = trays;
     }
+
+
 }
