@@ -22,8 +22,8 @@ public class Client {
         OrderLogRepository olr = new OrderLogRepository(HibernateUtils.getSessionFactory());
         WeightLogRepository wlr = new WeightLogRepository(HibernateUtils.getSessionFactory());
 
-        //olr.OrderLogGenerate();
-        wlr.WeightLogGenerate();
+        olr.OrderLogGenerate();
+        //wlr.WeightLogGenerate();
         //wlr.findAll();
 
     }
