@@ -27,9 +27,6 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
     @Column(name = "order_amount", nullable = false)
     private int orderAmount;
 
-    @Column(name = "date", nullable = false)
-    private Date date;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<SampleLogEntity> samples;
 
@@ -81,14 +78,6 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
 
     public void setOrderAmount(int orderAmount) {
         this.orderAmount = orderAmount;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     @Override

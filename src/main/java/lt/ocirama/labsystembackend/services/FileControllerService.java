@@ -1,5 +1,6 @@
 package lt.ocirama.labsystembackend.services;
 
+import com.fazecast.jSerialComm.SerialPort;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-public class FileControllerService {
+public final class FileControllerService {
 
     public static Sheet findSheetByProtocol(XSSFWorkbook workbook, String protocolName) {
         for (Sheet sheet : workbook)
@@ -74,5 +75,14 @@ public class FileControllerService {
 
     public static String changeToComma(String value) {
         return value.replace(".", ",");
+
+    }
+
+    public static Double sverimoPrograma() {
+        ScaleService ss = new ScaleService();
+        SerialPort serialPort = ss.SvarstykliuJungtis();
+        double trayWeight = ss.Pasverti(serialPort);
+        ss.ClosePort(serialPort);
+        return trayWeight;
     }
 }

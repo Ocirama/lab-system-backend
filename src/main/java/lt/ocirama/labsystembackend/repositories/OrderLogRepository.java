@@ -69,11 +69,6 @@ public class OrderLogRepository {
                     String y = s.toString();
                     row.createCell(3).setCellValue(y);
 
-                    LocalDate date = LocalDate.now();
-                    String z = date.toString();
-                    order.setDate(Date.valueOf(z));
-                    row.createCell(4).setCellValue(z);
-
                     System.out.println("Kuro rūšis:");
                     order.setSampleType(sc.nextLine());
                     row.createCell(5).setCellValue(order.getSampleType());
