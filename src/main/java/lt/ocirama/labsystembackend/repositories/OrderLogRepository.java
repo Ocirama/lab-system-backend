@@ -103,8 +103,9 @@ public class OrderLogRepository {
             row.createCell(1).setCellValue(order.getProtocolId());
             row.createCell(2).setCellValue(order.getCustomer());
             row.createCell(3).setCellValue(order.getTest());
-            row.createCell(5).setCellValue(order.getSampleType());
-            row.createCell(6).setCellValue(order.getOrderAmount());
+            row.createCell(4).setCellValue(order.getSampleType());
+            row.createCell(5).setCellValue(order.getOrderAmount());
+            row.createCell(6).setCellValue(order.getDate());
 
             FileOutputStream outFile = new FileOutputStream(new File(path));
             workbook.write(outFile);

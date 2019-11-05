@@ -15,7 +15,7 @@ public class AshEntity extends AbstractEntity {
     private double dishAndSampleWeightAfter;
 
     @OneToOne
-    @JoinColumn (name = "tray_id")
+    @JoinColumn(name = "tray_id")
     private TrayEntity tray;
 
     public String getDishId() {

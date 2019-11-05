@@ -16,9 +16,8 @@ public class TotalMoistureEntity extends AbstractEntity {
     private double trayAndSampleWeightAfterPlus;
 
     @OneToOne
-    @JoinColumn (name = "tray_id")
+    @JoinColumn(name = "tray_id")
     private TrayEntity tray;
-
 
 
     public double getTrayWeight() {

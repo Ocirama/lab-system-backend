@@ -18,11 +18,15 @@ public class Client {
         TrayRepository tr = new TrayRepository(HibernateUtils.getSessionFactory());
         TotalMoistureRepository tmr = new TotalMoistureRepository(HibernateUtils.getSessionFactory());
         GeneralMoistureRepository gmr = new GeneralMoistureRepository(HibernateUtils.getSessionFactory());
+        ReferenceTrayRepository rtr = new ReferenceTrayRepository(HibernateUtils.getSessionFactory());
+        AshRepository ar = new AshRepository(HibernateUtils.getSessionFactory());
 
         //olr.OrderLogGenerate();
         //wlr.WeightLogGenerate();
         //tr.TrayAssign();
         //tmr.TotalMoistureLogGenerate();
-        gmr.GeneralMoistureLogGenerate();
+        //gmr.GeneralMoistureLogGenerate();
+        //rtr.ReferenceTrayLogGenerate();
+        //ar.AshLogGenerate();
     }
 }

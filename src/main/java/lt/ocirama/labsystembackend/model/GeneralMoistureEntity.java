@@ -1,7 +1,5 @@
 package lt.ocirama.labsystembackend.model;
 
-import org.hibernate.SessionFactory;
-
 import javax.persistence.*;
 
 @Entity
@@ -22,7 +20,6 @@ public class GeneralMoistureEntity extends AbstractEntity {
     @OneToOne
     @JoinColumn(name = "tray_id")
     private TrayEntity tray;
-
 
 
     public String getJarId() {

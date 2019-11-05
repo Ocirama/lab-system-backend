@@ -2,12 +2,11 @@ package lt.ocirama.labsystembackend.model;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "sample_log")
-public class SampleEntity extends AbstractEntity  {
+public class SampleEntity extends AbstractEntity {
 
     @Column(name = "sample_id", length = 50, nullable = false)
     private String sampleId;
@@ -21,7 +20,6 @@ public class SampleEntity extends AbstractEntity  {
 
     @OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
     private List<TrayEntity> trays;
-
 
 
     public String getSampleId() {
