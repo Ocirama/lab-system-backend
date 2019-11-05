@@ -1,7 +1,7 @@
 package lt.ocirama.labsystembackend.repositories;
 
-import lt.ocirama.labsystembackend.model.SampleLogEntity;
-import lt.ocirama.labsystembackend.model.TrayLogEntity;
+import lt.ocirama.labsystembackend.model.SampleEntity;
+import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.ScaleService;
 import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.Session;
@@ -25,27 +25,27 @@ public class TrayRepository {
     }
 
     public void TrayAssign() {
-        SampleLogEntity sample = new SampleLogEntity();
+        SampleEntity sample = new SampleEntity();
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         System.out.println("Protokolas ?");
         String protocol = sc.nextLine();
         Session session = em.unwrap(Session.class);
-        Query query = session.createQuery("Select ol.samples from OrderLogEntity ol where ol.protocolId=:protocol");
+        Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
         query.setParameter("protocol", protocol);
-        List<SampleLogEntity> samples = query.getResultList();
+        List<SampleEntity> samples = query.getResultList();
         Row row1 = null;
-        for (SampleLogEntity sampleLogEntity : samples) {
-            String sample1 = sampleLogEntity.getSampleId();
+        for (SampleEntity sampleEntity : samples) {
+            String sample1 = sampleEntity.getSampleId();
             System.out.println("Skenuokite padėklo barkodą mėginiui  " + sample1);
             String padeklas = sc.nextLine();
-            List<TrayLogEntity> list = new ArrayList<>();
-            TrayLogEntity tle = new TrayLogEntity();
+            List<TrayEntity> list = new ArrayList<>();
+            TrayEntity tle = new TrayEntity();
             list.add(tle);
             tle.setTrayId(padeklas);
-            tle.setSample(sampleLogEntity);
-            em.merge(sampleLogEntity);
+            tle.setSample(sampleEntity);
+            em.merge(sampleEntity);
             em.persist(tle);
         }
         transaction.commit();

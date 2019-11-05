@@ -12,7 +12,7 @@ public class FileRepository {
     LocalDate date = LocalDate.now();
     ScaleService svarstykles = new ScaleService();
     MeginysEntity m = new MeginysEntity();
-    TrayLogEntity t = new TrayLogEntity();
+    TrayEntity t = new TrayEntity();
 
     public void totalMoistureLogGenerate() {
 

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "reference_tray")
+@Table(name = "reference_tray_log")
 public class ReferenceTrayEntity extends AbstractEntity{
 
     @Column( name = "reference_tray_id",length = 50, nullable = false)

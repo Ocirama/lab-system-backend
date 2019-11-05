@@ -1,7 +1,7 @@
 package lt.ocirama.labsystembackend.repositories;
 
 import com.fazecast.jSerialComm.SerialPort;
-import lt.ocirama.labsystembackend.model.SampleLogEntity;
+import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.services.ScaleService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -31,7 +31,7 @@ public class WeightLogRepository {
     }
 
     public void WeightLogGenerate() {
-        SampleLogEntity sample = new SampleLogEntity();
+        SampleEntity sample = new SampleEntity();
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -54,22 +54,22 @@ public class WeightLogRepository {
 
             Session session = em.unwrap(Session.class);
             //select o from orderentitiy o where o.protocol = protocol
-            Query query = session.createQuery("Select ol.samples from OrderLogEntity ol where ol.protocolId=:protocol");
+            Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
             query.setParameter("protocol", protocol);
-            List<SampleLogEntity> samples = query.getResultList();
+            List<SampleEntity> samples = query.getResultList();
             Row row1 = null;
-            for (SampleLogEntity sampleLogEntity : samples) {
+            for (SampleEntity sampleEntity : samples) {
 
-                System.out.println("Sverkite mėginį : " + sampleLogEntity.getSampleId());
+                System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
                 SerialPort serialPort = ss.SvarstykliuJungtis();
-                sampleLogEntity.setSampleWeight(ss.Pasverti(serialPort));
-                //sampleLogEntity.setSampleWeight(sc.nextDouble());
+                sampleEntity.setSampleWeight(ss.Pasverti(serialPort));
+                //sampleEntity.setSampleWeight(sc.nextDouble());
                 ss.ClosePort(serialPort);
-                em.merge(sampleLogEntity);
+                em.merge(sampleEntity);
                 for (int i = 1; i <= samples.size(); i++) {
                     row1 = sheet.createRow(i);
-                    row1.createCell(0).setCellValue(sampleLogEntity.getSampleId());
-                    row1.createCell(1).setCellValue(sampleLogEntity.getSampleWeight());
+                    row1.createCell(0).setCellValue(sampleEntity.getSampleId());
+                    row1.createCell(1).setCellValue(sampleEntity.getSampleWeight());
                 }
             }
             row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
