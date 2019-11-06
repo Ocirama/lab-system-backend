@@ -1,6 +1,5 @@
 package lt.ocirama.labsystembackend.repositories;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.model.TotalMoistureEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
@@ -14,7 +13,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,12 +75,37 @@ public class TotalMoistureRepository {
                     tme.setTrayAndSampleWeightBefore(trayWeight2);
                     em.merge(sampleEntity);
                     em.persist(tme);
-                    TotalMoistureExcel(tme.getTray(),tme, protocol);
+                    TotalMoistureExcel(tme.getTray(), tme, protocol);
                 }
             }
 
             transaction.commit();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void TotalMoistureSecondGenerate() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        try {
+            System.out.println("Skenuokitę padėklą:");
+            String padeklas = sc.nextLine();
+            Session session = em.unwrap(Session.class);
+            Query query = session.createQuery("Select totalMoistureEntity tme from TrayEntity te where te.trayId=:padeklas");
+            query.setParameter("padeklas", padeklas);
+            TotalMoistureEntity tme = (TotalMoistureEntity) query.getSingleResult();
+            System.out.println("Sverkite padėklą po džiovinimo: ");
+            Double trayWeight = FileControllerService.sverimoPrograma();
+            tme.setTrayAndSampleWeightAfter(trayWeight);
+            double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
+            tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
+            em.persist(tme);
+            String protocol = tme.getTray().getSample().getOrder().getProtocolId();
+            TotalMoistureExcel(tme.getTray(), tme, protocol);
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,7 +147,7 @@ public class TotalMoistureRepository {
             workbook.write(fileOut);
             fileOut.flush();
             fileOut.close();
-        } catch ( IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

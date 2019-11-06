@@ -111,8 +111,6 @@ public class OrderLogRepository {
             workbook.write(outFile);
             outFile.flush();
             outFile.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

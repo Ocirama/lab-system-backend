@@ -10,7 +10,6 @@ public class SampleEntity extends AbstractEntity {
 
     @Column(name = "sample_id", length = 50, nullable = false)
     private String sampleId;
-
     @Column(name = "sample_weight", nullable = false)
     private double sampleWeight;
 

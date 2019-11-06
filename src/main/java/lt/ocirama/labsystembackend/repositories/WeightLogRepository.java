@@ -11,9 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -44,6 +42,7 @@ public class WeightLogRepository {
                 Double sampleWeight = FileControllerService.sverimoPrograma();
                 sampleEntity.setSampleWeight(sampleWeight);
                 em.merge(sampleEntity);
+                WeightLogExcel(sampleEntity, protocol);
             }
             transaction.commit();
         } catch (Exception e) {
@@ -51,27 +50,27 @@ public class WeightLogRepository {
         }
     }
 
-    public void WeightLogExcel() {
+    public void WeightLogExcel(SampleEntity sampleEntity, String protocol) {
 
         XSSFSheet sheet;
         XSSFWorkbook workbook;
         String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + "(Svoriai).xlsx";
         File file = new File(path);
-        if (file.exists()) {
-            FileInputStream fsip = new FileInputStream(path);
-            workbook = new XSSFWorkbook(fsip);
-            sheet = workbook.createSheet(protocol);
-        } else {
-            workbook = new XSSFWorkbook();
-            sheet = workbook.createSheet(protocol);
-        }
-        Row rowhead = sheet.createRow(0);
-        rowhead.createCell(0).setCellValue("Mėginio Nr.");
-        rowhead.createCell(1).setCellValue("Svoris, g");
-        rowhead.createCell(2).setCellValue("Data");
-        Row row1 = null;
-        for (int i = 1; i <= samples.size(); i++) {
-            row1 = sheet.createRow(i);
+        try {
+            if (file.exists()) {
+                FileInputStream fsip = new FileInputStream(path);
+                workbook = new XSSFWorkbook(fsip);
+                sheet = workbook.getSheet(protocol);
+            } else {
+                workbook = new XSSFWorkbook();
+                sheet = workbook.createSheet(protocol);
+            }
+            Row rowhead = sheet.createRow(0);
+            rowhead.createCell(0).setCellValue("Mėginio Nr.");
+            rowhead.createCell(1).setCellValue("Svoris, g");
+            rowhead.createCell(2).setCellValue("Data");
+
+            Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
             row1.createCell(0).setCellValue(sampleEntity.getSampleId());
             row1.createCell(1).setCellValue(sampleEntity.getSampleWeight());
             row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
@@ -79,9 +78,10 @@ public class WeightLogRepository {
             workbook.write(fileOut);
             fileOut.flush();
             fileOut.close();
+        }  catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
 }
 
 

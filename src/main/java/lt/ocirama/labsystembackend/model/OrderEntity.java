@@ -7,21 +7,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "order_log")
-public class OrderEntity extends AbstractEntity implements Serializable {
+public class OrderEntity extends AbstractEntity  {
 
     @Column(name = "protocol_id", length = 50, nullable = false)
     private String protocolId;
-
     @Column(name = "customer", length = 50, nullable = false)
     private String customer;
-
     @Column(name = "test", length = 50, nullable = false)
     private String test;
-
     @Column(name = "sample_type", length = 50, nullable = false)
     private String sampleType;
-
-
     @Column(name = "order_amount", nullable = false)
     private int orderAmount;
 

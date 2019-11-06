@@ -2,8 +2,6 @@ package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
-import lt.ocirama.labsystembackend.services.ScaleService;
-import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
@@ -17,7 +15,6 @@ import java.util.Scanner;
 public class TrayRepository {
 
     Scanner sc = new Scanner(System.in);
-    ScaleService ss = new ScaleService();
     private final EntityManagerFactory entityManagerFactory;
 
     public TrayRepository(EntityManagerFactory entityManagerFactory) {
@@ -25,7 +22,6 @@ public class TrayRepository {
     }
 
     public void TrayAssign() {
-        SampleEntity sample = new SampleEntity();
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
@@ -35,7 +31,7 @@ public class TrayRepository {
         Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
         query.setParameter("protocol", protocol);
         List<SampleEntity> samples = query.getResultList();
-        Row row1 = null;
+
         for (SampleEntity sampleEntity : samples) {
             String sample1 = sampleEntity.getSampleId();
             System.out.println("Skenuokite padėklo barkodą mėginiui  " + sample1);

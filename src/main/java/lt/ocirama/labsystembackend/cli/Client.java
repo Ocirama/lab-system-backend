@@ -24,7 +24,8 @@ public class Client {
         //olr.OrderLogGenerate();
         //wlr.WeightLogGenerate();
         //tr.TrayAssign();
-        //tmr.TotalMoistureLogGenerate();
+        tmr.TotalMoistureLogGenerate();
+        tmr.TotalMoistureSecondGenerate();
         //gmr.GeneralMoistureLogGenerate();
         //rtr.ReferenceTrayLogGenerate();
         //ar.AshLogGenerate();

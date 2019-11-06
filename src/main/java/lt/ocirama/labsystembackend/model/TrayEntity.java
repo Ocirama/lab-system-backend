@@ -9,13 +9,13 @@ public class TrayEntity extends AbstractEntity {
     @Column(name = "tray_id", length = 50)
     private String trayId;
 
-    @OneToOne (mappedBy = "tray")
+    @OneToOne(mappedBy = "tray")
     private TotalMoistureEntity totalMoistureEntity;
 
-    @OneToOne (mappedBy = "tray")
+    @OneToOne(mappedBy = "tray")
     private GeneralMoistureEntity generalMoistureEntity;
 
-    @OneToOne (mappedBy = "tray")
+    @OneToOne(mappedBy = "tray")
     private AshEntity ashEntity;
 
     @ManyToOne
