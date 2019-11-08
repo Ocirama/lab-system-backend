@@ -77,7 +77,7 @@ public class TotalMoistureRepository {
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
-                            TotalMoistureExcel(tme.getTray(), tme, protocol, 1);
+                            TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null);
                         }
                     }
 
@@ -96,30 +96,35 @@ public class TotalMoistureRepository {
         EntityTransaction transaction = em.getTransaction();
 
         try {
-            do {
-                transaction.begin();
+            String padeklas;
+            for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
-                String padeklas = sc.nextLine();
-                Session session = em.unwrap(Session.class);
-                Query query = session.createQuery("Select totalMoistureEntity from TrayEntity te where te.trayId=:padeklas");
-                query.setParameter("padeklas", padeklas);
-                TotalMoistureEntity tme = (TotalMoistureEntity) query.getSingleResult();
-                System.out.println("Sverkite padėklą po džiovinimo: ");
-                Double trayWeight = FileControllerService.sverimoPrograma();
-                tme.setTrayAndSampleWeightAfter(trayWeight);
-                double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
-                tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
-                em.persist(tme);
-                String protocol = tme.getTray().getSample().getOrder().getProtocolId();
-                TotalMoistureExcel(tme.getTray(), tme, protocol, 2);
-                transaction.commit();
-            }while(!sc.nextLine().equals("Baigta"));
+                padeklas = sc.nextLine();
+                if (!padeklas.equals("Baigta")) {
+                    transaction.begin();
+                    Session session = em.unwrap(Session.class);
+                    Query query = session.createQuery("Select totalMoistureEntity from TrayEntity te where te.trayId=:padeklas");
+                    query.setParameter("padeklas", padeklas);
+                    TotalMoistureEntity tme = (TotalMoistureEntity) query.getSingleResult();
+                    System.out.println("Sverkite padėklą po džiovinimo: ");
+                    Double trayWeight = FileControllerService.sverimoPrograma();
+                    tme.setTrayAndSampleWeightAfter(trayWeight);
+                    double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
+                    tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
+                    em.persist(tme);
+                    String protocol = tme.getTray().getSample().getOrder().getProtocolId();
+                    TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId());
+                    transaction.commit();
+                } else {
+                    break;
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris) {
+    public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
         String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
@@ -147,7 +152,6 @@ public class TotalMoistureRepository {
             rowhead.createCell(7).setCellValue("Data");
             Row row;
             if (sverimoNumeris == 1) {
-
                 int sheetNumber = sheet.getLastRowNum() + 1;
                 row = sheet.createRow(sheetNumber);
                 row.createCell(0).setCellValue(protocol);
@@ -156,12 +160,10 @@ public class TotalMoistureRepository {
                 row.createCell(3).setCellValue(tme.getTrayWeight());
                 row.createCell(4).setCellValue(tme.getTrayAndSampleWeightBefore());
             } else if (sverimoNumeris == 2) {
-                int sheetNumber = sheet.getLastRowNum();
-                row = sheet.getRow(sheetNumber);
+                row = sheet.getRow(FileControllerService.findRow(workbook, trayId));
                 row.createCell(5).setCellValue(tme.getTrayAndSampleWeightAfter());
                 row.createCell(6).setCellValue(tme.getTrayAndSampleWeightAfterPlus());
             }
-
             FileOutputStream fileOut = new FileOutputStream(path);
             workbook.write(fileOut);
             fileOut.flush();

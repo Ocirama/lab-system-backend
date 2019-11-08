@@ -21,10 +21,8 @@ public class Client {
         ReferenceTrayRepository rtr = new ReferenceTrayRepository(HibernateUtils.getSessionFactory());
         AshRepository ar = new AshRepository(HibernateUtils.getSessionFactory());
 
-
         //Užsakymo registravimas
         //olr.OrderLogGenerate();
-
 
         //Gauto mėginio masės svėrimas
         //wlr.WeightLogGenerate();
@@ -34,17 +32,16 @@ public class Client {
 
         //Visuminės drėgmės matavimas
         //tmr.TotalMoistureLogGenerate();
-        tmr.TotalMoistureSecondGenerate();
+        //tmr.TotalMoistureSecondGenerate();
 
         //Pamatinio padėklo registravimas
         //rtr.ReferenceTrayLogGenerate();
+        rtr.ReferenceTrayLogSecondGenerate();
 
         //Bendrosios drėgmės matavimas
         //gmr.GeneralMoistureLogGenerate();
 
         //Peleningumo matavimas
         //ar.AshLogGenerate();
-
-
     }
 }
