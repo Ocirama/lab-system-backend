@@ -65,7 +65,8 @@ public class TotalMoistureRepository {
                             list.add(tme);
                             tme.setTray(te);
                             System.out.println("Sverkite padėklą " + padeklas);
-                            Double trayWeight = FileControllerService.sverimoPrograma();
+                            //Double trayWeight = FileControllerService.sverimoPrograma();
+                            Double trayWeight = 50.00000;
                             tme.setTrayWeight(trayWeight);
                             em.persist(te);
                             em.persist(tme);
@@ -73,7 +74,8 @@ public class TotalMoistureRepository {
                         for (int k = 0; k <= 1; k++) {
                             tme = list.get(k);
                             System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į " + tme.getTray().getTrayId() + " padėklą ir sverkite:");
-                            Double trayWeight2 = FileControllerService.sverimoPrograma();
+                            //Double trayWeight2 = FileControllerService.sverimoPrograma();
+                            Double trayWeight2 = 50.00000;
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
@@ -107,7 +109,8 @@ public class TotalMoistureRepository {
                     query.setParameter("padeklas", padeklas);
                     TotalMoistureEntity tme = (TotalMoistureEntity) query.getSingleResult();
                     System.out.println("Sverkite padėklą po džiovinimo: ");
-                    Double trayWeight = FileControllerService.sverimoPrograma();
+                    //Double trayWeight = FileControllerService.sverimoPrograma();
+                    Double trayWeight = 50.00000;
                     tme.setTrayAndSampleWeightAfter(trayWeight);
                     double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
                     tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);

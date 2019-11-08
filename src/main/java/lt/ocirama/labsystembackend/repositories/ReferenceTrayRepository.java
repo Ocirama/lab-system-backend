@@ -57,10 +57,10 @@ public class ReferenceTrayRepository {
             transaction.begin();
             System.out.println("Skenuokitę padėklą:");
             padeklas = sc.nextLine();
-            /*Session session = em.unwrap(Session.class);
-            Query query = session.createQuery("Select ReferenceTrayEntity  where ReferenceTrayEntity.referenceTrayId=:padeklas");
-            query.setParameter("padeklas", padeklas);*/
-            ReferenceTrayEntity rte = entityManagerFactory.createEntityManager().find(ReferenceTrayEntity.class, padeklas);
+            Session session = em.unwrap(Session.class);
+            Query query = session.createQuery("from ReferenceTrayEntity  where referenceTrayId=:padeklas");
+            query.setParameter("padeklas", padeklas);
+            ReferenceTrayEntity rte = (ReferenceTrayEntity) query.getSingleResult();
             System.out.println("Sverkite padėklą po džiovinimo: ");
             Double trayWeight = FileControllerService.sverimoPrograma();
             rte.setReferenceTrayWeightAfter(trayWeight);

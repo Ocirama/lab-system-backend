@@ -45,7 +45,8 @@ public class WeightLogRepository {
                     List<SampleEntity> samples = query.getResultList();
                     for (SampleEntity sampleEntity : samples) {
                         System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
-                        Double sampleWeight = FileControllerService.sverimoPrograma();
+                        //Double sampleWeight = FileControllerService.sverimoPrograma();
+                        Double sampleWeight = 50.00000;
                         sampleEntity.setSampleWeight(sampleWeight);
                         em.merge(sampleEntity);
                         WeightLogExcelUpdate(sampleEntity, protocol);

@@ -36,10 +36,11 @@ public class Client {
 
         //Pamatinio padėklo registravimas
         //rtr.ReferenceTrayLogGenerate();
-        rtr.ReferenceTrayLogSecondGenerate();
+        //rtr.ReferenceTrayLogSecondGenerate();
 
         //Bendrosios drėgmės matavimas
         //gmr.GeneralMoistureLogGenerate();
+        gmr.GeneralMoistureSecondGenerate();
 
         //Peleningumo matavimas
         //ar.AshLogGenerate();
