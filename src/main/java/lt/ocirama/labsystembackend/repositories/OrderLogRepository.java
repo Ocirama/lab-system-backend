@@ -9,7 +9,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -29,11 +33,11 @@ public class OrderLogRepository {
             EntityManager em = entityManagerFactory.createEntityManager();
             EntityTransaction transaction = em.getTransaction();
             for (int i = 1; i < 5000; i++) {
-                System.out.println("Sekantis protokolas? Taip/Ne");
+                System.out.println("Registruoti naują protokolą: Taip/Ne");
                 if (sc.nextLine().equals("Taip")) {
                     OrderEntity order = new OrderEntity();
 
-                    System.out.println("Protokolo numeris:");
+                    System.out.println("Užsakymo numeris:");
                     order.setProtocolId(sc.nextLine());
 
                     System.out.println("Užsakovas:");
@@ -41,7 +45,7 @@ public class OrderLogRepository {
 
                     StringBuilder s = new StringBuilder();
                     String tyrimas;
-                    System.out.println("Tyrimai:");
+                    System.out.println("Užsakomi tyrimai:");
                     do {
                         tyrimas = sc.nextLine();
                         s.append(tyrimas).append(", ");
@@ -49,7 +53,6 @@ public class OrderLogRepository {
                     s.delete(s.length() - 10, s.length() - 1);
                     System.out.println(s);
                     order.setTest(s.toString());
-                    String y = s.toString();
 
                     System.out.println("Kuro rūšis:");
                     order.setSampleType(sc.nextLine());
@@ -74,7 +77,7 @@ public class OrderLogRepository {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    OrderCreateExcel(order);
+                    OrderLogExcelUpdate(order);
                 } else {
                     break;
                 }
@@ -84,10 +87,10 @@ public class OrderLogRepository {
         }
     }
 
-    public void OrderCreateExcel(OrderEntity order) {
+    public void OrderLogExcelUpdate(OrderEntity order) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\Užsakymų Žurnalas.xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\Užsakymų Žurnalas (" + LocalDate.now().getYear() + ").xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
@@ -97,8 +100,16 @@ public class OrderLogRepository {
             } else {
                 workbook = new XSSFWorkbook();
                 sheet = workbook.createSheet();
+                Row row = sheet.createRow(0);
+                row.createCell(0).setCellValue("Id");
+                row.createCell(1).setCellValue("Užsakymo Nr.");
+                row.createCell(2).setCellValue("Užsakovas");
+                row.createCell(3).setCellValue("Tyrimai");
+                row.createCell(4).setCellValue("Kuro rūšis");
+                row.createCell(5).setCellValue("Mėginių kiekis");
+                row.createCell(6).setCellValue("Data");
             }
-            Row row = sheet.createRow(sheet.getLastRowNum());
+            Row row = sheet.createRow(sheet.getLastRowNum() + 1);
             row.createCell(0).setCellValue(sheet.getLastRowNum());
             row.createCell(1).setCellValue(order.getProtocolId());
             row.createCell(2).setCellValue(order.getCustomer());
@@ -116,6 +127,7 @@ public class OrderLogRepository {
         }
     }
 }
+
 
 
 

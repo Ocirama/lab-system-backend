@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,27 +23,32 @@ public class TrayRepository {
     public void TrayAssign() {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        System.out.println("Protokolas ?");
-        String protocol = sc.nextLine();
-        Session session = em.unwrap(Session.class);
-        Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
-        query.setParameter("protocol", protocol);
-        List<SampleEntity> samples = query.getResultList();
+        for (int i = 1; i < 5000; i++) {
+            System.out.println("Naujo protokolo padėklų registravimas: Taip/Ne");
+            if (sc.nextLine().equals("Taip")) {
+                transaction.begin();
+                System.out.println("Užsakymo numeris ?");
+                String protocol = sc.nextLine();
+                Session session = em.unwrap(Session.class);
+                Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
+                query.setParameter("protocol", protocol);
+                List<SampleEntity> samples = query.getResultList();
 
-        for (SampleEntity sampleEntity : samples) {
-            String sample1 = sampleEntity.getSampleId();
-            System.out.println("Skenuokite padėklo barkodą mėginiui  " + sample1);
-            String padeklas = sc.nextLine();
-            List<TrayEntity> list = new ArrayList<>();
-            TrayEntity tle = new TrayEntity();
-            list.add(tle);
-            tle.setTrayId(padeklas);
-            tle.setSample(sampleEntity);
-            em.merge(sampleEntity);
-            em.persist(tle);
+                for (SampleEntity sampleEntity : samples) {
+                    String sample1 = sampleEntity.getSampleId();
+                    System.out.println("Skenuokite padėklo barkodą mėginiui  " + sample1);
+                    String padeklas = sc.nextLine();
+                    TrayEntity tle = new TrayEntity();
+                    tle.setTrayId(padeklas);
+                    tle.setSample(sampleEntity);
+                    em.merge(sampleEntity);
+                    em.persist(tle);
+                }
+                transaction.commit();
+            } else {
+                break;
+            }
         }
-        transaction.commit();
     }
 }
 
