@@ -14,10 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +67,7 @@ public class TotalMoistureRepository {
                             System.out.println("Sverkite padėklą " + padeklas);
                             //Double trayWeight = FileControllerService.sverimoPrograma();
                             Double trayWeight = 50.00000;
+                            System.out.println("Svoris : 50.00000 g");
                             tme.setTrayWeight(trayWeight);
                             em.persist(te);
                             em.persist(tme);
@@ -79,6 +77,7 @@ public class TotalMoistureRepository {
                             System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į " + tme.getTray().getTrayId() + " padėklą ir sverkite:");
                             //Double trayWeight2 = FileControllerService.sverimoPrograma();
                             Double trayWeight2 = 50.00000;
+                            System.out.println("Svoris : 50.00000 g");
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
@@ -114,6 +113,7 @@ public class TotalMoistureRepository {
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();
                     Double trayWeight = 50.00000;
+                    System.out.println("Svoris : 50.00000 g");
                     tme.setTrayAndSampleWeightAfter(trayWeight);
                     double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
                     tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
@@ -133,7 +133,7 @@ public class TotalMoistureRepository {
     public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
+        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
@@ -180,54 +180,4 @@ public class TotalMoistureRepository {
 
     }
 
-    public void totalMoistureLogUpdate() {
-        TotalMoistureEntity tme = new TotalMoistureEntity();
-        EntityManager em = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        FileInputStream excelFile = null;
-        try {
-            excelFile = new FileInputStream(new File(path));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            workbook = new XSSFWorkbook(excelFile);
-            sheet = workbook.getSheetAt(0);
-            for (int i = 1; i < 50; i++) {
-                System.out.println("Sekantis meginys? Taip/Ne");
-                if (sc.nextLine().equals("Taip")) {
-                    System.out.println("Skenuokite padėklo ID:");
-                    String indukas = sc.nextLine();
-                    Session session = em.unwrap(Session.class);
-                    TotalMoistureEntity totalMoistureEntity = entityManagerFactory.createEntityManager().find(TotalMoistureEntity.class, indukas);
-                    int row = findRow(workbook, indukas);
-                    System.out.println(row);
-                    String sheet1 = findSheet(workbook, indukas);
-                    XSSFSheet sheetx = workbook.getSheet(sheet1);
-                    XSSFRow rowx = sheetx.getRow(row);
-
-                    double x = getRandomNumberInRange(0.00005, 0.00030);
-                    System.out.println("Induko svėrimas po džiovinimo:");
-                    String sg1 = SverimoPrograma();
-                    double a = Double.parseDouble(sg1);
-                    double sum = round(a + x, 5);
-                    rowx.createCell(5).setCellValue(sg1);
-                    rowx.createCell(6).setCellValue(String.valueOf(sum));
-                    // ds.SvorisPoDziovinimo(connection, "Visumine_dregme", sg1, sum, indukas);
-                } else {
-                    break;
-                }
-            }
-            Row row = sheet.createRow(5);
-            FileOutputStream outFile = new FileOutputStream(new File("C:\\Users\\lei12\\Desktop\\New folder\\" + data + ".xlsx"));
-            workbook.write(outFile);
-            outFile.flush();
-            outFile.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

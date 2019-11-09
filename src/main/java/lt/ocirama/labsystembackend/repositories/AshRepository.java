@@ -1,6 +1,7 @@
 package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.AshEntity;
+import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,7 +42,6 @@ public class AshRepository {
                 padeklas = sc.nextLine();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
-
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray");
                     query.setParameter("tray", padeklas);
@@ -61,6 +61,7 @@ public class AshRepository {
                         ae.setDishId(indukas);
                         //Double dishWeight = FileControllerService.sverimoPrograma();
                         Double dishWeight = 50.00000;
+                        System.out.println("Svoris : 50.00000 g");
                         ae.setDishWeight(dishWeight);
                         em.persist(ae);
                     }
@@ -69,6 +70,7 @@ public class AshRepository {
                         System.out.println("Įdėkitę " + ae.getTray().getSample().getSampleId() + " mėginį į " + tray.getSample().getSampleId() + " induką ir sverkite:");
                         //Double trayWeight2 = FileControllerService.sverimoPrograma();
                         Double trayWeight2 = 50.00000;
+                        System.out.println("Svoris : 50.00000 g");
                         ae.setDishAndSampleWeightBefore(trayWeight2);
                         em.persist(ae);
                         AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 1);
@@ -83,7 +85,7 @@ public class AshRepository {
         }
     }
 
-    public void GeneralMoistureSecondGenerate() {
+    public void AshSecondGenerate() {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
@@ -96,14 +98,17 @@ public class AshRepository {
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("from AshEntity where dishId=:padeklas");
                     query.setParameter("padeklas", padeklas);
-                    AshEntity ae = (AshEntity) query.getSingleResult();
+                    List<AshEntity> samples = query.getResultList();
+                    for (AshEntity ae :samples) {
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();
-                    Double trayWeight = 50.00000;
-                    ae.setDishAndSampleWeightAfter(trayWeight);
-                    em.persist(ae);
-                    AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
-                    transaction.commit();
+                        Double trayWeight = 50.00000;
+                        System.out.println("Svoris : 50.00000 g");
+                        ae.setDishAndSampleWeightAfter(trayWeight);
+                        em.persist(ae);
+                        AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
+                        transaction.commit();
+                    }
                 } else {
                     break;
                 }
@@ -117,7 +122,7 @@ public class AshRepository {
 
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (Peleningumas).xlsx";
+        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (Peleningumas).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

@@ -1,7 +1,6 @@
 package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.SampleEntity;
-import lt.ocirama.labsystembackend.services.FileControllerService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -47,6 +46,7 @@ public class WeightLogRepository {
                         System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
                         //Double sampleWeight = FileControllerService.sverimoPrograma();
                         Double sampleWeight = 50.00000;
+                        System.out.println("Svoris : 50.00000 g");
                         sampleEntity.setSampleWeight(sampleWeight);
                         em.merge(sampleEntity);
                         WeightLogExcelUpdate(sampleEntity, protocol);
@@ -65,7 +65,7 @@ public class WeightLogRepository {
 
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (Svoriai).xlsx";
+        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (Svoriai).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
