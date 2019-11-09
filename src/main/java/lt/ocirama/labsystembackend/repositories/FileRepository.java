@@ -3,7 +3,7 @@ package lt.ocirama.labsystembackend.repositories;
 public class FileRepository {
 
 
-    /*private final static Scanner sc = new Scanner(System.in);
+   /* private final static Scanner sc = new Scanner(System.in);
     String data;
     XSSFSheet sheet;
     XSSFWorkbook workbook;
@@ -13,112 +13,6 @@ public class FileRepository {
     ScaleService svarstykles = new ScaleService();
     MeginysEntity m = new MeginysEntity();
     TrayLogEntity t = new TrayLogEntity();
-
-
-    public void WeightLogGenerate() {
-        //ds.createTable(connection, "Meginiu_svoriai");
-        String path = "C:\\Users\\lei12\\Desktop\\New folder\\" + date + "(Svoriai).xlsx";
-        try {
-            File file = new File(path);
-            System.out.println("Protokolas ?");
-            m.setProtocolId(sc.nextLine());
-            if (file.exists()) {
-                FileInputStream fsip = new FileInputStream(path);
-                workbook = new XSSFWorkbook(fsip);
-                sheet = workbook.createSheet(m.getProtocolId());
-            } else {
-                workbook = new XSSFWorkbook();
-                sheet = workbook.createSheet(m.getProtocolId());
-            }
-            Row rowhead = sheet.createRow(0);
-            rowhead.createCell(0).setCellValue("Mėginio Nr.");
-            rowhead.createCell(1).setCellValue("Svoris, g");
-            rowhead.createCell(2).setCellValue("Data");
-            for (int i = 1; i < 50; i++) {
-                System.out.println("Sekantis mėginys? Taip/Ne");
-                String TaipNe = sc.nextLine();
-                if (TaipNe.equals("Taip")) {
-                    System.out.println("Skenuokite mėginio ID:");
-                    m.setSampleId(sc.nextLine());
-                    Row row1 = sheet.createRow(i);
-                    row1.createCell(0).setCellValue(m.getSampleId());
-                    System.out.println("Mėginio masės svėrimas:");
-                    SerialPort serialPort = svarstykles.SvarstykliuJungtis();
-                    m.setSampleWeight(Double.valueOf(svarstykles.Pasverti(serialPort)));
-                    row1.createCell(1).setCellValue(FileControllers.changeToComma(String.valueOf(m.getSampleWeight())));
-                    svarstykles.ClosePort(serialPort);
-                    row1.createCell(2).setCellValue(String.valueOf(date));
-                    //ds.updateSvoriai(connection, m.getProtocolId(), meginys, sgDouble, Date.valueOf(date));
-                } else if (TaipNe.equals("Ne")) {
-                    break;
-                }
-            }
-            FileOutputStream fileOut = new FileOutputStream(path);
-            workbook.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
-
-            //connection.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void trayRegistryLogGenerte() {
-        //ds.createTable(connection, "Padeklo_priskyrimas");
-        String path = "C:\\Users\\lei12\\Desktop\\New folder\\" + date + "(Padeklo_priskyrimas).xlsx";
-        try {
-            File file = new File(path);
-            if (file.exists()) {
-                FileInputStream fsip = new FileInputStream("C:\\Users\\lei12\\Desktop\\New folder\\" + data + ".xlsx");
-                workbook = new XSSFWorkbook(fsip);
-            } else {
-                workbook = new XSSFWorkbook();
-            }
-            for (int i = 1; i < 50; ++i) {
-                System.out.println("Sekantis meginys? Taip/Ne");
-                String TaipNe = sc.nextLine();
-                if (TaipNe.equals("Taip")) {
-                    System.out.println("Skenuokite mėginio ID:");
-                    String meginys = sc.nextLine();
-                    //protocolName = ds.getUzsakymo_nr(connection, "meginiu_svoriai", meginys);
-                    if (workbook.getNumberOfSheets() != 0) {
-                        if (findSheetByProtocol(workbook, protocolName) == null) {
-                            sheet = workbook.createSheet(protocolName + "-" + year + "-8b");
-                        } else {
-                            sheet = workbook.getSheet(protocolName + "-" + year + "-8b");
-                        }
-                    } else {
-                        sheet = workbook.createSheet(protocolName + "-" + year + "-8b");
-                    }
-                    Row rowhead = sheet.createRow(0);
-                    rowhead.createCell(0).setCellValue("Protokolo Nr.");
-                    rowhead.createCell(1).setCellValue("Mėginio Nr.");
-                    rowhead.createCell(2).setCellValue("Padėklo Nr.");
-                    rowhead.createCell(3).setCellValue("Data");
-                    Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
-                    row1.createCell(0).setCellValue(m.getProtocolId());
-                    row1.createCell(1).setCellValue(m.getSampleId());
-                    System.out.println("Skenuokite padėklą");
-                    t.setTrayId(Integer.valueOf(sc.nextLine()));
-                    row1.createCell(2).setCellValue(t.getTrayId());
-                    row1.createCell(3).setCellValue(String.valueOf(date));
-
-                    //ds.priskyrimas(connection, protocolName, meginys, padeklas, Date.valueOf(date));
-                } else if (TaipNe.equals("Ne")) {
-                    break;
-                }
-            }
-            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\lei12\\Desktop\\New folder\\" + data + ".xlsx");
-            workbook.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
-            //connection.close();
-
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void totalMoistureLogGenerate() {
 
@@ -211,7 +105,7 @@ public class FileRepository {
 
     }
 
-    public void totalMoistureLogUpdate() {
+    /*public void totalMoistureLogUpdate() {
         data = date + "(VisumineDregme)";
         FileInputStream excelFile = null;
         try {

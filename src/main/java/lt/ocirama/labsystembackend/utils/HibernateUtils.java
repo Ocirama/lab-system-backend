@@ -1,8 +1,6 @@
 package lt.ocirama.labsystembackend.utils;
 
-import lt.ocirama.labsystembackend.model.OrderLogEntity;
-import lt.ocirama.labsystembackend.model.SampleLogEntity;
-import lt.ocirama.labsystembackend.model.TrayLogEntity;
+import lt.ocirama.labsystembackend.model.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -29,6 +27,10 @@ public class HibernateUtils {
         configuration.addAnnotatedClass(OrderLogEntity.class);
         configuration.addAnnotatedClass(SampleLogEntity.class);
         configuration.addAnnotatedClass(TrayLogEntity.class);
+        configuration.addAnnotatedClass(TotalMoistureEntity.class);
+        configuration.addAnnotatedClass(ReferenceTrayEntity.class);
+        configuration.addAnnotatedClass(GeneralMoistureEntity.class);
+        configuration.addAnnotatedClass(AshEntity.class);
         sessionFactory = configuration.buildSessionFactory(
                 new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build()
         );

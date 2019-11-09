@@ -3,7 +3,6 @@ package lt.ocirama.labsystembackend.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,11 +21,9 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
     @Column(name = "sample_type", length = 50, nullable = false)
     private String sampleType;
 
+
     @Column(name = "order_amount", nullable = false)
     private int orderAmount;
-
-    @Column(name = "date", nullable = false)
-    private Date date;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<SampleLogEntity> samples;
@@ -35,9 +32,11 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
         return samples;
     }
 
+
     public void setSamples(List<SampleLogEntity> samples) {
         this.samples = samples;
     }
+
 
     public String getProtocolId() {
         return protocolId;
@@ -77,14 +76,6 @@ public class OrderLogEntity extends AbstractEntity implements Serializable {
 
     public void setOrderAmount(int orderAmount) {
         this.orderAmount = orderAmount;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     @Override
