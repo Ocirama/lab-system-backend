@@ -24,9 +24,9 @@ public class HibernateUtils {
         settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(Environment.HBM2DDL_AUTO, "validate");
         configuration.setProperties(settings);
-        configuration.addAnnotatedClass(OrderLogEntity.class);
-        configuration.addAnnotatedClass(SampleLogEntity.class);
-        configuration.addAnnotatedClass(TrayLogEntity.class);
+        configuration.addAnnotatedClass(OrderEntity.class);
+        configuration.addAnnotatedClass(SampleEntity.class);
+        configuration.addAnnotatedClass(TrayEntity.class);
         configuration.addAnnotatedClass(TotalMoistureEntity.class);
         configuration.addAnnotatedClass(ReferenceTrayEntity.class);
         configuration.addAnnotatedClass(GeneralMoistureEntity.class);

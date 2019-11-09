@@ -17,6 +17,14 @@ public abstract class AbstractEntity {
     @Column(name = "date", nullable = false)
     private Date date = java.sql.Date.valueOf(LocalDate.now());
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -5,66 +5,69 @@ import javax.persistence.*;
 @Entity
 @Table(name = "general_moisture_log")
 public class GeneralMoistureEntity extends AbstractEntity {
-    @Column(name = "tray_id", length = 50, nullable = false, unique = true)
-    private String trayId;
-    @Column(name = "tray_weight", nullable = false)
-    private double trayWeight;
-    @Column(name = "total_tray_weight_before", nullable = false)
-    private double trayAndSampleWeightBefore;
-    @Column(name = "total_tray_weight_after", nullable = false)
-    private double trayAndSampleWeightAfter;
-    @Column(name = "total_tray_weight_after_plus", nullable = false)
-    private double trayAndSampleWeightAfterPlus;
 
-    @ManyToOne
-    @JoinColumn(name = "sample_id")
-    private SampleLogEntity sample;
+    @Column(name = "jar_id")
+    private String jarId;
+    @Column(name = "jar_weight")
+    private double jarWeight;
+    @Column(name = "total_jar_weight_before")
+    private double jarAndSampleWeightBefore;
+    @Column(name = "total_jar_weight_after")
+    private double jarAndSampleWeightAfter;
+    @Column(name = "total_jar_weight_after_plus")
+    private double jarAndSampleWeightAfterPlus;
 
-    public String getTrayId() {
-        return trayId;
+    @OneToOne
+    @JoinColumn(name = "tray_id")
+    private TrayEntity tray;
+
+
+    public String getJarId() {
+        return jarId;
     }
 
-    public void setTrayId(String trayId) {
-        this.trayId = trayId;
+    public void setJarId(String jarId) {
+        this.jarId = jarId;
     }
 
-    public double getTrayWeight() {
-        return trayWeight;
+    public double getJarWeight() {
+        return jarWeight;
     }
 
-    public void setTrayWeight(double trayWeight) {
-        this.trayWeight = trayWeight;
+    public void setJarWeight(double jarWeight) {
+        this.jarWeight = jarWeight;
     }
 
-    public double getTrayAndSampleWeightBefore() {
-        return trayAndSampleWeightBefore;
+    public double getJarAndSampleWeightBefore() {
+        return jarAndSampleWeightBefore;
     }
 
-    public void setTrayAndSampleWeightBefore(double trayAndSampleWeightBefore) {
-        this.trayAndSampleWeightBefore = trayAndSampleWeightBefore;
+    public void setJarAndSampleWeightBefore(double jarAndSampleWeightBefore) {
+        this.jarAndSampleWeightBefore = jarAndSampleWeightBefore;
     }
 
-    public double getTrayAndSampleWeightAfter() {
-        return trayAndSampleWeightAfter;
+    public double getJarAndSampleWeightAfter() {
+        return jarAndSampleWeightAfter;
     }
 
-    public void setTrayAndSampleWeightAfter(double trayAndSampleWeightAfter) {
-        this.trayAndSampleWeightAfter = trayAndSampleWeightAfter;
+    public void setJarAndSampleWeightAfter(double jarAndSampleWeightAfter) {
+        this.jarAndSampleWeightAfter = jarAndSampleWeightAfter;
     }
 
-    public double getTrayAndSampleWeightAfterPlus() {
-        return trayAndSampleWeightAfterPlus;
+    public double getJarAndSampleWeightAfterPlus() {
+        return jarAndSampleWeightAfterPlus;
     }
 
-    public void setTrayAndSampleWeightAfterPlus(double trayAndSampleWeightAfterPlus) {
-        this.trayAndSampleWeightAfterPlus = trayAndSampleWeightAfterPlus;
+    public void setJarAndSampleWeightAfterPlus(double jarAndSampleWeightAfterPlus) {
+        this.jarAndSampleWeightAfterPlus = jarAndSampleWeightAfterPlus;
     }
 
-    public SampleLogEntity getSample() {
-        return sample;
+    public TrayEntity getTray() {
+        return tray;
     }
 
-    public void setSample(SampleLogEntity sample) {
-        this.sample = sample;
+    public void setTray(TrayEntity tray) {
+        this.tray = tray;
     }
 }
+

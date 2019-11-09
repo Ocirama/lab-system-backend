@@ -2,38 +2,24 @@ package lt.ocirama.labsystembackend.model;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "sample_log")
-public class SampleLogEntity extends AbstractEntity implements Serializable {
+public class SampleEntity extends AbstractEntity {
 
-    @Column(name = "sample_id", length = 50, nullable = false, unique = true)
+    @Column(name = "sample_id", length = 50, nullable = false)
     private String sampleId;
-
     @Column(name = "sample_weight", nullable = false)
     private double sampleWeight;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private OrderLogEntity order;
+    private OrderEntity order;
 
     @OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
-    private List<TrayLogEntity> trays;
+    private List<TrayEntity> trays;
 
-    @OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
-    private List<TotalMoistureEntity> totalTrays;
-
-
-
-    public List<TotalMoistureEntity> getTotalTrays() {
-        return totalTrays;
-    }
-
-    public void setTotalTrays(List<TotalMoistureEntity> totalTrays) {
-        this.totalTrays = totalTrays;
-    }
 
     public String getSampleId() {
         return sampleId;
@@ -51,19 +37,19 @@ public class SampleLogEntity extends AbstractEntity implements Serializable {
         this.sampleWeight = sampleWeight;
     }
 
-    public OrderLogEntity getOrder() {
+    public OrderEntity getOrder() {
         return order;
     }
 
-    public void setOrder(OrderLogEntity order) {
+    public void setOrder(OrderEntity order) {
         this.order = order;
     }
 
-    public List<TrayLogEntity> getTrays() {
+    public List<TrayEntity> getTrays() {
         return trays;
     }
 
-    public void setTrays(List<TrayLogEntity> trays) {
+    public void setTrays(List<TrayEntity> trays) {
         this.trays = trays;
     }
 

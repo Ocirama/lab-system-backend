@@ -5,58 +5,56 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ash_log")
 public class AshEntity extends AbstractEntity {
-    @Column(name = "tray_id", length = 50, nullable = false, unique = true)
-    private String trayId;
-    @Column(name = "tray_weight", nullable = false)
-    private double trayWeight;
-    @Column(name = "total_tray_weight_before", nullable = false)
-    private double trayAndSampleWeightBefore;
-    @Column(name = "total_tray_weight_after", nullable = false)
-    private double trayAndSampleWeightAfter;
+    @Column(name = "dish_id", length = 50, nullable = false)
+    private String dishId;
+    @Column(name = "dish_weight", nullable = false)
+    private double dishWeight;
+    @Column(name = "total_dish_weight_before", nullable = false)
+    private double dishAndSampleWeightBefore;
+    @Column(name = "total_dish_weight_after", nullable = false)
+    private double dishAndSampleWeightAfter;
 
-    @ManyToOne
-    @JoinColumn(name = "sample_id")
-    private SampleLogEntity sample;
+    @OneToOne
+    @JoinColumn(name = "tray_id")
+    private TrayEntity tray;
 
-    public String getTrayId() {
-        return trayId;
+    public String getDishId() {
+        return dishId;
     }
 
-    public void setTrayId(String trayId) {
-        this.trayId = trayId;
+    public void setDishId(String dishId) {
+        this.dishId = dishId;
     }
 
-    public double getTrayWeight() {
-        return trayWeight;
+    public double getDishWeight() {
+        return dishWeight;
     }
 
-    public void setTrayWeight(double trayWeight) {
-        this.trayWeight = trayWeight;
+    public void setDishWeight(double dishWeight) {
+        this.dishWeight = dishWeight;
     }
 
-    public double getTrayAndSampleWeightBefore() {
-        return trayAndSampleWeightBefore;
+    public double getDishAndSampleWeightBefore() {
+        return dishAndSampleWeightBefore;
     }
 
-    public void setTrayAndSampleWeightBefore(double trayAndSampleWeightBefore) {
-        this.trayAndSampleWeightBefore = trayAndSampleWeightBefore;
+    public void setDishAndSampleWeightBefore(double dishAndSampleWeightBefore) {
+        this.dishAndSampleWeightBefore = dishAndSampleWeightBefore;
     }
 
-    public double getTrayAndSampleWeightAfter() {
-        return trayAndSampleWeightAfter;
+    public double getDishAndSampleWeightAfter() {
+        return dishAndSampleWeightAfter;
     }
 
-    public void setTrayAndSampleWeightAfter(double trayAndSampleWeightAfter) {
-        this.trayAndSampleWeightAfter = trayAndSampleWeightAfter;
+    public void setDishAndSampleWeightAfter(double dishAndSampleWeightAfter) {
+        this.dishAndSampleWeightAfter = dishAndSampleWeightAfter;
     }
 
-    public SampleLogEntity getSample() {
-        return sample;
+    public TrayEntity getTray() {
+        return tray;
     }
 
-    public void setSample(SampleLogEntity sample) {
-        this.sample = sample;
+    public void setTray(TrayEntity tray) {
+        this.tray = tray;
     }
 }
-
-

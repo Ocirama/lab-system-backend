@@ -1,8 +1,7 @@
 package lt.ocirama.labsystembackend.repositories;
 
-import com.fazecast.jSerialComm.SerialPort;
-import lt.ocirama.labsystembackend.model.SampleLogEntity;
-import lt.ocirama.labsystembackend.services.ScaleService;
+import lt.ocirama.labsystembackend.model.SampleEntity;
+import lt.ocirama.labsystembackend.services.FileControllerService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -12,7 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -20,7 +22,6 @@ import java.util.Scanner;
 public class WeightLogRepository {
 
     Scanner sc = new Scanner(System.in);
-    ScaleService ss = new ScaleService();
     private final EntityManagerFactory entityManagerFactory;
 
     public WeightLogRepository(EntityManagerFactory entityManagerFactory) {
@@ -28,67 +29,72 @@ public class WeightLogRepository {
     }
 
     public void WeightLogGenerate() {
-        SampleLogEntity sample = new SampleLogEntity();
+
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
         try {
-            System.out.println("Protokolas ?");
-            String protocol = sc.nextLine();
-
-
-            Session session = em.unwrap(Session.class);
-            //select o from orderentitiy o where o.protocol = protocol
-            Query query = session.createQuery("Select ol.samples from OrderLogEntity ol where ol.protocolId=:protocol");
-            query.setParameter("protocol", protocol);
-            List<SampleLogEntity> samples = query.getResultList();
-            for (SampleLogEntity sampleLogEntity : samples) {
-                System.out.println("Sverkite mėginį : " + sampleLogEntity.getSampleId());
-                SerialPort serialPort = ss.SvarstykliuJungtis();
-                sampleLogEntity.setSampleWeight(ss.Pasverti(serialPort));
-                //sampleLogEntity.setSampleWeight(sc.nextDouble());
-                ss.ClosePort(serialPort);
-                em.merge(sampleLogEntity);
-
+            for (int i = 1; i < 5000; i++) {
+                System.out.println("Naujo protokolo svėrimas: Taip/Ne");
+                if (sc.nextLine().equals("Taip")) {
+                    transaction.begin();
+                    System.out.println("Užsakymo numeris ?");
+                    String protocol = sc.nextLine();
+                    Session session = em.unwrap(Session.class);
+                    Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
+                    query.setParameter("protocol", protocol);
+                    List<SampleEntity> samples = query.getResultList();
+                    for (SampleEntity sampleEntity : samples) {
+                        System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
+                        //Double sampleWeight = FileControllerService.sverimoPrograma();
+                        Double sampleWeight = 50.00000;
+                        sampleEntity.setSampleWeight(sampleWeight);
+                        em.merge(sampleEntity);
+                        WeightLogExcelUpdate(sampleEntity, protocol);
+                    }
+                    transaction.commit();
+                } else {
+                    break;
+                }
             }
-            transaction.commit();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void createExcel() {
+    public void WeightLogExcelUpdate(SampleEntity sampleEntity, String protocol) {
+
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + "(Svoriai).xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (Svoriai).xlsx";
         File file = new File(path);
-        if (file.exists()) {
-            FileInputStream fsip = new FileInputStream(path);
-            workbook = new XSSFWorkbook(fsip);
-            sheet = workbook.createSheet(protocol);
-        } else {
-            workbook = new XSSFWorkbook();
-            sheet = workbook.createSheet(protocol);
-        }
-        Row rowhead = sheet.createRow(0);
-        rowhead.createCell(0).setCellValue("Mėginio Nr.");
-        rowhead.createCell(1).setCellValue("Svoris, g");
-        rowhead.createCell(2).setCellValue("Data");
-        Row row1 = null;
-        for (int i = 1; i <= samples.size(); i++) {
-            row1 = sheet.createRow(i);
-            row1.createCell(0).setCellValue(sampleLogEntity.getSampleId());
-            row1.createCell(1).setCellValue(sampleLogEntity.getSampleWeight());
+        try {
+            if (file.exists()) {
+                FileInputStream fsip = new FileInputStream(path);
+                workbook = new XSSFWorkbook(fsip);
+                if (workbook.getSheet(protocol) == null) {
+                    sheet = workbook.createSheet(protocol);
+                } else
+                    sheet = workbook.getSheet(protocol);
+            } else {
+                workbook = new XSSFWorkbook();
+                sheet = workbook.createSheet(protocol);
+            }
+            Row rowhead = sheet.createRow(0);
+            rowhead.createCell(0).setCellValue("Mėginio Nr.");
+            rowhead.createCell(1).setCellValue("Svoris, g");
+            rowhead.createCell(2).setCellValue("Data");
 
+            Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
+            row1.createCell(0).setCellValue(sampleEntity.getSampleId());
+            row1.createCell(1).setCellValue(sampleEntity.getSampleWeight());
+            row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
+            FileOutputStream fileOut = new FileOutputStream(path);
+            workbook.write(fileOut);
+            fileOut.flush();
+            fileOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
-        FileOutputStream fileOut = new FileOutputStream(path);
-        workbook.write(fileOut);
-        fileOut.flush();
-        fileOut.close();
     }
 }
 

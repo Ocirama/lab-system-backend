@@ -5,8 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "total_moisture_log")
 public class TotalMoistureEntity extends AbstractEntity {
-    @Column(name = "tray_id", length = 50, nullable = false, unique = true)
-    private String trayId;
+
     @Column(name = "tray_weight", nullable = false)
     private double trayWeight;
     @Column(name = "total_tray_weight_before", nullable = false)
@@ -16,9 +15,10 @@ public class TotalMoistureEntity extends AbstractEntity {
     @Column(name = "total_tray_weight_after_plus", nullable = false)
     private double trayAndSampleWeightAfterPlus;
 
-    @ManyToOne
-    @JoinColumn(name = "sample_id")
-    private SampleLogEntity sample;
+    @OneToOne
+    @JoinColumn(name = "tray_id")
+    private TrayEntity tray;
+
 
     public double getTrayWeight() {
         return trayWeight;
@@ -52,20 +52,13 @@ public class TotalMoistureEntity extends AbstractEntity {
         this.trayAndSampleWeightAfterPlus = trayAndSampleWeightAfterPlus;
     }
 
-    public String getTrayId() {
-        return trayId;
+
+    public TrayEntity getTray() {
+        return tray;
     }
 
-    public void setTrayId(String trayId) {
-        this.trayId = trayId;
-    }
-
-    public SampleLogEntity getSample() {
-        return sample;
-    }
-
-    public void setSample(SampleLogEntity sample) {
-        this.sample = sample;
+    public void setTray(TrayEntity tray) {
+        this.tray = tray;
     }
 }
 

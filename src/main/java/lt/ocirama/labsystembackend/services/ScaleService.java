@@ -20,9 +20,9 @@ public class ScaleService {
                 System.out.println(i++ + ": " + port.getSystemPortName());
             int chosenPort = 1;
             SerialPort serialPort = ports[chosenPort - 1];
-            if (serialPort.openPort())
+            if (serialPort.openPort()) {
                 System.out.println("Port opened successfully.");
-            else {
+            }else {
                 System.out.println("Unable to open the port.");
             }
             serialPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
