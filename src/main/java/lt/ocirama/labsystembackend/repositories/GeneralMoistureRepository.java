@@ -34,13 +34,13 @@ public class GeneralMoistureRepository {
     public void GeneralMoistureLogGenerate() {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
         try {
             String padeklas;
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
                 padeklas = sc.nextLine();
                 if (!padeklas.equals("Baigta")) {
+                    transaction.begin();
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray");
                     query.setParameter("tray", padeklas);
@@ -59,6 +59,7 @@ public class GeneralMoistureRepository {
                         gme.setJarId(indukas);
                         //Double jarWeight = FileControllerService.sverimoPrograma();
                         double jarWeight =50.00000;
+                        System.out.println("Svoris : 50.00000 g");
                         gme.setJarWeight(jarWeight);
                         em.persist(gme);
                     }
@@ -67,6 +68,7 @@ public class GeneralMoistureRepository {
                         System.out.println("Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + tray.getSample().getSampleId() + " padėklą ir sverkite:");
                         //Double trayWeight2 = FileControllerService.sverimoPrograma();
                         Double trayWeight2 = 50.00000;
+                        System.out.println("Svoris : 50.00000 g");
                         gme.setJarAndSampleWeightBefore(trayWeight2);
                         em.persist(gme);
                         GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 1);
@@ -98,6 +100,7 @@ public class GeneralMoistureRepository {
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();
                     Double trayWeight = 50.00000;
+                    System.out.println("Svoris : 50.00000 g");
                     gme.setJarAndSampleWeightAfter(trayWeight);
                     double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00020);
                     gme.setJarAndSampleWeightAfterPlus(trayWeight + x);
@@ -117,7 +120,7 @@ public class GeneralMoistureRepository {
 
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (BendrojiDregme).xlsx";
+        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (BendrojiDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

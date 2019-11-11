@@ -5,6 +5,7 @@ import lt.ocirama.labsystembackend.model.TotalMoistureEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
@@ -13,14 +14,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static lt.ocirama.labsystembackend.services.FileControllerService.*;
 
 public class TotalMoistureRepository {
 
@@ -67,6 +67,7 @@ public class TotalMoistureRepository {
                             System.out.println("Sverkite padėklą " + padeklas);
                             //Double trayWeight = FileControllerService.sverimoPrograma();
                             Double trayWeight = 50.00000;
+                            System.out.println("Svoris : 50.00000 g");
                             tme.setTrayWeight(trayWeight);
                             em.persist(te);
                             em.persist(tme);
@@ -76,6 +77,7 @@ public class TotalMoistureRepository {
                             System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į " + tme.getTray().getTrayId() + " padėklą ir sverkite:");
                             //Double trayWeight2 = FileControllerService.sverimoPrograma();
                             Double trayWeight2 = 50.00000;
+                            System.out.println("Svoris : 50.00000 g");
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
@@ -111,6 +113,7 @@ public class TotalMoistureRepository {
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();
                     Double trayWeight = 50.00000;
+                    System.out.println("Svoris : 50.00000 g");
                     tme.setTrayAndSampleWeightAfter(trayWeight);
                     double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
                     tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
@@ -130,7 +133,7 @@ public class TotalMoistureRepository {
     public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
+        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
@@ -176,4 +179,5 @@ public class TotalMoistureRepository {
         }
 
     }
+
 }

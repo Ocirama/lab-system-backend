@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "general_moisture_log")
 public class GeneralMoistureEntity extends AbstractEntity {
 
-    @Column(name = "jar_id")
+    @Column(name = "jar_id",length = 50)
     private String jarId;
     @Column(name = "jar_weight")
     private double jarWeight;

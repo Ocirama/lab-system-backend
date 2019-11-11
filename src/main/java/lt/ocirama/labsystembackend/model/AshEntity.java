@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ash_log")
 public class AshEntity extends AbstractEntity {
-    @Column(name = "dish_id", length = 50, nullable = false)
+    @Column(name = "dish_id",length = 50, nullable = false)
     private String dishId;
     @Column(name = "dish_weight", nullable = false)
     private double dishWeight;

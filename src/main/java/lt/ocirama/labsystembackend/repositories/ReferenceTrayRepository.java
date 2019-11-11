@@ -37,7 +37,9 @@ public class ReferenceTrayRepository {
             rte.setReferenceTrayId(padeklas);
 
             System.out.println("Sverkitę " + padeklas + " padėklą:");
-            Double trayWeight = FileControllerService.sverimoPrograma();
+            //Double trayWeight = FileControllerService.sverimoPrograma();
+            Double trayWeight = 50.00000;
+            System.out.println("Svoris : 50.00000 g");
             rte.setReferenceTrayWeightBefore(trayWeight);
             em.persist(rte);
             transaction.commit();
@@ -62,7 +64,9 @@ public class ReferenceTrayRepository {
             query.setParameter("padeklas", padeklas);
             ReferenceTrayEntity rte = (ReferenceTrayEntity) query.getSingleResult();
             System.out.println("Sverkite padėklą po džiovinimo: ");
-            Double trayWeight = FileControllerService.sverimoPrograma();
+            //Double trayWeight = FileControllerService.sverimoPrograma();
+            Double trayWeight = 50.00000;
+            System.out.println("Svoris : 50.00000 g");
             rte.setReferenceTrayWeightAfter(trayWeight);
             em.persist(rte);
             ReferenceTrayExcelUpdate(rte, 2);
@@ -76,7 +80,7 @@ public class ReferenceTrayRepository {
     public void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
+        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

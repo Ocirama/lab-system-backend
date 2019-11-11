@@ -33,7 +33,7 @@ FOREIGN KEY (sample_id) REFERENCES sample_log (id)
  id int PRIMARY KEY AUTO_INCREMENT,
  reference_tray_id varchar(50) not null,
  reference_tray_weight_before double not null,
- reference_tray_weight_after double not null
+ reference_tray_weight_after double not null,
  date date
  );
  
