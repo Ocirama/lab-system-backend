@@ -101,26 +101,36 @@ public class TotalMoistureRepository {
 
         try {
             String padeklas;
+            LocalDate laikas;
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
                 padeklas = sc.nextLine();
+                if(padeklas.equals("Savaitgalis")){
+                    laikas = LocalDate.now().minusDays(sc.nextInt());
+                }else {
+                    laikas = LocalDate.now().minusDays(1);
+                }
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select totalMoistureEntity from TrayEntity te where te.trayId=:padeklas");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:padeklas AND te.date=:data");
                     query.setParameter("padeklas", padeklas);
-                    TotalMoistureEntity tme = (TotalMoistureEntity) query.getSingleResult();
+                    query.setParameter("data",laikas);
+                    TrayEntity te = (TrayEntity) query.getSingleResult();
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();
                     Double trayWeight = 50.00000;
                     System.out.println("Svoris : 50.00000 g");
-                    tme.setTrayAndSampleWeightAfter(trayWeight);
-                    double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
-                    tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
-                    em.persist(tme);
-                    String protocol = tme.getTray().getSample().getOrder().getProtocolId();
-                    TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId());
-                    transaction.commit();
+                    List<TotalMoistureEntity> tmeList = te.getTotalMoistureEntities();
+                    for(TotalMoistureEntity tme:tmeList) {
+                        tme.setTrayAndSampleWeightAfter(trayWeight);
+                        double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
+                        tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
+                        em.persist(tme);
+                        String protocol = tme.getTray().getSample().getOrder().getProtocolId();
+                        TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId());
+                        transaction.commit();
+                    }
                 } else {
                     break;
                 }
@@ -133,7 +143,7 @@ public class TotalMoistureRepository {
     public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

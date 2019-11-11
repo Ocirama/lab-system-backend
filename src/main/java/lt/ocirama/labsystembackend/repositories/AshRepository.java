@@ -43,8 +43,9 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=:data");
                     query.setParameter("tray", padeklas);
+                    query.setParameter("data", LocalDate.now());
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
 
@@ -96,8 +97,9 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from AshEntity where dishId=:padeklas");
+                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=:data");
                     query.setParameter("padeklas", padeklas);
+                    query.setParameter("data", LocalDate.now());
                     List<AshEntity> samples = query.getResultList();
                     for (AshEntity ae :samples) {
                     System.out.println("Sverkite padėklą po džiovinimo: ");
@@ -122,7 +124,7 @@ public class AshRepository {
 
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (Peleningumas).xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (Peleningumas).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

@@ -14,7 +14,7 @@ public class AshEntity extends AbstractEntity {
     @Column(name = "total_dish_weight_after", nullable = false)
     private double dishAndSampleWeightAfter;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "tray_id")
     private TrayEntity tray;
 

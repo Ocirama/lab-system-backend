@@ -42,8 +42,9 @@ public class GeneralMoistureRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=:data");
                     query.setParameter("tray", padeklas);
+                    query.setParameter("data", LocalDate.now());
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
                     List<GeneralMoistureEntity> list = new ArrayList<>();
@@ -94,8 +95,9 @@ public class GeneralMoistureRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from GeneralMoistureEntity where jarId=:padeklas");
+                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=:data");
                     query.setParameter("padeklas", padeklas);
+                    query.setParameter("data", LocalDate.now());
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();
@@ -120,7 +122,7 @@ public class GeneralMoistureRepository {
 
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (BendrojiDregme).xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (BendrojiDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

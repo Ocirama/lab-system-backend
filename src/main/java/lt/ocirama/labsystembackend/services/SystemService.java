@@ -50,7 +50,7 @@ public class SystemService {
                     ar.AshLogGenerate();
                     break;
                 case 8:
-                    System.out.println("Kurį bandymą atliekate?\n1 - Visumine Dregme\n2 - Bendroji Dregme\n3 - Peleningumas\n4 - Exit");
+                    System.out.println("Kurį bandymą atliekate?\n1 - Visumine Dregme\n2 - Bendroji Dregme\n3 - Peleningumas\n4 - Pamatinis padeklas\n5 - Exit");
                     int x = sc.nextInt();
                     if (x == 1) {
                         tmr.TotalMoistureSecondGenerate();
@@ -58,6 +58,8 @@ public class SystemService {
                         gmr.GeneralMoistureSecondGenerate();
                     } else if (x == 3) {
                         ar.AshSecondGenerate();
+                    }else if (x==4){
+                        rtr.ReferenceTrayLogSecondGenerate();
                     } else {
                         break;
                     }

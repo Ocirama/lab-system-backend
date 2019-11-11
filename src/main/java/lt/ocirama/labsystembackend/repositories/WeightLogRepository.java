@@ -65,7 +65,7 @@ public class WeightLogRepository {
 
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\Justas\\Desktop\\Output\\" + LocalDate.now() + " (Svoriai).xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (Svoriai).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

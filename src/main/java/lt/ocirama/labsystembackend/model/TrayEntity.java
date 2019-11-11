@@ -1,6 +1,7 @@
 package lt.ocirama.labsystembackend.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tray_log")
@@ -9,42 +10,41 @@ public class TrayEntity extends AbstractEntity {
     @Column(name = "tray_id", length = 50)
     private String trayId;
 
-    @OneToOne(mappedBy = "tray")
-    private TotalMoistureEntity totalMoistureEntity;
+    @OneToMany(mappedBy = "tray", cascade = CascadeType.ALL)
+    private List<TotalMoistureEntity> totalMoistureEntities;
 
-    @OneToOne(mappedBy = "tray")
-    private GeneralMoistureEntity generalMoistureEntity;
+    @OneToMany(mappedBy = "tray", cascade = CascadeType.ALL)
+    private List<GeneralMoistureEntity> generalMoistureEntities;
 
-    @OneToOne(mappedBy = "tray")
-    private AshEntity ashEntity;
+    @OneToMany(mappedBy = "tray", cascade = CascadeType.ALL)
+    private List<AshEntity> ashEntities;
 
     @ManyToOne
     @JoinColumn(name = "sample_id")
     private SampleEntity sample;
 
-
-    public TotalMoistureEntity getTotalMoistureEntity() {
-        return totalMoistureEntity;
+    public List<TotalMoistureEntity> getTotalMoistureEntities() {
+        return totalMoistureEntities;
     }
 
-    public void setTotalMoistureEntity(TotalMoistureEntity totalMoistureEntity) {
-        this.totalMoistureEntity = totalMoistureEntity;
+    public void setTotalMoistureEntities(List<TotalMoistureEntity> totalMoistureEntities) {
+        this.totalMoistureEntities = totalMoistureEntities;
     }
 
-    public GeneralMoistureEntity getGeneralMoistureEntity() {
-        return generalMoistureEntity;
+    public List<GeneralMoistureEntity> getGeneralMoistureEntities() {
+        return generalMoistureEntities;
     }
 
-    public void setGeneralMoistureEntity(GeneralMoistureEntity generalMoistureEntity) {
-        this.generalMoistureEntity = generalMoistureEntity;
+    public void setGeneralMoistureEntities(List<GeneralMoistureEntity> generalMoistureEntities) {
+        this.generalMoistureEntities = generalMoistureEntities;
     }
 
-    public AshEntity getAshEntity() {
-        return ashEntity;
+    public List<AshEntity> getAshEntities() {
+        return ashEntities;
     }
 
-    public void setAshEntity(AshEntity ashEntity) {
-        this.ashEntity = ashEntity;
+    public void setAshEntities(List<AshEntity> ashEntities) {
+        this.ashEntities = ashEntities;
     }
 
     public String getTrayId() {
