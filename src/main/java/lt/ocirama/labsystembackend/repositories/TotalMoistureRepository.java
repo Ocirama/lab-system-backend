@@ -121,9 +121,7 @@ public class TotalMoistureRepository {
 
                     TrayEntity te = (TrayEntity) query.getSingleResult();
                     System.out.println("Sverkite padėklą po džiovinimo: ");
-                    //Double trayWeight = FileControllerService.sverimoPrograma();
-                    Double trayWeight = 50.00000;
-                    System.out.println("Svoris : 50.00000 g");
+                    Double trayWeight = FileControllerService.sverimoPrograma();
                     List<TotalMoistureEntity> tmeList = te.getTotalMoistureEntities();
                     for(TotalMoistureEntity tme:tmeList) {
                         tme.setTrayAndSampleWeightAfter(trayWeight);
@@ -132,7 +130,13 @@ public class TotalMoistureRepository {
                         em.persist(tme);
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();
                         TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId());
+                        if (te.getId()%2 ==0){
+                            System.out.println("Galite išpilti mėginį");
+                        }else if (te.getId()%2 != 0){
+                            System.out.println("Dėkite mėginį prie "+ te.getSample().getOrder().getProtocolId()+" protokolo");
+                        }
                         transaction.commit();
+
                     }
                 } else {
                     break;
