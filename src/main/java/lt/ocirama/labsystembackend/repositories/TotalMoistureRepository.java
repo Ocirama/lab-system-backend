@@ -15,6 +15,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.io.*;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,21 +104,21 @@ public class TotalMoistureRepository {
 
         try {
             String padeklas;
-            LocalDate laikas;
+            int laikas;
+            System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
+            laikas = sc.nextInt();
+            sc.nextLine();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
                 padeklas = sc.nextLine();
-                if(padeklas.equals("Savaitgalis")){
-                    laikas = LocalDate.now().minusDays(sc.nextInt());
-                }else {
-                    laikas = LocalDate.now().minusDays(1);
-                }
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:padeklas AND te.date=:data");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:padeklas AND te.date=current_date-:laikas");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("data",laikas);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    query.setParameter("laikas", laikas);
+
                     TrayEntity te = (TrayEntity) query.getSingleResult();
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();

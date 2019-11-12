@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +44,8 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=:data");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date ");
                     query.setParameter("tray", padeklas);
-                    query.setParameter("data", LocalDate.now());
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
 
@@ -97,9 +97,9 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=:data");
+                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date ");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("data", LocalDate.now());
+
                     List<AshEntity> samples = query.getResultList();
                     for (AshEntity ae :samples) {
                     System.out.println("Sverkite padėklą po džiovinimo: ");

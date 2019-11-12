@@ -42,9 +42,8 @@ public class GeneralMoistureRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=:data");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date ");
                     query.setParameter("tray", padeklas);
-                    query.setParameter("data", LocalDate.now());
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
                     List<GeneralMoistureEntity> list = new ArrayList<>();
@@ -95,9 +94,8 @@ public class GeneralMoistureRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=:data");
+                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date ");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("data", LocalDate.now());
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
                     System.out.println("Sverkite padėklą po džiovinimo: ");
                     //Double trayWeight = FileControllerService.sverimoPrograma();
