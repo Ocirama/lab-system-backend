@@ -27,38 +27,42 @@ public class OrderLogRepository {
     public OrderLogRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
+public String OrderTestStringBuild(String input){
+    StringBuilder s = new StringBuilder();
+    String tyrimas;
+    do {
+        tyrimas = input;
+        s.append(tyrimas).append(", ");
+    } while (!tyrimas.equals("Baigta"));
+    s.delete(s.length() - 10, s.length() - 1);
+    System.out.println(s);
+    return s.toString();
+}
 
-    public void OrderLogGenerate() {
+    public void OrderLogSave(String input) {
         try {
             EntityManager em = entityManagerFactory.createEntityManager();
             EntityTransaction transaction = em.getTransaction();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Registruoti naują protokolą: Taip/Ne");
-                if (sc.nextLine().equals("Taip")) {
+                if (input.equals("Taip")) {
                     OrderEntity order = new OrderEntity();
 
                     System.out.println("Užsakymo numeris:");
-                    order.setProtocolId(sc.nextLine());
+                    order.setProtocolId(input);
 
                     System.out.println("Užsakovas:");
-                    order.setCustomer(sc.nextLine());
+                    order.setCustomer(input);
 
-                    StringBuilder s = new StringBuilder();
-                    String tyrimas;
                     System.out.println("Užsakomi tyrimai:");
-                    do {
-                        tyrimas = sc.nextLine();
-                        s.append(tyrimas).append(", ");
-                    } while (!tyrimas.equals("Baigta"));
-                    s.delete(s.length() - 10, s.length() - 1);
-                    System.out.println(s);
-                    order.setTest(s.toString());
+                    String testString = OrderTestStringBuild(input);
+                    order.setTest(testString);
 
                     System.out.println("Kuro rūšis:");
-                    order.setSampleType(sc.nextLine());
+                    order.setSampleType(input);
 
                     System.out.println("Mėginių kiekis:");
-                    order.setOrderAmount(sc.nextInt());
+                    order.setOrderAmount(Integer.parseInt(input));
                     sc.nextLine();
 
                     System.out.println("Mėginių Id:");
@@ -76,6 +80,7 @@ public class OrderLogRepository {
                         transaction.commit();
                     } catch (Exception ex) {
                         ex.printStackTrace();
+                        transaction.commit();
                     }
                     OrderLogExcelUpdate(order);
                 } else {
@@ -87,7 +92,7 @@ public class OrderLogRepository {
         }
     }
 
-    public void OrderLogExcelUpdate(OrderEntity order) {
+    public void OrderLogExcelUpdate(OrderEntity order, String excelDirectory) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
         String path = "C:\\Users\\lei12\\Desktop\\Output\\Užsakymų Žurnalas (" + LocalDate.now().getYear() + ").xlsx";
