@@ -12,7 +12,7 @@ public class ScaleService {
 
     public SerialPort SvarstykliuJungtis() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Uždėkite mėginį ir spauskite 'sverti'");
+        System.out.println("Spauskite sverti 'push' ");
         if (sc.nextLine().equals("push")) {
             SerialPort[] ports = SerialPort.getCommPorts();
             int i = 1;

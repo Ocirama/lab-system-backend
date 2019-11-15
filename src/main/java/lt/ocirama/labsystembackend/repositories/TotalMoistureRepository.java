@@ -125,7 +125,7 @@ public class TotalMoistureRepository {
                     List<TotalMoistureEntity> tmeList = te.getTotalMoistureEntities();
                     for(TotalMoistureEntity tme:tmeList) {
                         tme.setTrayAndSampleWeightAfter(trayWeight);
-                        double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00030);
+                        double x = FileControllerService.getRandomNumberInRange(0.05, 0.30);
                         tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
                         em.persist(tme);
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();

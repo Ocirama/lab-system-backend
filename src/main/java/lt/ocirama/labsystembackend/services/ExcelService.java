@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class ExcelService {
-    public void OrderLogExcelUpdate(OrderEntity order, String excelDirectory) {
+   /* public void OrderLogExcelUpdate(OrderEntity order, String excelDirectory) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
         String path = "C:\\Users\\lei12\\Desktop\\Output\\Užsakymų Žurnalas (" + LocalDate.now().getYear() + ").xlsx";
@@ -52,5 +52,5 @@ public class ExcelService {
             row.createCell(6).setCellValue(order.getDate());
 
 
-    }
+    }*/
 }

@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,14 +38,20 @@ public class GeneralMoistureRepository {
         EntityTransaction transaction = em.getTransaction();
         try {
             String padeklas;
+            int laikas;
+            System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
+            laikas = sc.nextInt();
+            sc.nextLine();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
                 padeklas = sc.nextLine();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date ");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date-:laikas ");
                     query.setParameter("tray", padeklas);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    query.setParameter("laikas", laikas);
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
                     List<GeneralMoistureEntity> list = new ArrayList<>();
@@ -57,18 +65,14 @@ public class GeneralMoistureRepository {
                         list.add(gme);
                         System.out.println("Sverkite induką " + indukas);
                         gme.setJarId(indukas);
-                        //Double jarWeight = FileControllerService.sverimoPrograma();
-                        double jarWeight =50.00000;
-                        System.out.println("Svoris : 50.00000 g");
+                        Double jarWeight = FileControllerService.sverimoPrograma();
                         gme.setJarWeight(jarWeight);
                         em.persist(gme);
                     }
                     for (int k = 0; k <= 1; k++) {
                         gme = list.get(k);
-                        System.out.println("Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + tray.getSample().getSampleId() + " padėklą ir sverkite:");
-                        //Double trayWeight2 = FileControllerService.sverimoPrograma();
-                        Double trayWeight2 = 50.00000;
-                        System.out.println("Svoris : 50.00000 g");
+                        System.out.println("Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + gme.getJarId() + " padėklą ir sverkite:");
+                        Double trayWeight2 = FileControllerService.sverimoPrograma();
                         gme.setJarAndSampleWeightBefore(trayWeight2);
                         em.persist(gme);
                         GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 1);
@@ -94,16 +98,15 @@ public class GeneralMoistureRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date ");
+                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date-:laikas ");
                     query.setParameter("padeklas", padeklas);
+                    query.setParameter("laikas", 1);
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
-                    System.out.println("Sverkite padėklą po džiovinimo: ");
-                    //Double trayWeight = FileControllerService.sverimoPrograma();
-                    Double trayWeight = 50.00000;
-                    System.out.println("Svoris : 50.00000 g");
+                    System.out.println("Sverkite  induką po džiovinimo: ");
+                    Double trayWeight = FileControllerService.sverimoPrograma();
                     gme.setJarAndSampleWeightAfter(trayWeight);
-                    double x = FileControllerService.getRandomNumberInRange(0.00005, 0.00020);
-                    gme.setJarAndSampleWeightAfterPlus(trayWeight + x);
+                    double x = FileControllerService.getRandomNumberInRange(0.05, 0.20);
+                    gme.setJarAndSampleWeightAfterPlus(trayWeight - x);
                     em.persist(gme);
                     GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 2);
                     transaction.commit();

@@ -1,7 +1,6 @@
 package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.AshEntity;
-import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,7 +16,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +38,20 @@ public class AshRepository {
 
         try {
             String padeklas;
+            int laikas;
+            System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
+            laikas = sc.nextInt();
+            sc.nextLine();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
                 padeklas = sc.nextLine();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date ");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date-:laikas ");
                     query.setParameter("tray", padeklas);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    query.setParameter("laikas", laikas);
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
 
@@ -60,18 +66,14 @@ public class AshRepository {
                         list.add(ae);
                         System.out.println("Sverkite induką " + indukas);
                         ae.setDishId(indukas);
-                        //Double dishWeight = FileControllerService.sverimoPrograma();
-                        Double dishWeight = 50.00000;
-                        System.out.println("Svoris : 50.00000 g");
+                        Double dishWeight = FileControllerService.sverimoPrograma();
                         ae.setDishWeight(dishWeight);
                         em.persist(ae);
                     }
                     for (int k = 0; k <= 1; k++) {
                         ae = list.get(k);
-                        System.out.println("Įdėkitę " + ae.getTray().getSample().getSampleId() + " mėginį į " + tray.getSample().getSampleId() + " induką ir sverkite:");
-                        //Double trayWeight2 = FileControllerService.sverimoPrograma();
-                        Double trayWeight2 = 50.00000;
-                        System.out.println("Svoris : 50.00000 g");
+                        System.out.println("Įdėkitę " + ae.getTray().getSample().getSampleId() + " mėginį į " + ae.getDishId() + " induką ir sverkite:");
+                        Double trayWeight2 = FileControllerService.sverimoPrograma();
                         ae.setDishAndSampleWeightBefore(trayWeight2);
                         em.persist(ae);
                         AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 1);
@@ -97,20 +99,16 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date ");
+                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date-:laikas ");
                     query.setParameter("padeklas", padeklas);
-
-                    List<AshEntity> samples = query.getResultList();
-                    for (AshEntity ae :samples) {
-                    System.out.println("Sverkite padėklą po džiovinimo: ");
-                    //Double trayWeight = FileControllerService.sverimoPrograma();
-                        Double trayWeight = 50.00000;
-                        System.out.println("Svoris : 50.00000 g");
-                        ae.setDishAndSampleWeightAfter(trayWeight);
-                        em.persist(ae);
-                        AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
-                        transaction.commit();
-                    }
+                    query.setParameter("laikas", 1);
+                    AshEntity ae = (AshEntity) query.getSingleResult();
+                    System.out.println("Sverkite induką po džiovinimo: ");
+                    Double trayWeight = FileControllerService.sverimoPrograma();
+                    ae.setDishAndSampleWeightAfter(trayWeight);
+                    em.persist(ae);
+                    AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
+                    transaction.commit();
                 } else {
                     break;
                 }

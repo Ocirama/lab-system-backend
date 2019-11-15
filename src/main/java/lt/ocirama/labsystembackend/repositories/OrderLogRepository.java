@@ -82,7 +82,7 @@ public String OrderTestStringBuild(String input){
                         ex.printStackTrace();
                         transaction.commit();
                     }
-                    OrderLogExcelUpdate(order);
+                    //OrderLogExcelUpdate(order);
                 } else {
                     break;
                 }
