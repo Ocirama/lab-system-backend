@@ -100,12 +100,12 @@ public class GeneralMoistureRepository {
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date-:laikas ");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("laikas", 1);
+                    query.setParameter("laikas", 0);
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
                     System.out.println("Sverkite  induką po džiovinimo: ");
                     Double trayWeight = FileControllerService.sverimoPrograma();
                     gme.setJarAndSampleWeightAfter(trayWeight);
-                    double x = FileControllerService.getRandomNumberInRange(0.05, 0.20);
+                    double x = FileControllerService.getRandomNumberInRange(0.0001, 0.0003);
                     gme.setJarAndSampleWeightAfterPlus(trayWeight - x);
                     em.persist(gme);
                     GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 2);

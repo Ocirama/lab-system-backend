@@ -11,11 +11,31 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class ExcelService {
-   /* public void OrderLogExcelUpdate(OrderEntity order, String excelDirectory) {
-        XSSFSheet sheet;
-        XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\Užsakymų Žurnalas (" + LocalDate.now().getYear() + ").xlsx";
+public final class ExcelService {
+    /*XSSFSheet sheet;
+    XSSFWorkbook workbook;
+
+    private ExcelService() {
+    }
+
+    public void OrderLogExcelCreate(String logType) {
+        String path;
+        String cellValue1;
+        String cellValue2;
+        String cellValue3;
+        String cellValue4;
+        String cellValue5;
+
+        if (logType.equals("OrderLog")) {
+            path.equals("Užsakymų Žurnalas (" + LocalDate.now().getYear());
+           cellValue1 ="Užsakymo Nr";
+            String cellValue2 ="Tyrimai";
+            String cellValue3 ="Kuro rūšis";
+            String cellValue4 ="Mėginių kiekis";
+            String cellValue5 ="Užsakymo Nr";
+
+        }
+        path = "C:\\Users\\lei12\\Desktop\\Output\\" + path + ").xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
@@ -42,15 +62,24 @@ public class ExcelService {
             e.printStackTrace();
         }
 
-            Row row = sheet.createRow(sheet.getLastRowNum() + 1);
-            row.createCell(0).setCellValue(sheet.getLastRowNum());
-            row.createCell(1).setCellValue(order.getProtocolId());
-            row.createCell(2).setCellValue(order.getCustomer());
-            row.createCell(3).setCellValue(order.getTest());
-            row.createCell(4).setCellValue(order.getSampleType());
-            row.createCell(5).setCellValue(order.getOrderAmount());
-            row.createCell(6).setCellValue(order.getDate());
+        public void OrderLogExcelUpdate (OrderEntity order, String excelDirectory){
+            XSSFSheet sheet;
+            XSSFWorkbook workbook;
+            String path = "C:\\Users\\lei12\\Desktop\\Output\\Užsakymų Žurnalas (" + LocalDate.now().getYear() + ").xlsx";
+            File file = new File(path);
+            try {
+
+                Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+                row.createCell(0).setCellValue(sheet.getLastRowNum());
+                row.createCell(1).setCellValue(order.getProtocolId());
+                row.createCell(2).setCellValue(order.getCustomer());
+                row.createCell(3).setCellValue(order.getTest());
+                row.createCell(4).setCellValue(order.getSampleType());
+                row.createCell(5).setCellValue(order.getOrderAmount());
+                row.createCell(6).setCellValue(order.getDate());
 
 
+            }
+        }
     }*/
 }

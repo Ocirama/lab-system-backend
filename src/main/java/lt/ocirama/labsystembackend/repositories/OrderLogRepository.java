@@ -1,5 +1,6 @@
 package lt.ocirama.labsystembackend.repositories;
 
+import lt.ocirama.labsystembackend.Validators.InputCheck;
 import lt.ocirama.labsystembackend.model.OrderEntity;
 import lt.ocirama.labsystembackend.model.SampleEntity;
 import org.apache.poi.ss.usermodel.Row;
@@ -9,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.transaction.Transaction;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,61 +21,41 @@ import java.util.List;
 import java.util.Scanner;
 
 public class OrderLogRepository {
-
-
-    Scanner sc = new Scanner(System.in);
+Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
 
     public OrderLogRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
-public String OrderTestStringBuild(String input){
-    StringBuilder s = new StringBuilder();
-    String tyrimas;
-    do {
-        tyrimas = input;
-        s.append(tyrimas).append(", ");
-    } while (!tyrimas.equals("Baigta"));
-    s.delete(s.length() - 10, s.length() - 1);
-    System.out.println(s);
-    return s.toString();
-}
 
-    public void OrderLogSave(String input) {
+    public void OrderLogSave() {
         try {
             EntityManager em = entityManagerFactory.createEntityManager();
             EntityTransaction transaction = em.getTransaction();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Registruoti naują protokolą: Taip/Ne");
-                if (input.equals("Taip")) {
+                if (sc.nextLine().equals("Taip")) {
                     OrderEntity order = new OrderEntity();
 
                     System.out.println("Užsakymo numeris:");
-                    order.setProtocolId(input);
+                    order.setProtocolId(InputCheck.isText(sc.nextLine()));
 
                     System.out.println("Užsakovas:");
-                    order.setCustomer(input);
+                    order.setCustomer(InputCheck.isText(sc.nextLine()));
 
                     System.out.println("Užsakomi tyrimai:");
-                    String testString = OrderTestStringBuild(input);
+                    String testString = OrderTestStringBuild(sc.nextLine());
                     order.setTest(testString);
 
                     System.out.println("Kuro rūšis:");
-                    order.setSampleType(input);
+                    order.setSampleType(InputCheck.isText(sc.nextLine()));
 
                     System.out.println("Mėginių kiekis:");
-                    order.setOrderAmount(Integer.parseInt(input));
-                    sc.nextLine();
+                    order.setOrderAmount(Integer.parseInt(sc.nextLine()));
 
                     System.out.println("Mėginių Id:");
-                    List<SampleEntity> list = new ArrayList<>();
-                    for (int j = 1; j <= order.getOrderAmount(); j++) {
-                        SampleEntity se = new SampleEntity();
-                        list.add(se);
-                        se.setSampleId(sc.nextLine());
-                        se.setOrder(order);
-                    }
-                    order.setSamples(list);
+                   // sampleIdListGenerate(order,em,transaction);
+
                     transaction.begin();
                     try {
                         em.persist(order);
@@ -82,7 +64,6 @@ public String OrderTestStringBuild(String input){
                         ex.printStackTrace();
                         transaction.commit();
                     }
-                    //OrderLogExcelUpdate(order);
                 } else {
                     break;
                 }
@@ -90,6 +71,17 @@ public String OrderTestStringBuild(String input){
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void generateSampleList (OrderEntity order,EntityManager em, Transaction transaction){
+        List<SampleEntity> list = new ArrayList<>();
+        for (int j = 1; j <= order.getOrderAmount(); j++) {
+            SampleEntity se = new SampleEntity();
+            list.add(se);
+            se.setSampleId(sc.nextLine());
+            se.setOrder(order);
+        }
+        order.setSamples(list);
+
     }
 
     public void OrderLogExcelUpdate(OrderEntity order, String excelDirectory) {
@@ -132,8 +124,19 @@ public String OrderTestStringBuild(String input){
         }
     }
 
-
+    public String OrderTestStringBuild(String input) {
+        StringBuilder s = new StringBuilder();
+        String tyrimas;
+        do {
+            tyrimas = input;
+            s.append(tyrimas).append(", ");
+        } while (!tyrimas.equals("Baigta"));
+        s.delete(s.length() - 10, s.length() - 1);
+        System.out.println(s);
+        return s.toString();
     }
+
+}
 
 
 

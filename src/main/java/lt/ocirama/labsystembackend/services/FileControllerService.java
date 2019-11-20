@@ -10,6 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
+import java.util.Scanner;
 
 public final class FileControllerService {
 
@@ -84,5 +85,12 @@ public final class FileControllerService {
         double trayWeight = ss.Pasverti(serialPort);
         ss.ClosePort(serialPort);
         return trayWeight;
+    }
+    public static Integer testTimeCheck (Scanner sc){
+        int laikas;
+        System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
+        laikas = sc.nextInt();
+        sc.nextLine();
+        return laikas;
     }
 }

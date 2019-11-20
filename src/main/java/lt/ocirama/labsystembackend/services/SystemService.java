@@ -16,6 +16,8 @@ public class SystemService {
     GeneralMoistureRepository gmr = new GeneralMoistureRepository(HibernateUtils.getSessionFactory());
     ReferenceTrayRepository rtr = new ReferenceTrayRepository(HibernateUtils.getSessionFactory());
     AshRepository ar = new AshRepository(HibernateUtils.getSessionFactory());
+    TrayWeightRepository twr = new TrayWeightRepository(HibernateUtils.getSessionFactory());
+
     Scanner sc = new Scanner(System.in);
 
     public void MenuSelect() {
@@ -24,7 +26,7 @@ public class SystemService {
             System.out.println("Pasirinkite funkciją:");
             System.out.println("1 - Užsakymo registravimas\n2 - Mėginių masės svėrimas\n3 - Padėklo priskyrimas mėginiui\n" +
                     "4 - Visuminės drėgmės matavimas\n5 - Pamatinio padėklo registravimas\n6 - Bendrosios drėgmės matavimas\n7 - Peleningumo matavimas\n" +
-                    "8 - Antrasis dienos svėrimas\n9 - Exit");
+                    "8 - Antrasis dienos svėrimas\n9 - Padėklų svorio kalibracija\n10 - Exit");
 
             function = sc.nextInt();
             switch (function) {
@@ -58,13 +60,21 @@ public class SystemService {
                         gmr.GeneralMoistureSecondGenerate();
                     } else if (x == 3) {
                         ar.AshSecondGenerate();
-                    }else if (x==4){
+                    } else if (x == 4) {
                         rtr.ReferenceTrayLogSecondGenerate();
                     } else {
                         break;
                     }
+                case 9:
+                    System.out.println("Ką norite daryti? \n 1 - Padėklų svorio priskyrimas\n 2 - Padėklų svorio kalibracija\n 3- exit");
+                    int y = sc.nextInt();
+                    if (y == 1) {
+                        twr.TrayWeightAsign();
+                    } else if (y == 2) {
+                        twr.TrayWeightCalibrate();
+                    }
             }
 
-        } while (function != 9);
+        } while (function != 10);
     }
 }

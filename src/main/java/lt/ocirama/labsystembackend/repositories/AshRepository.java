@@ -35,13 +35,9 @@ public class AshRepository {
     public void AshLogGenerate() {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-
+        int laikas = FileControllerService.testTimeCheck(sc);
         try {
             String padeklas;
-            int laikas;
-            System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-            laikas = sc.nextInt();
-            sc.nextLine();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
                 padeklas = sc.nextLine();
@@ -59,6 +55,7 @@ public class AshRepository {
                     AshEntity ae;
                     for (int j = 1; j <= 2; j++) {
                         ae = new AshEntity();
+
                         System.out.println("Peleningumo svėrimas mėginiui : " + tray.getSample().getSampleId());
                         System.out.println("Skenuokite " + j + "-ojo induko barkodą mėginiui  " + tray.getSample().getSampleId());
                         indukas = sc.nextLine();
@@ -101,7 +98,7 @@ public class AshRepository {
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date-:laikas ");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("laikas", 1);
+                    query.setParameter("laikas", 0);
                     AshEntity ae = (AshEntity) query.getSingleResult();
                     System.out.println("Sverkite induką po džiovinimo: ");
                     Double trayWeight = FileControllerService.sverimoPrograma();

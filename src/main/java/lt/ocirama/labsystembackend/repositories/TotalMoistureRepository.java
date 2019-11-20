@@ -3,6 +3,7 @@ package lt.ocirama.labsystembackend.repositories;
 import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.model.TotalMoistureEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
+import lt.ocirama.labsystembackend.model.TrayWeightEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -61,17 +62,18 @@ public class TotalMoistureRepository {
                             te = new TrayEntity();
                             System.out.println("Skenuokite " + j + "-ojo padėklo barkodą mėginiui  " + sampleName);
                             padeklas = sc.nextLine();
-
                             te.setSample(sampleEntity);
                             te.setTrayId(padeklas);
 
                             list.add(tme);
                             tme.setTray(te);
                             System.out.println("Sverkite padėklą " + padeklas);
-                            //Double trayWeight = FileControllerService.sverimoPrograma();
-                            Double trayWeight = 50.00000;
-                            System.out.println("Svoris : 50.00000 g");
-                            tme.setTrayWeight(trayWeight);
+
+                            session = em.unwrap(Session.class);
+                           query = session.createQuery("Select twe.trayId from TrayWeightEntity twe where twe.trayId=:padeklas");
+                            query.setParameter("padeklas", padeklas);
+                            TrayWeightEntity twe = (TrayWeightEntity) query.getSingleResult();
+                            tme.setTrayWeight(twe.getTrayWeight());
                             em.persist(te);
                             em.persist(tme);
                         }
