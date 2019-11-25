@@ -79,18 +79,30 @@ public final class FileControllerService {
 
     }
 
-    public static Double sverimoPrograma() {
-        ScaleService ss = new ScaleService();
-        SerialPort serialPort = ss.SvarstykliuJungtis();
-        double trayWeight = ss.Pasverti(serialPort);
-        ss.ClosePort(serialPort);
+    public static Double sverimoPrograma(String clearance) {
+        double trayWeight = 0;
+        if (clearance.equals("On")) {
+            System.out.println("Spauskite sverti 'push' ");
+            if (UserInputService.CommandInput().equals("push")) {
+                ScaleService ss = new ScaleService();
+                SerialPort serialPort = ss.SvarstykliuJungtis();
+                trayWeight = ss.Pasverti(serialPort);
+                ss.ClosePort(serialPort);
+                return trayWeight;
+            }
+        } else if (clearance.equals("Off")) {
+            ScaleService ss = new ScaleService();
+            SerialPort serialPort = ss.SvarstykliuJungtis();
+            trayWeight = ss.Pasverti(serialPort);
+            ss.ClosePort(serialPort);
+            return trayWeight;
+        }
         return trayWeight;
     }
-    public static Integer testTimeCheck (Scanner sc){
-        int laikas;
+
+
+    public static Integer testTimeCheck(int laikas) {
         System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-        laikas = sc.nextInt();
-        sc.nextLine();
         return laikas;
     }
 }

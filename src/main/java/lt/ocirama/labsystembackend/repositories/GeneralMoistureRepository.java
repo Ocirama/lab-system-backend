@@ -3,6 +3,7 @@ package lt.ocirama.labsystembackend.repositories;
 import lt.ocirama.labsystembackend.model.GeneralMoistureEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
+import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,13 +21,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 public class GeneralMoistureRepository {
 
-    Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
 
     public GeneralMoistureRepository(EntityManagerFactory entityManagerFactory) {
@@ -40,11 +38,10 @@ public class GeneralMoistureRepository {
             String padeklas;
             int laikas;
             System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-            laikas = sc.nextInt();
-            sc.nextLine();
+            laikas = Integer.parseInt(UserInputService.NumberInput());
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
-                padeklas = sc.nextLine();
+                padeklas = UserInputService.NumberInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -60,19 +57,19 @@ public class GeneralMoistureRepository {
                         gme = new GeneralMoistureEntity();
                         System.out.println("Bendrosios drėgmės svėrimas mėginiui : " + tray.getSample().getSampleId());
                         System.out.println("Skenuokite " + j + "-ojo induko barkodą mėginiui  " + tray.getSample().getSampleId());
-                        indukas = sc.nextLine();
+                        indukas = UserInputService.NumberInput();
                         gme.setTray(tray);
                         list.add(gme);
                         System.out.println("Sverkite induką " + indukas);
                         gme.setJarId(indukas);
-                        Double jarWeight = FileControllerService.sverimoPrograma();
+                        Double jarWeight = FileControllerService.sverimoPrograma("On");
                         gme.setJarWeight(jarWeight);
                         em.persist(gme);
                     }
                     for (int k = 0; k <= 1; k++) {
                         gme = list.get(k);
                         System.out.println("Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + gme.getJarId() + " padėklą ir sverkite:");
-                        Double trayWeight2 = FileControllerService.sverimoPrograma();
+                        Double trayWeight2 = FileControllerService.sverimoPrograma("On");
                         gme.setJarAndSampleWeightBefore(trayWeight2);
                         em.persist(gme);
                         GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 1);
@@ -94,7 +91,7 @@ public class GeneralMoistureRepository {
         try {
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę induką:");
-                String padeklas = sc.nextLine();
+                String padeklas = UserInputService.NumberInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -103,7 +100,7 @@ public class GeneralMoistureRepository {
                     query.setParameter("laikas", 0);
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
                     System.out.println("Sverkite  induką po džiovinimo: ");
-                    Double trayWeight = FileControllerService.sverimoPrograma();
+                    Double trayWeight = FileControllerService.sverimoPrograma("On");
                     gme.setJarAndSampleWeightAfter(trayWeight);
                     double x = FileControllerService.getRandomNumberInRange(0.0001, 0.0003);
                     gme.setJarAndSampleWeightAfterPlus(trayWeight - x);

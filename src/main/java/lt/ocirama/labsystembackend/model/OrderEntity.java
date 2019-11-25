@@ -2,12 +2,11 @@ package lt.ocirama.labsystembackend.model;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "order_log")
-public class OrderEntity extends AbstractEntity  {
+public class OrderEntity extends AbstractEntity {
 
     @Column(name = "protocol_id", length = 50, nullable = false)
     private String protocolId;

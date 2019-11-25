@@ -1,6 +1,8 @@
 package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.SampleEntity;
+import lt.ocirama.labsystembackend.services.FileControllerService;
+import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,8 +21,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class WeightLogRepository {
-
-    Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
 
     public WeightLogRepository(EntityManagerFactory entityManagerFactory) {
@@ -34,19 +34,17 @@ public class WeightLogRepository {
         try {
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Naujo protokolo svėrimas: Taip/Ne");
-                if (sc.nextLine().equals("Taip")) {
+                if (UserInputService.YesOrNoInput().equals("Taip")) {
                     transaction.begin();
                     System.out.println("Užsakymo numeris ?");
-                    String protocol = sc.nextLine();
+                    String protocol = UserInputService.NumberInput();
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
                     query.setParameter("protocol", protocol);
                     List<SampleEntity> samples = query.getResultList();
                     for (SampleEntity sampleEntity : samples) {
                         System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
-                        //Double sampleWeight = FileControllerService.sverimoPrograma();
-                        Double sampleWeight = 50.00000;
-                        System.out.println("Svoris : 50.00000 g");
+                        Double sampleWeight = FileControllerService.sverimoPrograma("On");
                         sampleEntity.setSampleWeight(sampleWeight);
                         em.merge(sampleEntity);
                         WeightLogExcelUpdate(sampleEntity, protocol);

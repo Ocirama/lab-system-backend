@@ -32,7 +32,7 @@ public class TrayWeightRepository {
                 twe.setTrayId(padeklas);
 
                 System.out.println("Sverkite padėklą " + twe.getTrayId() + ":");
-                Double trayWeight = FileControllerService.sverimoPrograma();
+                Double trayWeight = FileControllerService.sverimoPrograma("On");
                 twe.setTrayWeight(trayWeight);
                 transaction.begin();
                 em.persist(twe);
@@ -56,7 +56,7 @@ public class TrayWeightRepository {
                 query.setParameter("padeklas", padeklas);
                 TrayWeightEntity twe = (TrayWeightEntity) query.getSingleResult();
                 System.out.println("Sverkite " + twe.getTrayId() + "padėklą kalibravimui");
-                Double trayWeight = FileControllerService.sverimoPrograma();
+                Double trayWeight = FileControllerService.sverimoPrograma("Om");
                 twe.setTrayWeight(trayWeight);
                 em.merge(twe);
                 em.persist(twe);

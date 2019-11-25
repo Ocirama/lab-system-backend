@@ -1,11 +1,12 @@
 package lt.ocirama.labsystembackend.repositories;
 
-import lt.ocirama.labsystembackend.Validators.InputCheck;
+import lt.ocirama.labsystembackend.services.UserInputService;
 import lt.ocirama.labsystembackend.model.OrderEntity;
 import lt.ocirama.labsystembackend.model.SampleEntity;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class OrderLogRepository {
-Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
 
     public OrderLogRepository(EntityManagerFactory entityManagerFactory) {
@@ -34,27 +34,41 @@ Scanner sc = new Scanner(System.in);
             EntityTransaction transaction = em.getTransaction();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Registruoti naują protokolą: Taip/Ne");
-                if (sc.nextLine().equals("Taip")) {
+                if (UserInputService.YesOrNoInput().equals("Taip")) {
                     OrderEntity order = new OrderEntity();
 
                     System.out.println("Užsakymo numeris:");
-                    order.setProtocolId(InputCheck.isText(sc.nextLine()));
+                    order.setProtocolId(UserInputService.NumberInput());
 
                     System.out.println("Užsakovas:");
-                    order.setCustomer(InputCheck.isText(sc.nextLine()));
+                    order.setCustomer(UserInputService.TextInput());
 
                     System.out.println("Užsakomi tyrimai:");
-                    String testString = OrderTestStringBuild(sc.nextLine());
-                    order.setTest(testString);
+                    StringBuilder s = new StringBuilder();
+                    String tyrimas;
+                    do {
+                        tyrimas = UserInputService.BasicInput();
+                        s.append(tyrimas).append(", ");
+                    } while (!tyrimas.equals("Baigta"));
+                    s.delete(s.length() - 10, s.length() - 1);
+                    System.out.println(s);
+                    order.setTest(s.toString());
 
                     System.out.println("Kuro rūšis:");
-                    order.setSampleType(InputCheck.isText(sc.nextLine()));
+                    order.setSampleType(UserInputService.TextInput());
 
                     System.out.println("Mėginių kiekis:");
-                    order.setOrderAmount(Integer.parseInt(sc.nextLine()));
+                    order.setOrderAmount(Integer.parseInt(UserInputService.NumberInput()));
 
                     System.out.println("Mėginių Id:");
-                   // sampleIdListGenerate(order,em,transaction);
+                    List<SampleEntity> list = new ArrayList<>();
+                    for (int j = 1; j <= order.getOrderAmount(); j++) {
+                        SampleEntity se = new SampleEntity();
+                        list.add(se);
+                        se.setSampleId(UserInputService.BasicInput());
+                        se.setOrder(order);
+                    }
+                    order.setSamples(list);
 
                     transaction.begin();
                     try {
@@ -72,18 +86,6 @@ Scanner sc = new Scanner(System.in);
             e.printStackTrace();
         }
     }
-    public void generateSampleList (OrderEntity order,EntityManager em, Transaction transaction){
-        List<SampleEntity> list = new ArrayList<>();
-        for (int j = 1; j <= order.getOrderAmount(); j++) {
-            SampleEntity se = new SampleEntity();
-            list.add(se);
-            se.setSampleId(sc.nextLine());
-            se.setOrder(order);
-        }
-        order.setSamples(list);
-
-    }
-
     public void OrderLogExcelUpdate(OrderEntity order, String excelDirectory) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
@@ -124,17 +126,6 @@ Scanner sc = new Scanner(System.in);
         }
     }
 
-    public String OrderTestStringBuild(String input) {
-        StringBuilder s = new StringBuilder();
-        String tyrimas;
-        do {
-            tyrimas = input;
-            s.append(tyrimas).append(", ");
-        } while (!tyrimas.equals("Baigta"));
-        s.delete(s.length() - 10, s.length() - 1);
-        System.out.println(s);
-        return s.toString();
-    }
 
 }
 

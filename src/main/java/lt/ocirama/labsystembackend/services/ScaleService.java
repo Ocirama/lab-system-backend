@@ -3,7 +3,7 @@ package lt.ocirama.labsystembackend.services;
 import com.fazecast.jSerialComm.SerialPort;
 
 import java.io.InputStream;
-import java.util.Scanner;
+
 
 
 public class ScaleService {
@@ -11,9 +11,7 @@ public class ScaleService {
     public SerialPort serialPort;
 
     public SerialPort SvarstykliuJungtis() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Spauskite sverti 'push' ");
-        if (sc.nextLine().equals("push")) {
+
             SerialPort[] ports = SerialPort.getCommPorts();
             int i = 1;
             /*for (SerialPort port : ports)
@@ -30,8 +28,8 @@ public class ScaleService {
             serialPort.openPort();
             serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
             return serialPort;
-        }
-        return serialPort;
+
+
     }
 
     public Double Pasverti(SerialPort serialPort) {

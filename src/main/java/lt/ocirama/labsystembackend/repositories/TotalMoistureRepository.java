@@ -5,8 +5,8 @@ import lt.ocirama.labsystembackend.model.TotalMoistureEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.model.TrayWeightEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
+import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
@@ -15,21 +15,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.*;
-import java.sql.Date;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import static lt.ocirama.labsystembackend.services.FileControllerService.*;
 
 public class TotalMoistureRepository {
 
 
-    Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
 
     public TotalMoistureRepository(EntityManagerFactory entityManagerFactory) {
@@ -42,10 +40,10 @@ public class TotalMoistureRepository {
         try {
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Naujo protokolo visuminės drėgmės svėrimas: Taip/Ne");
-                if (sc.nextLine().equals("Taip")) {
+                if (UserInputService.YesOrNoInput().equals("Taip")) {
                     transaction.begin();
                     System.out.println("Užsakymo numeris ?");
-                    String protocol = sc.nextLine();
+                    String protocol = UserInputService.NumberInput();
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
                     query.setParameter("protocol", protocol);
@@ -61,16 +59,15 @@ public class TotalMoistureRepository {
                             tme = new TotalMoistureEntity();
                             te = new TrayEntity();
                             System.out.println("Skenuokite " + j + "-ojo padėklo barkodą mėginiui  " + sampleName);
-                            padeklas = sc.nextLine();
+                            padeklas = UserInputService.NumberInput();
                             te.setSample(sampleEntity);
                             te.setTrayId(padeklas);
 
                             list.add(tme);
                             tme.setTray(te);
-                            System.out.println("Sverkite padėklą " + padeklas);
 
                             session = em.unwrap(Session.class);
-                           query = session.createQuery("Select twe.trayId from TrayWeightEntity twe where twe.trayId=:padeklas");
+                            query = session.createQuery("Select twe from TrayWeightEntity twe where twe.trayId=:padeklas");
                             query.setParameter("padeklas", padeklas);
                             TrayWeightEntity twe = (TrayWeightEntity) query.getSingleResult();
                             tme.setTrayWeight(twe.getTrayWeight());
@@ -80,9 +77,7 @@ public class TotalMoistureRepository {
                         for (int k = 0; k <= 1; k++) {
                             tme = list.get(k);
                             System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į " + tme.getTray().getTrayId() + " padėklą ir sverkite:");
-                            //Double trayWeight2 = FileControllerService.sverimoPrograma();
-                            Double trayWeight2 = 50.00000;
-                            System.out.println("Svoris : 50.00000 g");
+                            Double trayWeight2 = FileControllerService.sverimoPrograma("Off");
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
@@ -108,11 +103,10 @@ public class TotalMoistureRepository {
             String padeklas;
             int laikas;
             System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-            laikas = sc.nextInt();
-            sc.nextLine();
+            laikas = Integer.parseInt(UserInputService.NumberInput());
             for (int i = 1; i < 5000; i++) {
-                System.out.println("Skenuokitę padėklą:");
-                padeklas = sc.nextLine();
+                System.out.println("Fiksuokite padėklo numerį ir svorį:");
+                padeklas = UserInputService.NumberInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -122,20 +116,20 @@ public class TotalMoistureRepository {
                     query.setParameter("laikas", laikas);
 
                     TrayEntity te = (TrayEntity) query.getSingleResult();
-                    System.out.println("Sverkite padėklą po džiovinimo: ");
-                    Double trayWeight = FileControllerService.sverimoPrograma();
+                    System.out.println("Padėklo svoris po džiovinimo: ");
+                    Double trayWeight = FileControllerService.sverimoPrograma("Off");
                     List<TotalMoistureEntity> tmeList = te.getTotalMoistureEntities();
-                    for(TotalMoistureEntity tme:tmeList) {
+                    for (TotalMoistureEntity tme : tmeList) {
                         tme.setTrayAndSampleWeightAfter(trayWeight);
                         double x = FileControllerService.getRandomNumberInRange(0.05, 0.30);
                         tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
                         em.persist(tme);
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();
                         TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId());
-                        if (te.getId()%2 ==0){
+                        if (te.getId() % 2 == 0) {
                             System.out.println("Galite išpilti mėginį");
-                        }else if (te.getId()%2 != 0){
-                            System.out.println("Dėkite mėginį prie "+ te.getSample().getOrder().getProtocolId()+" protokolo");
+                        } else if (te.getId() % 2 != 0) {
+                            System.out.println("Dėkite mėginį prie " + te.getSample().getOrder().getProtocolId() + " protokolo");
                         }
                         transaction.commit();
 

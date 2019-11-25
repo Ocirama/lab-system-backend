@@ -2,6 +2,7 @@ package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.ReferenceTrayEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
+import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ReferenceTrayRepository {
-    Scanner sc = new Scanner(System.in);
+
     private final EntityManagerFactory entityManagerFactory;
 
     public ReferenceTrayRepository(EntityManagerFactory entityManagerFactory) {
@@ -31,15 +32,12 @@ public class ReferenceTrayRepository {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            System.out.println("Skenuokite padėklą");
-            String padeklas = sc.nextLine();
+            System.out.println("Fiskuokite padėklo numerį ir svorį");
+            String padeklas = UserInputService.NumberInput();
             ReferenceTrayEntity rte = new ReferenceTrayEntity();
             rte.setReferenceTrayId(padeklas);
 
-            System.out.println("Sverkitę " + padeklas + " padėklą:");
-            //Double trayWeight = FileControllerService.sverimoPrograma();
-            Double trayWeight = 50.00000;
-            System.out.println("Svoris : 50.00000 g");
+            Double trayWeight = FileControllerService.sverimoPrograma("Off");
             rte.setReferenceTrayWeightBefore(trayWeight);
             em.persist(rte);
             transaction.commit();
@@ -57,16 +55,14 @@ public class ReferenceTrayRepository {
         try {
             String padeklas;
             transaction.begin();
-            System.out.println("Skenuokitę padėklą:");
-            padeklas = sc.nextLine();
+            System.out.println("Fiskuokite padėklo numerį ir svorį:");
+            padeklas = UserInputService.NumberInput();
             Session session = em.unwrap(Session.class);
             Query query = session.createQuery("from ReferenceTrayEntity  where referenceTrayId=:padeklas");
             query.setParameter("padeklas", padeklas);
             ReferenceTrayEntity rte = (ReferenceTrayEntity) query.getSingleResult();
             System.out.println("Sverkite padėklą po džiovinimo: ");
-            //Double trayWeight = FileControllerService.sverimoPrograma();
-            Double trayWeight = 50.00000;
-            System.out.println("Svoris : 50.00000 g");
+            Double trayWeight = FileControllerService.sverimoPrograma("Off");
             rte.setReferenceTrayWeightAfter(trayWeight);
             em.persist(rte);
             ReferenceTrayExcelUpdate(rte, 2);

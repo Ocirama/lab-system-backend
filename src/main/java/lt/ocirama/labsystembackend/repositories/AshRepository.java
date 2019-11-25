@@ -3,6 +3,7 @@ package lt.ocirama.labsystembackend.repositories;
 import lt.ocirama.labsystembackend.model.AshEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
+import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,7 +26,6 @@ import java.util.Scanner;
 
 public class AshRepository {
 
-    Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
 
     public AshRepository(EntityManagerFactory entityManagerFactory) {
@@ -35,12 +35,12 @@ public class AshRepository {
     public void AshLogGenerate() {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        int laikas = FileControllerService.testTimeCheck(sc);
+        int laikas = FileControllerService.testTimeCheck(Integer.parseInt(UserInputService.NumberInput()));
         try {
             String padeklas;
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
-                padeklas = sc.nextLine();
+                padeklas = UserInputService.NumberInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -58,19 +58,19 @@ public class AshRepository {
 
                         System.out.println("Peleningumo svėrimas mėginiui : " + tray.getSample().getSampleId());
                         System.out.println("Skenuokite " + j + "-ojo induko barkodą mėginiui  " + tray.getSample().getSampleId());
-                        indukas = sc.nextLine();
+                        indukas = UserInputService.NumberInput();
                         ae.setTray(tray);
                         list.add(ae);
                         System.out.println("Sverkite induką " + indukas);
                         ae.setDishId(indukas);
-                        Double dishWeight = FileControllerService.sverimoPrograma();
+                        Double dishWeight = FileControllerService.sverimoPrograma("On");
                         ae.setDishWeight(dishWeight);
                         em.persist(ae);
                     }
                     for (int k = 0; k <= 1; k++) {
                         ae = list.get(k);
                         System.out.println("Įdėkitę " + ae.getTray().getSample().getSampleId() + " mėginį į " + ae.getDishId() + " induką ir sverkite:");
-                        Double trayWeight2 = FileControllerService.sverimoPrograma();
+                        Double trayWeight2 = FileControllerService.sverimoPrograma("On");
                         ae.setDishAndSampleWeightBefore(trayWeight2);
                         em.persist(ae);
                         AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 1);
@@ -92,7 +92,7 @@ public class AshRepository {
         try {
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę induką:");
-                String padeklas = sc.nextLine();
+                String padeklas = UserInputService.NumberInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -101,7 +101,7 @@ public class AshRepository {
                     query.setParameter("laikas", 0);
                     AshEntity ae = (AshEntity) query.getSingleResult();
                     System.out.println("Sverkite induką po džiovinimo: ");
-                    Double trayWeight = FileControllerService.sverimoPrograma();
+                    Double trayWeight = FileControllerService.sverimoPrograma("On");
                     ae.setDishAndSampleWeightAfter(trayWeight);
                     em.persist(ae);
                     AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);

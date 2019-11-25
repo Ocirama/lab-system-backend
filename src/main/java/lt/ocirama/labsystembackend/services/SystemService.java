@@ -31,7 +31,7 @@ public class SystemService {
             function = sc.nextInt();
             switch (function) {
                 case 1:
-                    //olr.OrderLogGenerate();
+                    olr.OrderLogSave();
                     break;
                 case 2:
                     wlr.WeightLogGenerate();
