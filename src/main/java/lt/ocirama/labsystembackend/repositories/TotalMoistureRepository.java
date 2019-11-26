@@ -58,14 +58,12 @@ public class TotalMoistureRepository {
                         for (int j = 1; j <= 2; j++) {
                             tme = new TotalMoistureEntity();
                             te = new TrayEntity();
-                            System.out.println("Skenuokite " + j + "-ojo padėklo barkodą mėginiui  " + sampleName);
+                            System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į padėklą ir sverkite:");
                             padeklas = UserInputService.NumberInput();
                             te.setSample(sampleEntity);
                             te.setTrayId(padeklas);
-
                             list.add(tme);
                             tme.setTray(te);
-
                             session = em.unwrap(Session.class);
                             query = session.createQuery("Select twe from TrayWeightEntity twe where twe.trayId=:padeklas");
                             query.setParameter("padeklas", padeklas);
@@ -73,10 +71,7 @@ public class TotalMoistureRepository {
                             tme.setTrayWeight(twe.getTrayWeight());
                             em.persist(te);
                             em.persist(tme);
-                        }
-                        for (int k = 0; k <= 1; k++) {
-                            tme = list.get(k);
-                            System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į " + tme.getTray().getTrayId() + " padėklą ir sverkite:");
+                            tme = list.get(j);
                             Double trayWeight2 = FileControllerService.sverimoPrograma("Off");
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
