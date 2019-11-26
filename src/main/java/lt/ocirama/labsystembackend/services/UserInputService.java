@@ -24,14 +24,27 @@ public final class UserInputService {
         Scanner sc = new Scanner(System.in);
         String validationInput;
         do {
-            validationInput= sc.nextLine();
-            if(Validator.isValidNum(validationInput)) {
+            validationInput = sc.nextLine();
+            if (Validator.isValidNum(validationInput)) {
                 return validationInput;
-            }else{
+            } else {
                 System.out.println("Galima tik skaičių įvestis");
             }
         } while (!Validator.isValidNum(validationInput));
-return validationInput;
+        return validationInput;
+    }
+    public static String NumberOrEndInput() {
+        Scanner sc = new Scanner(System.in);
+        String validationInput;
+        do {
+            validationInput = sc.nextLine();
+            if (Validator.isValidNum(validationInput)) {
+                return validationInput;
+            } else {
+                System.out.println("Galima tik skaičių įvestis");
+            }
+        } while (!Validator.isValidNumOrEnd(validationInput));
+        return validationInput;
     }
 
     public static String CommandInput() {
@@ -52,7 +65,7 @@ return validationInput;
         Scanner sc = new Scanner(System.in);
         String validationInput;
         do {
-             validationInput = sc.nextLine();
+            validationInput = sc.nextLine();
             if (Validator.isValidYesOrNo(validationInput)) {
                 return validationInput;
             } else {

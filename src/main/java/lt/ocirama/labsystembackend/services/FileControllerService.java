@@ -99,10 +99,4 @@ public final class FileControllerService {
         }
         return trayWeight;
     }
-
-
-    public static Integer testTimeCheck(int laikas) {
-        System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-        return laikas;
-    }
 }

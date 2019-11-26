@@ -55,7 +55,7 @@ public class TotalMoistureRepository {
                         List<TotalMoistureEntity> list = new ArrayList<>();
                         TotalMoistureEntity tme;
                         TrayEntity te;
-                        for (int j = 1; j <= 2; j++) {
+                        for (int j = 0; j <= 1; j++) {
                             tme = new TotalMoistureEntity();
                             te = new TrayEntity();
                             System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į padėklą ir sverkite:");
@@ -76,7 +76,7 @@ public class TotalMoistureRepository {
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
-                            TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null);
+                            TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null,0);
                         }
                     }
 
@@ -101,7 +101,7 @@ public class TotalMoistureRepository {
             laikas = Integer.parseInt(UserInputService.NumberInput());
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Fiksuokite padėklo numerį ir svorį:");
-                padeklas = UserInputService.NumberInput();
+                padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -120,7 +120,7 @@ public class TotalMoistureRepository {
                         tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
                         em.persist(tme);
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();
-                        TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId());
+                        TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), laikas);
                         if (te.getId() % 2 == 0) {
                             System.out.println("Galite išpilti mėginį");
                         } else if (te.getId() % 2 != 0) {
@@ -138,10 +138,10 @@ public class TotalMoistureRepository {
         }
     }
 
-    public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId) {
+    public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId, int laikas) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now().minusDays(laikas) + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

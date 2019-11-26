@@ -35,7 +35,8 @@ public class AshRepository {
     public void AshLogGenerate() {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        int laikas = FileControllerService.testTimeCheck(Integer.parseInt(UserInputService.NumberInput()));
+        System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
+        int  laikas = Integer.parseInt(UserInputService.NumberInput());
         try {
             String padeklas;
             for (int i = 1; i < 5000; i++) {
@@ -92,7 +93,7 @@ public class AshRepository {
         try {
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę induką:");
-                String padeklas = UserInputService.NumberInput();
+                String padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);

@@ -2,6 +2,7 @@ package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.TrayWeightEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
+import lt.ocirama.labsystembackend.services.UserInputService;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
@@ -24,7 +25,7 @@ public class TrayWeightRepository {
         EntityTransaction transaction = em.getTransaction();
         for (int i = 1; i < 5000; i++) {
             System.out.println("Skenuokitę padėklą:");
-            String padeklas = sc.nextLine();
+            String padeklas = UserInputService.NumberOrEndInput();
             if (!padeklas.equals("Baigta")) {
 
 
@@ -48,7 +49,7 @@ public class TrayWeightRepository {
         EntityTransaction transaction = em.getTransaction();
         for (int i = 1; i < 5000; i++) {
             System.out.println("Skenuokitę padėklą kalibravimui:");
-            String padeklas = sc.nextLine();
+            String padeklas = UserInputService.NumberOrEndInput();
             if (!padeklas.equals("Baigta")) {
                 transaction.begin();
                 Session session = em.unwrap(Session.class);

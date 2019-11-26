@@ -30,8 +30,10 @@ public class OrderLogRepository {
 
     public void OrderLogSave() {
         try {
+
             EntityManager em = entityManagerFactory.createEntityManager();
             EntityTransaction transaction = em.getTransaction();
+
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Registruoti naują protokolą: Taip/Ne");
                 if (UserInputService.YesOrNoInput().equals("Taip")) {

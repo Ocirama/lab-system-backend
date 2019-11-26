@@ -41,7 +41,7 @@ public class GeneralMoistureRepository {
             laikas = Integer.parseInt(UserInputService.NumberInput());
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
-                padeklas = UserInputService.NumberInput();
+                padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);

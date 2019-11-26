@@ -10,14 +10,17 @@ public class ScaleService {
 
     public SerialPort serialPort;
 
-    public SerialPort SvarstykliuJungtis() {
-
+    public SerialPort SvarstykliuJungtis(
+    ) {
             SerialPort[] ports = SerialPort.getCommPorts();
             int i = 1;
+
             /*for (SerialPort port : ports)
                 System.out.println(i++ + ": " + port.getSystemPortName());*/
+
             int chosenPort = 1;
             SerialPort serialPort = ports[chosenPort - 1];
+
             /*if (serialPort.openPort()) {
                 System.out.println("Port opened successfully.");
             }else {
@@ -28,8 +31,6 @@ public class ScaleService {
             serialPort.openPort();
             serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
             return serialPort;
-
-
     }
 
     public Double Pasverti(SerialPort serialPort) {
@@ -44,15 +45,13 @@ public class ScaleService {
                     if (c == '\n')
                         break;
                     sg += c;
-
                 } while (true);
                 String string = "5)";
                 if (sg.contains(string)) {
-                    System.out.println("Wrong value.");
+                    //System.out.println("Wrong value.");
                     ScaleService s = new ScaleService();
                     return s.Pasverti(serialPort);
                 }
-                //System.out.println(sg);
                 sg = sg.replaceAll("\\s+", "");
                 sg = sg.replaceAll("[^\\d.]", "");
                 if ((sg.length() != 7) && (sg.length() != 8)) {

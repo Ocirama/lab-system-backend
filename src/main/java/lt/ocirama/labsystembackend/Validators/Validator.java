@@ -29,5 +29,9 @@ public final class Validator {
             return false;
         } else return true;
     }
-
+    public static boolean isValidNumOrEnd(String strNum) {
+        if (!(Pattern.compile( "[0-9]" ).matcher( strNum ).find())|| strNum.equals("Baigti")) {
+            return false;
+        } else return true;
+    }
 }
