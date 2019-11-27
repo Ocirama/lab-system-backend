@@ -6,7 +6,7 @@ import lt.ocirama.labsystembackend.utils.HibernateUtils;
 
 import java.util.Scanner;
 
-public class SystemService {
+public class MenuService {
 
     GenericRepository<OrderEntity> gr = new GenericRepository<>(OrderEntity.class, HibernateUtils.getSessionFactory());
     OrderLogRepository olr = new OrderLogRepository(HibernateUtils.getSessionFactory());

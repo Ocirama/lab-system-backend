@@ -4,6 +4,7 @@ import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.model.TotalMoistureEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.model.TrayWeightEntity;
+import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
@@ -76,7 +77,7 @@ public class TotalMoistureRepository {
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
-                            TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null,0);
+                            ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null,0);
                         }
                     }
 
@@ -120,7 +121,7 @@ public class TotalMoistureRepository {
                         tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
                         em.persist(tme);
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();
-                        TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), laikas);
+                        ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), laikas);
                         if (te.getId() % 2 == 0) {
                             System.out.println("Galite išpilti mėginį");
                         } else if (te.getId() % 2 != 0) {
@@ -138,54 +139,6 @@ public class TotalMoistureRepository {
         }
     }
 
-    public void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId, int laikas) {
-        XSSFSheet sheet;
-        XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now().minusDays(laikas) + " (VisumineDregme).xlsx";
-        File file = new File(path);
-        try {
-            if (file.exists()) {
-                FileInputStream fsip = new FileInputStream(path);
-                workbook = new XSSFWorkbook(fsip);
-                if (workbook.getSheet(protocol) == null) {
-                    sheet = workbook.createSheet(protocol);
-                } else
-                    sheet = workbook.getSheet(protocol);
-            } else {
-                workbook = new XSSFWorkbook();
-                sheet = workbook.createSheet(protocol);
-            }
-            Row rowhead = sheet.createRow(0);
-            rowhead.createCell(0).setCellValue("Užsakymo Nr.");
-            rowhead.createCell(1).setCellValue("Mėginio Nr.");
-            rowhead.createCell(2).setCellValue("Padėklo Nr.");
-            rowhead.createCell(3).setCellValue("Tuščio padėklo masė, g");
-            rowhead.createCell(4).setCellValue("Tuščio padėklo ir ėminio masė PRIEŠ bandymą, g");
-            rowhead.createCell(5).setCellValue("Tuščio padėklo ir ėminio masė PO bandymo, g");
-            rowhead.createCell(6).setCellValue("Tuščio padėklo ir ėminio masė PO bandymo+n val, g");
-            rowhead.createCell(7).setCellValue("Data");
-            Row row;
-            if (sverimoNumeris == 1) {
-                int sheetNumber = sheet.getLastRowNum() + 1;
-                row = sheet.createRow(sheetNumber);
-                row.createCell(0).setCellValue(protocol);
-                row.createCell(1).setCellValue(tray.getSample().getSampleId());
-                row.createCell(2).setCellValue(tray.getTrayId());
-                row.createCell(3).setCellValue(tme.getTrayWeight());
-                row.createCell(4).setCellValue(tme.getTrayAndSampleWeightBefore());
-            } else if (sverimoNumeris == 2) {
-                row = sheet.getRow(FileControllerService.findRow(workbook, trayId));
-                row.createCell(5).setCellValue(tme.getTrayAndSampleWeightAfter());
-                row.createCell(6).setCellValue(tme.getTrayAndSampleWeightAfterPlus());
-            }
-            FileOutputStream fileOut = new FileOutputStream(path);
-            workbook.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
 
 }

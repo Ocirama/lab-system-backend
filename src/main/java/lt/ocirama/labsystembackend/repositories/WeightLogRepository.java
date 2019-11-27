@@ -1,6 +1,7 @@
 package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.SampleEntity;
+import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
@@ -47,7 +48,7 @@ public class WeightLogRepository {
                         Double sampleWeight = FileControllerService.sverimoPrograma("On");
                         sampleEntity.setSampleWeight(sampleWeight);
                         em.merge(sampleEntity);
-                        WeightLogExcelUpdate(sampleEntity, protocol);
+                       ExcelService.WeightLogExcelUpdate(sampleEntity, protocol);
                     }
                     transaction.commit();
                 } else {
@@ -59,41 +60,7 @@ public class WeightLogRepository {
         }
     }
 
-    public void WeightLogExcelUpdate(SampleEntity sampleEntity, String protocol) {
 
-        XSSFSheet sheet;
-        XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (Svoriai).xlsx";
-        File file = new File(path);
-        try {
-            if (file.exists()) {
-                FileInputStream fsip = new FileInputStream(path);
-                workbook = new XSSFWorkbook(fsip);
-                if (workbook.getSheet(protocol) == null) {
-                    sheet = workbook.createSheet(protocol);
-                } else
-                    sheet = workbook.getSheet(protocol);
-            } else {
-                workbook = new XSSFWorkbook();
-                sheet = workbook.createSheet(protocol);
-            }
-            Row rowhead = sheet.createRow(0);
-            rowhead.createCell(0).setCellValue("Mėginio Nr.");
-            rowhead.createCell(1).setCellValue("Svoris, g");
-            rowhead.createCell(2).setCellValue("Data");
-
-            Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
-            row1.createCell(0).setCellValue(sampleEntity.getSampleId());
-            row1.createCell(1).setCellValue(sampleEntity.getSampleWeight());
-            row1.createCell(2).setCellValue(String.valueOf(LocalDate.now()));
-            FileOutputStream fileOut = new FileOutputStream(path);
-            workbook.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
 
 

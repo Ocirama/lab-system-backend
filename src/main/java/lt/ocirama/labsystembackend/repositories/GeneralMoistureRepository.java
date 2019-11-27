@@ -2,6 +2,7 @@ package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.GeneralMoistureEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
+import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
@@ -72,7 +73,7 @@ public class GeneralMoistureRepository {
                         Double trayWeight2 = FileControllerService.sverimoPrograma("On");
                         gme.setJarAndSampleWeightBefore(trayWeight2);
                         em.persist(gme);
-                        GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 1);
+                        ExcelService.GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 1);
                     }
                     transaction.commit();
                 } else {
@@ -105,7 +106,7 @@ public class GeneralMoistureRepository {
                     double x = FileControllerService.getRandomNumberInRange(0.0001, 0.0003);
                     gme.setJarAndSampleWeightAfterPlus(trayWeight - x);
                     em.persist(gme);
-                    GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 2);
+                   ExcelService.GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 2);
                     transaction.commit();
                 } else {
                     break;
@@ -116,56 +117,6 @@ public class GeneralMoistureRepository {
         }
     }
 
-    public void GeneralMoistureExcelUpdate(GeneralMoistureEntity gme, String protocol, int sverimoNumeris) {
 
-        XSSFSheet sheet;
-        XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (BendrojiDregme).xlsx";
-        File file = new File(path);
-        try {
-            if (file.exists()) {
-                FileInputStream fsip = new FileInputStream(path);
-                workbook = new XSSFWorkbook(fsip);
-                if (workbook.getSheet(protocol) == null) {
-                    sheet = workbook.createSheet(protocol);
-                } else
-                    sheet = workbook.getSheet(protocol);
-            } else {
-                workbook = new XSSFWorkbook();
-                sheet = workbook.createSheet(protocol);
-            }
-            Row rowhead = sheet.createRow(0);
-            rowhead.createCell(0).setCellValue("Užsakymo Nr.");
-            rowhead.createCell(1).setCellValue("Mėginio Nr.");
-            rowhead.createCell(2).setCellValue("Induko Nr.");
-            rowhead.createCell(3).setCellValue("Tuščio induko masė, g");
-            rowhead.createCell(4).setCellValue("Tuščio induko ir ėminio masė PRIEŠ bandymą, g");
-            rowhead.createCell(5).setCellValue("Tuščio induko ir ėminio masė PO bandymo, g");
-            rowhead.createCell(6).setCellValue("Tuščio induko ir ėminio masė PO bandymo+n val, g");
-            rowhead.createCell(7).setCellValue("Data");
-            Row row;
-            if (sverimoNumeris == 1) {
-                int sheetNumber = sheet.getLastRowNum() + 1;
-                row = sheet.createRow(sheetNumber);
-                row.createCell(0).setCellValue(protocol);
-                row.createCell(1).setCellValue(gme.getTray().getSample().getSampleId());
-                row.createCell(2).setCellValue(gme.getJarId());
-                row.createCell(3).setCellValue(gme.getJarWeight());
-                row.createCell(4).setCellValue(gme.getJarAndSampleWeightBefore());
-            } else if (sverimoNumeris == 2) {
-                row = sheet.getRow(FileControllerService.findRow(workbook, gme.getJarId()));
-                row.createCell(5).setCellValue(gme.getJarAndSampleWeightAfter());
-                row.createCell(6).setCellValue(gme.getJarAndSampleWeightAfterPlus());
-            }
-
-            FileOutputStream fileOut = new FileOutputStream(path);
-            workbook.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
 

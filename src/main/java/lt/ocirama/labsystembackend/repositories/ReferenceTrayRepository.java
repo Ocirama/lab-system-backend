@@ -1,6 +1,7 @@
 package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.ReferenceTrayEntity;
+import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,7 +42,7 @@ public class ReferenceTrayRepository {
             rte.setReferenceTrayWeightBefore(trayWeight);
             em.persist(rte);
             transaction.commit();
-            ReferenceTrayExcelUpdate(rte, 1);
+            ExcelService.ReferenceTrayExcelUpdate(rte, 1);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,7 +66,7 @@ public class ReferenceTrayRepository {
             Double trayWeight = FileControllerService.sverimoPrograma("Off");
             rte.setReferenceTrayWeightAfter(trayWeight);
             em.persist(rte);
-            ReferenceTrayExcelUpdate(rte, 2);
+            ExcelService.ReferenceTrayExcelUpdate(rte, 2);
             transaction.commit();
 
         } catch (Exception e) {
@@ -73,46 +74,6 @@ public class ReferenceTrayRepository {
         }
     }
 
-    public void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris) {
-        XSSFSheet sheet;
-        XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (VisumineDregme).xlsx";
-        File file = new File(path);
-        try {
-            if (file.exists()) {
-                FileInputStream fsip = new FileInputStream(path);
-                workbook = new XSSFWorkbook(fsip);
-                if (workbook.getSheet("PamatinisPadeklas") == null) {
-                    sheet = workbook.createSheet("PamatinisPadeklas");
-                } else
-                    sheet = workbook.getSheet("PamatinisPadeklas");
-            } else {
-                workbook = new XSSFWorkbook();
-                sheet = workbook.createSheet("PamatinisPadeklas");
-            }
-            Row rowhead = sheet.createRow(0);
-            rowhead.createCell(0).setCellValue("Pamatinio padėklo Nr.");
-            rowhead.createCell(1).setCellValue("Pamatinio padėklo svoris PRIEŠ");
-            rowhead.createCell(2).setCellValue("Pamatinio padėklo svoris P0");
-            rowhead.createCell(3).setCellValue("Data");
 
-            if (sverimoNumeris == 1) {
-                Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
-                row1.createCell(0).setCellValue(rte.getReferenceTrayId());
-                row1.createCell(1).setCellValue(rte.getReferenceTrayWeightBefore());
-                row1.createCell(3).setCellValue(String.valueOf(LocalDate.now()));
-            }
-            if (sverimoNumeris == 2) {
-                Row row = sheet.getRow(FileControllerService.findRow(workbook, rte.getReferenceTrayId()));
-                row.createCell(2).setCellValue(rte.getReferenceTrayWeightAfter());
-            }
-            FileOutputStream fileOut = new FileOutputStream(path);
-            workbook.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
 

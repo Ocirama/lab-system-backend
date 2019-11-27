@@ -2,6 +2,7 @@ package lt.ocirama.labsystembackend.repositories;
 
 import lt.ocirama.labsystembackend.model.AshEntity;
 import lt.ocirama.labsystembackend.model.TrayEntity;
+import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
 import org.apache.poi.ss.usermodel.Row;
@@ -74,7 +75,7 @@ public class AshRepository {
                         Double trayWeight2 = FileControllerService.sverimoPrograma("On");
                         ae.setDishAndSampleWeightBefore(trayWeight2);
                         em.persist(ae);
-                        AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 1);
+                        ExcelService.AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 1);
                     }
                     transaction.commit();
                 } else {
@@ -105,7 +106,7 @@ public class AshRepository {
                     Double trayWeight = FileControllerService.sverimoPrograma("On");
                     ae.setDishAndSampleWeightAfter(trayWeight);
                     em.persist(ae);
-                    AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
+                   ExcelService.AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
                     transaction.commit();
                 } else {
                     break;
@@ -116,54 +117,6 @@ public class AshRepository {
         }
     }
 
-    public void AshExcelUpdate(AshEntity ae, String protocol, int sverimoNumeris) {
 
-        XSSFSheet sheet;
-        XSSFWorkbook workbook;
-        String path = "C:\\Users\\lei12\\Desktop\\Output\\" + LocalDate.now() + " (Peleningumas).xlsx";
-        File file = new File(path);
-        try {
-            if (file.exists()) {
-                FileInputStream fsip = new FileInputStream(path);
-                workbook = new XSSFWorkbook(fsip);
-                if (workbook.getSheet(protocol) == null) {
-                    sheet = workbook.createSheet(protocol);
-                } else
-                    sheet = workbook.getSheet(protocol);
-            } else {
-                workbook = new XSSFWorkbook();
-                sheet = workbook.createSheet(protocol);
-            }
-            Row rowhead = sheet.createRow(0);
-            rowhead.createCell(0).setCellValue("Užsakymo Nr.");
-            rowhead.createCell(1).setCellValue("Mėginio Nr.");
-            rowhead.createCell(2).setCellValue("Induko Nr.");
-            rowhead.createCell(3).setCellValue("Tuščio induko masė, g");
-            rowhead.createCell(4).setCellValue("Tuščio induko ir ėminio masė PRIEŠ bandymą, g");
-            rowhead.createCell(5).setCellValue("Tuščio induko ir ėminio masė PO bandymo, g");
-            rowhead.createCell(6).setCellValue("Data");
-            Row row;
-            if (sverimoNumeris == 1) {
-                int sheetNumber = sheet.getLastRowNum() + 1;
-                row = sheet.createRow(sheetNumber);
-                row.createCell(0).setCellValue(protocol);
-                row.createCell(1).setCellValue(ae.getTray().getSample().getSampleId());
-                row.createCell(2).setCellValue(ae.getDishId());
-                row.createCell(3).setCellValue(ae.getDishWeight());
-                row.createCell(4).setCellValue(ae.getDishAndSampleWeightBefore());
-            } else if (sverimoNumeris == 2) {
-                row = sheet.getRow(FileControllerService.findRow(workbook, ae.getDishId()));
-                row.createCell(5).setCellValue(ae.getDishAndSampleWeightAfter());
-            }
-
-            FileOutputStream fileOut = new FileOutputStream(path);
-            workbook.write(fileOut);
-            fileOut.flush();
-            fileOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
 
