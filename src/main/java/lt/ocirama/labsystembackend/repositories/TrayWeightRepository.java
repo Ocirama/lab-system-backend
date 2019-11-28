@@ -9,11 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.util.Scanner;
 
 public class TrayWeightRepository {
 
-    Scanner sc = new Scanner(System.in);
     private final EntityManagerFactory entityManagerFactory;
 
     public TrayWeightRepository(EntityManagerFactory entityManagerFactory) {
@@ -66,5 +64,6 @@ public class TrayWeightRepository {
                 break;
             }
         }
-    }}
+    }
+}
 

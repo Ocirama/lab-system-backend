@@ -7,22 +7,12 @@ import lt.ocirama.labsystembackend.model.TrayWeightEntity;
 import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +51,9 @@ public class TotalMoistureRepository {
                             te = new TrayEntity();
                             System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į padėklą ir sverkite:");
                             padeklas = UserInputService.NumberInput();
+                            if (padeklas.equals("Kitas")){
+                                break;
+                            }
                             te.setSample(sampleEntity);
                             te.setTrayId(padeklas);
                             list.add(tme);
@@ -77,7 +70,7 @@ public class TotalMoistureRepository {
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
-                            ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null,0);
+                            ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null, 0);
                         }
                     }
 
@@ -108,7 +101,6 @@ public class TotalMoistureRepository {
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:padeklas AND te.date=current_date-:laikas");
                     query.setParameter("padeklas", padeklas);
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     query.setParameter("laikas", laikas);
 
                     TrayEntity te = (TrayEntity) query.getSingleResult();
@@ -138,7 +130,6 @@ public class TotalMoistureRepository {
             e.printStackTrace();
         }
     }
-
 
 
 }

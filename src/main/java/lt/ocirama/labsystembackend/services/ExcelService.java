@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 public final class ExcelService {
 
-public static String  excelSaveDirectory = "C:\\Users\\lei12\\Desktop\\Output\\";
+    public static String excelSaveDirectory = "C:\\Users\\lei12\\Desktop\\Output\\";
 
     public static void OrderLogExcelUpdate(OrderEntity order) {
         XSSFSheet sheet;
@@ -104,6 +104,7 @@ public static String  excelSaveDirectory = "C:\\Users\\lei12\\Desktop\\Output\\"
         }
 
     }
+
     public static void GeneralMoistureExcelUpdate(GeneralMoistureEntity gme, String protocol, int sverimoNumeris) {
 
         XSSFSheet sheet;
@@ -155,6 +156,7 @@ public static String  excelSaveDirectory = "C:\\Users\\lei12\\Desktop\\Output\\"
         }
 
     }
+
     public static void WeightLogExcelUpdate(SampleEntity sampleEntity, String protocol) {
 
         XSSFSheet sheet;
@@ -190,6 +192,7 @@ public static String  excelSaveDirectory = "C:\\Users\\lei12\\Desktop\\Output\\"
             e.printStackTrace();
         }
     }
+
     public static void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId, int laikas) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
@@ -240,10 +243,10 @@ public static String  excelSaveDirectory = "C:\\Users\\lei12\\Desktop\\Output\\"
 
     }
 
-    public static void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris) {
+    public static void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris,int laikas) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = excelSaveDirectory + LocalDate.now() + " (VisumineDregme).xlsx";
+        String path = excelSaveDirectory + LocalDate.now().minusDays(laikas) + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {

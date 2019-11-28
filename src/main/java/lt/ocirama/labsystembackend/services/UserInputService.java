@@ -41,7 +41,7 @@ public final class UserInputService {
             if (Validator.isValidNum(validationInput)) {
                 return validationInput;
             } else {
-                System.out.println("Galima tik skaičių įvestis");
+                System.out.println("Galima tik skaičių įvestis arba komanda 'Baigta'");
             }
         } while (!Validator.isValidNumOrEnd(validationInput));
         return validationInput;

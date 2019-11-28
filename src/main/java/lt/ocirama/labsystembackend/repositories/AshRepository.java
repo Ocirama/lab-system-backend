@@ -5,25 +5,14 @@ import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class AshRepository {
 
@@ -37,7 +26,7 @@ public class AshRepository {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-        int  laikas = Integer.parseInt(UserInputService.NumberInput());
+        int laikas = Integer.parseInt(UserInputService.NumberInput());
         try {
             String padeklas;
             for (int i = 1; i < 5000; i++) {
@@ -48,7 +37,6 @@ public class AshRepository {
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date-:laikas ");
                     query.setParameter("tray", padeklas);
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     query.setParameter("laikas", laikas);
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
@@ -106,7 +94,7 @@ public class AshRepository {
                     Double trayWeight = FileControllerService.sverimoPrograma("On");
                     ae.setDishAndSampleWeightAfter(trayWeight);
                     em.persist(ae);
-                   ExcelService.AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
+                    ExcelService.AshExcelUpdate(ae, ae.getTray().getSample().getOrder().getProtocolId(), 2);
                     transaction.commit();
                 } else {
                     break;

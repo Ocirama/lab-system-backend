@@ -4,18 +4,10 @@ import lt.ocirama.labsystembackend.model.OrderEntity;
 import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.UserInputService;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +78,6 @@ public class OrderLogRepository {
             e.printStackTrace();
         }
     }
-
-
 
 
 }

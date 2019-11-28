@@ -4,22 +4,13 @@ import lt.ocirama.labsystembackend.model.SampleEntity;
 import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
 
 public class WeightLogRepository {
     private final EntityManagerFactory entityManagerFactory;
@@ -48,7 +39,7 @@ public class WeightLogRepository {
                         Double sampleWeight = FileControllerService.sverimoPrograma("On");
                         sampleEntity.setSampleWeight(sampleWeight);
                         em.merge(sampleEntity);
-                       ExcelService.WeightLogExcelUpdate(sampleEntity, protocol);
+                        ExcelService.WeightLogExcelUpdate(sampleEntity, protocol);
                     }
                     transaction.commit();
                 } else {

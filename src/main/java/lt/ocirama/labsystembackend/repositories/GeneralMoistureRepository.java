@@ -5,22 +5,12 @@ import lt.ocirama.labsystembackend.model.TrayEntity;
 import lt.ocirama.labsystembackend.services.ExcelService;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +38,6 @@ public class GeneralMoistureRepository {
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date-:laikas ");
                     query.setParameter("tray", padeklas);
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     query.setParameter("laikas", laikas);
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
@@ -69,7 +58,7 @@ public class GeneralMoistureRepository {
                     }
                     for (int k = 0; k <= 1; k++) {
                         gme = list.get(k);
-                        System.out.println("Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + gme.getJarId() + " padėklą ir sverkite:");
+                        System.out.println("Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + gme.getJarId() + " induką ir sverkite:");
                         Double trayWeight2 = FileControllerService.sverimoPrograma("On");
                         gme.setJarAndSampleWeightBefore(trayWeight2);
                         em.persist(gme);
@@ -106,7 +95,7 @@ public class GeneralMoistureRepository {
                     double x = FileControllerService.getRandomNumberInRange(0.0001, 0.0003);
                     gme.setJarAndSampleWeightAfterPlus(trayWeight - x);
                     em.persist(gme);
-                   ExcelService.GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 2);
+                    ExcelService.GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 2);
                     transaction.commit();
                 } else {
                     break;
