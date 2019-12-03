@@ -12,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GeneralMoistureRepository {
@@ -27,18 +28,16 @@ public class GeneralMoistureRepository {
         EntityTransaction transaction = em.getTransaction();
         try {
             String padeklas;
-            int laikas;
-            System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-            laikas = Integer.parseInt(UserInputService.NumberInput());
+            Date date = FileControllerService.dateInput();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę padėklą:");
                 padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date-:laikas ");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=:current_date");
                     query.setParameter("tray", padeklas);
-                    query.setParameter("laikas", laikas);
+                    query.setParameter("current_date", date);
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
                     List<GeneralMoistureEntity> list = new ArrayList<>();
@@ -81,13 +80,12 @@ public class GeneralMoistureRepository {
         try {
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokitę induką:");
-                String padeklas = UserInputService.NumberInput();
+                String padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date-:laikas ");
+                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date ");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("laikas", 0);
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
                     System.out.println("Sverkite  induką po džiovinimo: ");
                     Double trayWeight = FileControllerService.sverimoPrograma("On");

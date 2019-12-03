@@ -36,8 +36,18 @@ public class WeightLogRepository {
                     List<SampleEntity> samples = query.getResultList();
                     for (SampleEntity sampleEntity : samples) {
                         System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
-                        Double sampleWeight = FileControllerService.sverimoPrograma("On");
-                        sampleEntity.setSampleWeight(sampleWeight);
+                        if (sampleEntity.getSampleWeight() != 0) {
+                            System.out.println("Mėginys jau pasvertas. Ar norite papildyti reikšmę ? TAIP/NE ");
+                            if (UserInputService.YesOrNoInput().equals("Taip")) {
+                                Double sampleWeight = FileControllerService.sverimoPrograma("On");
+                                sampleEntity.setSampleWeight(sampleWeight);
+                            } else {
+                                continue;
+                            }
+                        } else {
+                            Double sampleWeight = FileControllerService.sverimoPrograma("On");
+                            sampleEntity.setSampleWeight(sampleWeight);
+                        }
                         em.merge(sampleEntity);
                         ExcelService.WeightLogExcelUpdate(sampleEntity, protocol);
                     }

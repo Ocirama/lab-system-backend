@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.util.Date;
 
 public class ReferenceTrayRepository {
 
@@ -33,7 +34,7 @@ public class ReferenceTrayRepository {
             rte.setReferenceTrayWeightBefore(trayWeight);
             em.persist(rte);
             transaction.commit();
-            ExcelService.ReferenceTrayExcelUpdate(rte, 1,0);
+            ExcelService.ReferenceTrayExcelUpdate(rte, 1,null);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,9 +44,7 @@ public class ReferenceTrayRepository {
     public void ReferenceTrayLogSecondGenerate() {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        int laikas;
-        System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-        laikas = Integer.parseInt(UserInputService.NumberInput());
+        Date date = FileControllerService.dateInput();
         try {
             String padeklas;
             transaction.begin();
@@ -59,7 +58,7 @@ public class ReferenceTrayRepository {
             Double trayWeight = FileControllerService.sverimoPrograma("Off");
             rte.setReferenceTrayWeightAfter(trayWeight);
             em.persist(rte);
-            ExcelService.ReferenceTrayExcelUpdate(rte, 2, laikas);
+            ExcelService.ReferenceTrayExcelUpdate(rte, 2, date);
             transaction.commit();
 
         } catch (Exception e) {

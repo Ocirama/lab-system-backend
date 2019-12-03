@@ -12,7 +12,7 @@ public class OrderEntity extends AbstractEntity {
     private String protocolId;
     @Column(name = "customer", length = 50, nullable = false)
     private String customer;
-    @Column(name = "test", length = 50, nullable = false)
+    @Column(name = "test", length = 100, nullable = false)
     private String test;
     @Column(name = "sample_type", length = 50, nullable = false)
     private String sampleType;

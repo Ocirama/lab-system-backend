@@ -13,6 +13,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class AshRepository {
 
@@ -23,10 +24,12 @@ public class AshRepository {
     }
 
     public void AshLogGenerate() {
+        Scanner sc = new Scanner(System.in);
+
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
-        System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-        int laikas = Integer.parseInt(UserInputService.NumberInput());
+
+        java.util.Date sqlDate = FileControllerService.dateInput();
         try {
             String padeklas;
             for (int i = 1; i < 5000; i++) {
@@ -35,9 +38,10 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=current_date-:laikas ");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=:current_date");
                     query.setParameter("tray", padeklas);
-                    query.setParameter("laikas", laikas);
+                    query.setParameter("current_date", sqlDate);
+
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
                     String indukas;
 
@@ -45,7 +49,6 @@ public class AshRepository {
                     AshEntity ae;
                     for (int j = 1; j <= 2; j++) {
                         ae = new AshEntity();
-
                         System.out.println("Peleningumo svėrimas mėginiui : " + tray.getSample().getSampleId());
                         System.out.println("Skenuokite " + j + "-ojo induko barkodą mėginiui  " + tray.getSample().getSampleId());
                         indukas = UserInputService.NumberInput();
@@ -86,9 +89,8 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date-:laikas ");
+                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("laikas", 0);
                     AshEntity ae = (AshEntity) query.getSingleResult();
                     System.out.println("Sverkite induką po džiovinimo: ");
                     Double trayWeight = FileControllerService.sverimoPrograma("On");

@@ -30,45 +30,51 @@ public class OrderLogRepository {
                     OrderEntity order = new OrderEntity();
 
                     System.out.println("Užsakymo numeris:");
-                    order.setProtocolId(UserInputService.NumberInput());
+                    String protokolas = UserInputService.NumberInput();
+                    if (order.getProtocolId().equals(protokolas)){
+                        System.out.println("Toks protokolas jau užregistruotas");
+                        continue;
+                    }else {
+                        order.setProtocolId(protokolas);
 
-                    System.out.println("Užsakovas:");
-                    order.setCustomer(UserInputService.TextInput());
+                        System.out.println("Užsakovas:");
+                        order.setCustomer(UserInputService.TextInput());
 
-                    System.out.println("Užsakomi tyrimai:");
-                    StringBuilder s = new StringBuilder();
-                    String tyrimas;
-                    do {
-                        tyrimas = UserInputService.BasicInput();
-                        s.append(tyrimas).append(", ");
-                    } while (!tyrimas.equals("Baigta"));
-                    s.delete(s.length() - 10, s.length() - 1);
-                    System.out.println(s);
-                    order.setTest(s.toString());
+                        System.out.println("Užsakomi tyrimai:");
+                        StringBuilder s = new StringBuilder();
+                        String tyrimas;
+                        do {
+                            tyrimas = UserInputService.BasicInput();
+                            s.append(tyrimas).append(", ");
+                        } while (!tyrimas.equals("Baigta"));
+                        s.delete(s.length() - 10, s.length() - 1);
+                        System.out.println(s);
+                        order.setTest(s.toString());
 
-                    System.out.println("Kuro rūšis:");
-                    order.setSampleType(UserInputService.TextInput());
+                        System.out.println("Kuro rūšis:");
+                        order.setSampleType(UserInputService.TextInput());
 
-                    System.out.println("Mėginių kiekis:");
-                    order.setOrderAmount(Integer.parseInt(UserInputService.NumberInput()));
+                        System.out.println("Mėginių kiekis:");
+                        order.setOrderAmount(Integer.parseInt(UserInputService.NumberInput()));
 
-                    System.out.println("Mėginių Id:");
-                    List<SampleEntity> list = new ArrayList<>();
-                    for (int j = 1; j <= order.getOrderAmount(); j++) {
-                        SampleEntity se = new SampleEntity();
-                        list.add(se);
-                        se.setSampleId(UserInputService.BasicInput());
-                        se.setOrder(order);
-                    }
-                    order.setSamples(list);
-                    ExcelService.OrderLogExcelUpdate(order);
-                    transaction.begin();
-                    try {
-                        em.persist(order);
-                        transaction.commit();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        transaction.commit();
+                        System.out.println("Mėginių Id:");
+                        List<SampleEntity> list = new ArrayList<>();
+                        for (int j = 1; j <= order.getOrderAmount(); j++) {
+                            SampleEntity se = new SampleEntity();
+                            list.add(se);
+                            se.setSampleId(UserInputService.BasicInput());
+                            se.setOrder(order);
+                        }
+                        order.setSamples(list);
+                        ExcelService.OrderLogExcelUpdate(order);
+                        transaction.begin();
+                        try {
+                            em.persist(order);
+                            transaction.commit();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            transaction.commit();
+                        }
                     }
                 } else {
                     break;

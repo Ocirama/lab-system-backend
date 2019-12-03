@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Date;
 
 public final class ExcelService {
 
@@ -193,10 +194,10 @@ public final class ExcelService {
         }
     }
 
-    public static void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId, int laikas) {
+    public static void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId, Date date) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = excelSaveDirectory + LocalDate.now().minusDays(laikas) + " (VisumineDregme).xlsx";
+        String path = excelSaveDirectory + date + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
@@ -243,10 +244,10 @@ public final class ExcelService {
 
     }
 
-    public static void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris,int laikas) {
+    public static void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris,Date date) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = excelSaveDirectory + LocalDate.now().minusDays(laikas) + " (VisumineDregme).xlsx";
+        String path = excelSaveDirectory + date + " (VisumineDregme).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
@@ -275,6 +276,49 @@ public final class ExcelService {
             if (sverimoNumeris == 2) {
                 Row row = sheet.getRow(FileControllerService.findRow(workbook, rte.getReferenceTrayId()));
                 row.createCell(2).setCellValue(rte.getReferenceTrayWeightAfter());
+            }
+            FileOutputStream fileOut = new FileOutputStream(path);
+            workbook.write(fileOut);
+            fileOut.flush();
+            fileOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void QualityControlExcelUpdate(QualityControlEntity qce, int sverimoNumeris) {
+        XSSFSheet sheet;
+        XSSFWorkbook workbook;
+        String path = excelSaveDirectory + LocalDate.now() + " (Kokybes kontrole).xlsx";
+        File file = new File(path);
+        try {
+            if (file.exists()) {
+                FileInputStream fsip = new FileInputStream(path);
+                workbook = new XSSFWorkbook(fsip);
+                if (workbook.getSheet("KokybesKontrole") == null) {
+                    sheet = workbook.createSheet("KokybesKontrole");
+                } else
+                    sheet = workbook.getSheet("KokybesKontrole");
+            } else {
+                workbook = new XSSFWorkbook();
+                sheet = workbook.createSheet("KokybesKontrole");
+            }
+            Row rowhead = sheet.createRow(0);
+            rowhead.createCell(0).setCellValue("Pamatinio padėklo Nr.");
+            rowhead.createCell(1).setCellValue("Induko Nr.");
+            rowhead.createCell(2).setCellValue("Induko svoris PRIEŠ");
+            rowhead.createCell(3).setCellValue("Induko svoris P0");
+            rowhead.createCell(4).setCellValue("Data");
+
+            if (sverimoNumeris == 1) {
+                Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
+                row1.createCell(0).setCellValue(qce.getTestType());
+                row1.createCell(1).setCellValue(qce.getQualityTrayId());
+                row1.createCell(2).setCellValue(qce.getQualityTrayWeightBefore());
+                row1.createCell(4).setCellValue(String.valueOf(LocalDate.now()));
+            }
+            if (sverimoNumeris == 2) {
+                Row row = sheet.getRow(FileControllerService.findRow(workbook, qce.getQualityTrayId()));
+                row.createCell(3).setCellValue(qce.getQualityTrayWeightAfter());
             }
             FileOutputStream fileOut = new FileOutputStream(path);
             workbook.write(fileOut);

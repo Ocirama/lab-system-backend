@@ -14,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TotalMoistureRepository {
@@ -70,7 +71,7 @@ public class TotalMoistureRepository {
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
-                            ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null, 0);
+                            ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null, null);
                         }
                     }
 
@@ -90,18 +91,16 @@ public class TotalMoistureRepository {
 
         try {
             String padeklas;
-            int laikas;
-            System.out.println("Prieš kiek dienų atliktas pirmas Visuminės drėgmės svėrimas ?");
-            laikas = Integer.parseInt(UserInputService.NumberInput());
+            Date date =FileControllerService.dateInput();
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Fiksuokite padėklo numerį ir svorį:");
                 padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:padeklas AND te.date=current_date-:laikas");
+                    Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:padeklas AND te.date=:current_date");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("laikas", laikas);
+                    query.setParameter("current_date", date);
 
                     TrayEntity te = (TrayEntity) query.getSingleResult();
                     System.out.println("Padėklo svoris po džiovinimo: ");
@@ -113,7 +112,7 @@ public class TotalMoistureRepository {
                         tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
                         em.persist(tme);
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();
-                        ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), laikas);
+                        ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), date);
                         if (te.getId() % 2 == 0) {
                             System.out.println("Galite išpilti mėginį");
                         } else if (te.getId() % 2 != 0) {

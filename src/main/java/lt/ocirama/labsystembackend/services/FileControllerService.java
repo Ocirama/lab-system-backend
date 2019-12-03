@@ -9,7 +9,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.TimeZone;
 
 public final class FileControllerService {
 
@@ -98,4 +103,22 @@ public final class FileControllerService {
         }
         return trayWeight;
     }
+
+    public static java.util.Date dateInput() {
+
+        System.out.println("Įveskite padėklo registravimo datą yyyyMMdd");
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        java.util.Date theDate = null;
+        try {
+            theDate = sdf.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(theDate);
+        return theDate;
+    }
 }
+

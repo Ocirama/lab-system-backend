@@ -1,5 +1,6 @@
 package lt.ocirama.labsystembackend.repositories;
 
+import lt.ocirama.labsystembackend.model.QualityControlEntity;
 import lt.ocirama.labsystembackend.model.ReferenceTrayEntity;
 import lt.ocirama.labsystembackend.services.FileControllerService;
 import lt.ocirama.labsystembackend.services.UserInputService;
@@ -19,9 +20,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 public class QualityControlRepository {
-    /*
 
-    private final EntityManagerFactory entityManagerFactory;
+   /*private final EntityManagerFactory entityManagerFactory;
 
     public QualityControlRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
@@ -32,14 +32,17 @@ public class QualityControlRepository {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            System.out.println("Fiksuokite padėklo numerį ir svorį");
-            String padeklas = UserInputService.NumberInput();
-            ReferenceTrayEntity rte = new ReferenceTrayEntity();
-            rte.setReferenceTrayId(padeklas);
-
-            Double trayWeight = FileControllerService.sverimoPrograma("Off");
-            rte.setReferenceTrayWeightBefore(trayWeight);
-            em.persist(rte);
+            System.out.println("Kokiam tyrimui daroma kokybės kontrolė ? D/P");
+            String tyrimas = UserInputService.TextInput();
+            QualityControlEntity qce = new QualityControlEntity();
+            qce.setTestType(tyrimas);
+            System.out.println("Skenuokite padėklo numerį");
+            String indukas = UserInputService.NumberInput();
+            qce.setQualityTrayId(indukas);
+            System.out.println("Sverkite induką");
+            Double trayWeight = FileControllerService.sverimoPrograma("On");
+         qce.setQualityTrayWeightBefore(trayWeight);
+            em.persist(qce);
             transaction.commit();
             ReferenceTrayExcelUpdate(rte, 1);
 
@@ -113,6 +116,6 @@ public class QualityControlRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-}*/
+    }*/
 }
+

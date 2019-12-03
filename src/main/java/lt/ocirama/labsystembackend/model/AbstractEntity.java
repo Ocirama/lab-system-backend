@@ -15,7 +15,7 @@ public abstract class AbstractEntity {
     private Integer id;
 
     @Column(name = "date", nullable = false)
-    private Date date = java.sql.Date.valueOf(LocalDate.now().plusDays(1));
+    private Date date = java.sql.Date.valueOf(LocalDate.now().minusDays(1));
 
     public Date getDate() {
         return date;
