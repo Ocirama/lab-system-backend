@@ -285,40 +285,39 @@ public final class ExcelService {
             e.printStackTrace();
         }
     }
-    public static void QualityControlExcelUpdate(QualityControlEntity qce, int sverimoNumeris) {
+    public static void QualityControlExcelUpdate(QualityControlEntity qte, int sverimoNumeris, String tyrimas) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
-        String path = excelSaveDirectory + LocalDate.now() + " (Kokybes kontrole).xlsx";
+        String path = "C:\\Users\\lei12\\Desktop\\Output\\(KokybesKontrole).xlsx";
         File file = new File(path);
         try {
             if (file.exists()) {
                 FileInputStream fsip = new FileInputStream(path);
                 workbook = new XSSFWorkbook(fsip);
-                if (workbook.getSheet("KokybesKontrole") == null) {
-                    sheet = workbook.createSheet("KokybesKontrole");
+                if (workbook.getSheet(tyrimas) == null) {
+                    sheet = workbook.createSheet(tyrimas);
                 } else
-                    sheet = workbook.getSheet("KokybesKontrole");
+                    sheet = workbook.getSheet(tyrimas);
             } else {
                 workbook = new XSSFWorkbook();
-                sheet = workbook.createSheet("KokybesKontrole");
+                sheet = workbook.createSheet(tyrimas);
             }
             Row rowhead = sheet.createRow(0);
-            rowhead.createCell(0).setCellValue("Pamatinio padėklo Nr.");
+            rowhead.createCell(0).setCellValue("Tyrimas");
             rowhead.createCell(1).setCellValue("Induko Nr.");
             rowhead.createCell(2).setCellValue("Induko svoris PRIEŠ");
-            rowhead.createCell(3).setCellValue("Induko svoris P0");
-            rowhead.createCell(4).setCellValue("Data");
+            rowhead.createCell(3).setCellValue("Induko svoris PO");
 
             if (sverimoNumeris == 1) {
                 Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
-                row1.createCell(0).setCellValue(qce.getTestType());
-                row1.createCell(1).setCellValue(qce.getQualityTrayId());
-                row1.createCell(2).setCellValue(qce.getQualityTrayWeightBefore());
-                row1.createCell(4).setCellValue(String.valueOf(LocalDate.now()));
+                row1.createCell(0).setCellValue(qte.getTestType());
+                row1.createCell(1).setCellValue(qte.getQualityTrayId());
+                row1.createCell(3).setCellValue(qte.getQualityTrayWeightBefore());
+                row1.createCell(5).setCellValue(qte.getDate());
             }
             if (sverimoNumeris == 2) {
-                Row row = sheet.getRow(FileControllerService.findRow(workbook, qce.getQualityTrayId()));
-                row.createCell(3).setCellValue(qce.getQualityTrayWeightAfter());
+                Row row = sheet.getRow(FileControllerService.findRow(workbook, qte.getQualityTrayId()));
+                row.createCell(2).setCellValue(qte.getQualityTrayWeightAfter());
             }
             FileOutputStream fileOut = new FileOutputStream(path);
             workbook.write(fileOut);

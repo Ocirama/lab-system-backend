@@ -17,6 +17,7 @@ public class MenuService {
     ReferenceTrayRepository rtr = new ReferenceTrayRepository(HibernateUtils.getSessionFactory());
     AshRepository ar = new AshRepository(HibernateUtils.getSessionFactory());
     TrayWeightRepository twr = new TrayWeightRepository(HibernateUtils.getSessionFactory());
+    QualityControlRepository qcr = new QualityControlRepository(HibernateUtils.getSessionFactory());
 
     Scanner sc = new Scanner(System.in);
 
@@ -26,7 +27,7 @@ public class MenuService {
             System.out.println("Pasirinkite funkciją:");
             System.out.println("1 - Užsakymo registravimas\n2 - Mėginių masės svėrimas\n3 - Padėklo priskyrimas mėginiui\n" +
                     "4 - Visuminės drėgmės matavimas\n5 - Pamatinio padėklo registravimas\n6 - Bendrosios drėgmės matavimas\n7 - Peleningumo matavimas\n" +
-                    "8 - Antrasis dienos svėrimas\n9 - Padėklų svorio kalibracija\n10 - Exit");
+                    "8 - Antrasis dienos svėrimas\n9 - Padėklų svorio kalibracija\n10 - Kokybės kontrolė\n11 - Exit");
 
             function = sc.nextInt();
             switch (function) {
@@ -52,7 +53,7 @@ public class MenuService {
                     ar.AshLogGenerate();
                     break;
                 case 8:
-                    System.out.println("Kurį bandymą atliekate?\n1 - Visumine Dregme\n2 - Bendroji Dregme\n3 - Peleningumas\n4 - Pamatinis padeklas\n5 - Exit");
+                    System.out.println("Kurį bandymą atliekate?\n1 - Visumine Dregme\n2 - Bendroji Dregme\n3 - Peleningumas\n4 - Pamatinis padeklas\n5 - Kokybės kontrolė\n6 - Exit");
                     int x = sc.nextInt();
                     if (x == 1) {
                         tmr.TotalMoistureSecondGenerate();
@@ -62,9 +63,12 @@ public class MenuService {
                         ar.AshSecondGenerate();
                     } else if (x == 4) {
                         rtr.ReferenceTrayLogSecondGenerate();
+                    } else if (x == 5) {
+                        qcr.QualityControlLogSecondGenerate();
                     } else {
                         break;
                     }
+                    break;
                 case 9:
                     System.out.println("Ką norite daryti? \n 1 - Padėklų svorio priskyrimas\n 2 - Padėklų svorio kalibracija\n 3- exit");
                     int y = sc.nextInt();
@@ -72,9 +76,15 @@ public class MenuService {
                         twr.TrayWeightAsign();
                     } else if (y == 2) {
                         twr.TrayWeightCalibrate();
+                    } else {
+                        break;
                     }
+                    break;
+                case 10:
+                    qcr.QualityControlLogGenerate();
+                    break;
             }
 
-        } while (function != 10);
+        } while (function != 11);
     }
 }

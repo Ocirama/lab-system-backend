@@ -14,6 +14,9 @@ import javax.persistence.Table;
         @Column(name = "quality_tray_id", length = 50, nullable = false)
         private String qualityTrayId;
 
+        @Column(name = "quality_tray_weight")
+        private double qualityTrayWeight;
+
         @Column(name = "quality_tray_weight_before")
         private double qualityTrayWeightBefore;
 
@@ -50,5 +53,13 @@ import javax.persistence.Table;
 
         public void setQualityTrayWeightAfter(double qualityTrayWeightAfter) {
             this.qualityTrayWeightAfter = qualityTrayWeightAfter;
+        }
+
+        public double getQualityTrayWeight() {
+            return qualityTrayWeight;
+        }
+
+        public void setQualityTrayWeight(double qualityTrayWeight) {
+            this.qualityTrayWeight = qualityTrayWeight;
         }
     }

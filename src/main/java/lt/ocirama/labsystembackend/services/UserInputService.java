@@ -38,7 +38,7 @@ public final class UserInputService {
         String validationInput;
         do {
             validationInput = sc.nextLine();
-            if (Validator.isValidNum(validationInput)) {
+            if (Validator.isValidNumOrEnd(validationInput)) {
                 return validationInput;
             } else {
                 System.out.println("Galima tik skaičių įvestis arba komanda 'Baigta'");
@@ -46,7 +46,6 @@ public final class UserInputService {
         } while (!Validator.isValidNumOrEnd(validationInput));
         return validationInput;
     }
-
     public static String CommandInput() {
         Scanner sc = new Scanner(System.in);
         String validationInput;

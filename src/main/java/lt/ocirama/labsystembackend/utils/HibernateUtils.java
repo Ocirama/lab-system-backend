@@ -32,6 +32,7 @@ public class HibernateUtils {
         configuration.addAnnotatedClass(GeneralMoistureEntity.class);
         configuration.addAnnotatedClass(AshEntity.class);
         configuration.addAnnotatedClass(TrayWeightEntity.class);
+        configuration.addAnnotatedClass(QualityControlEntity.class);
         sessionFactory = configuration.buildSessionFactory(
                 new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build()
         );

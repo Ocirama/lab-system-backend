@@ -89,8 +89,9 @@ public class AshRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date");
+                    Query query = session.createQuery("from AshEntity ae where ae.dishId=:padeklas AND ae.date=current_date-:laikas");
                     query.setParameter("padeklas", padeklas);
+                    query.setParameter("laikas", 2);
                     AshEntity ae = (AshEntity) query.getSingleResult();
                     System.out.println("Sverkite induką po džiovinimo: ");
                     Double trayWeight = FileControllerService.sverimoPrograma("On");
