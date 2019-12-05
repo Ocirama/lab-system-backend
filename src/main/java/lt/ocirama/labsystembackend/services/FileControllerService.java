@@ -12,9 +12,7 @@ import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.TimeZone;
+import java.util.*;
 
 public final class FileControllerService {
 
@@ -59,6 +57,22 @@ public final class FileControllerService {
         return 0;
     }
 
+    public static List findRowList(XSSFWorkbook workbook, LocalDate cellContent) {
+        List<Integer> rowNums = new ArrayList<>();
+        for (Sheet sheet : workbook)
+            for (Row row : sheet) {
+                for (Cell cell : row) {
+                    cell.setCellType(CellType.STRING);
+                    if (cell.getCellType() == CellType.STRING) {
+                        if (cell.getRichStringCellValue().getString().trim().equals(cellContent)) {
+                            rowNums.add(row.getRowNum());
+                            return rowNums;
+                        }
+                    }
+                }
+            }
+        return rowNums;
+    }
 
 
     public static Double getRandomNumberInRange(double min, double max) {
@@ -87,7 +101,7 @@ public final class FileControllerService {
     public static Double sverimoPrograma(String clearance) {
         double trayWeight = 0;
         if (clearance.equals("On")) {
-            System.out.println("Spauskite sverti 'push' ");
+            System.out.println(">>>>> Spauskite sverti 'push' <<<<<");
             if (UserInputService.CommandInput().equals("push")) {
                 ScaleService ss = new ScaleService();
                 SerialPort serialPort = ss.SvarstykliuJungtis();
@@ -107,7 +121,7 @@ public final class FileControllerService {
 
     public static java.util.Date dateInput() {
 
-        System.out.println("Įveskite padėklo registravimo datą yyyyMMdd");
+        System.out.println(">>>>> Įveskite padėklo registravimo datą yyyyMMdd <<<<<");
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

@@ -25,19 +25,19 @@ public class WeightLogRepository {
         EntityTransaction transaction = em.getTransaction();
         try {
             for (int i = 1; i < 5000; i++) {
-                System.out.println("Naujo protokolo svėrimas: Taip/Ne");
+                System.out.println(">>>>> Naujo protokolo svėrimas: TAIP/NE <<<<<");
                 if (UserInputService.YesOrNoInput().equals("Taip")) {
                     transaction.begin();
-                    System.out.println("Užsakymo numeris ?");
+                    System.out.println(">>>>> Užsakymo numeris: <<<<<");
                     String protocol = UserInputService.NumberInput();
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
                     query.setParameter("protocol", protocol);
                     List<SampleEntity> samples = query.getResultList();
                     for (SampleEntity sampleEntity : samples) {
-                        System.out.println("Sverkite mėginį : " + sampleEntity.getSampleId());
+                        System.out.println(">>>>> Sverkite " + protocol + " protokolo mėginį: " + sampleEntity.getSampleId() + " <<<<<");
                         if (sampleEntity.getSampleWeight() != 0) {
-                            System.out.println("Mėginys jau pasvertas. Ar norite papildyti reikšmę ? TAIP/NE ");
+                            System.out.println("!!!!! Mėginys jau pasvertas. Ar norite papildyti reikšmę ? TAIP/NE !!!!!");
                             if (UserInputService.YesOrNoInput().equals("Taip")) {
                                 Double sampleWeight = FileControllerService.sverimoPrograma("On");
                                 sampleEntity.setSampleWeight(sampleWeight);

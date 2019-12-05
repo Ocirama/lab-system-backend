@@ -14,7 +14,7 @@ public final class UserInputService {
             if (Validator.isValidText(validationInput)) {
                 return validationInput;
             } else {
-                System.out.println("Galima tik tekstinė įvestis");
+                System.out.println("!!!!! Galima tik tekstinė įvestis !!!!!");
             }
         } while (!Validator.isValidText(validationInput));
         return validationInput;
@@ -28,7 +28,7 @@ public final class UserInputService {
             if (Validator.isValidNum(validationInput)) {
                 return validationInput;
             } else {
-                System.out.println("Galima tik skaičių įvestis");
+                System.out.println("!!!!! Galima tik skaičių įvestis !!!!!");
             }
         } while (!Validator.isValidNum(validationInput));
         return validationInput;
@@ -41,7 +41,7 @@ public final class UserInputService {
             if (Validator.isValidNumOrEnd(validationInput)) {
                 return validationInput;
             } else {
-                System.out.println("Galima tik skaičių įvestis arba komanda 'Baigta'");
+                System.out.println("!!!!! Galima tik skaičių įvestis arba komanda 'Baigta' !!!!!");
             }
         } while (!Validator.isValidNumOrEnd(validationInput));
         return validationInput;
@@ -54,7 +54,7 @@ public final class UserInputService {
             if (Validator.isValidCommand(validationInput)) {
                 return validationInput;
             } else {
-                System.out.println("Tokios komandos nėra");
+                System.out.println("!!!!! Tokios komandos nėra !!!!!");
             }
         } while (!Validator.isValidCommand(validationInput));
         return validationInput;
@@ -68,7 +68,7 @@ public final class UserInputService {
             if (Validator.isValidYesOrNo(validationInput)) {
                 return validationInput;
             } else {
-                System.out.println("Tokios komandos nėra");
+                System.out.println("!!!!! Tokios komandos nėra !!!!!");
             }
         } while (!Validator.isValidYesOrNo(validationInput));
         return validationInput;

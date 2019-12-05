@@ -54,11 +54,14 @@ public class ScaleService {
                 sg = sg.replaceAll("\\s+", "");
                 sg = sg.replaceAll("[^\\d.]", "");
                 if ((sg.length() != 7) && (sg.length() != 8)) {
-                    System.out.println("Value out of bounds. Repeating.");
                     ScaleService s = new ScaleService();
                     return s.Pasverti(serialPort);
                 }
-                System.out.println(sg);
+                if (Double.parseDouble(sg) > 2000.00000) {
+                    ScaleService s = new ScaleService();
+                    return s.Pasverti(serialPort);
+                }
+                System.out.println("----> "+ sg + " <----");
                 break;
             }
         } catch (Exception e) {

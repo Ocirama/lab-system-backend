@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 public final class ExcelService {
 
@@ -317,7 +319,7 @@ public final class ExcelService {
             }
             if (sverimoNumeris == 2) {
                 Row row = sheet.getRow(FileControllerService.findRow(workbook, qte.getQualityTrayId()));
-                row.createCell(2).setCellValue(qte.getQualityTrayWeightAfter());
+                row.createCell(4).setCellValue(qte.getQualityTrayWeightAfter());
             }
             FileOutputStream fileOut = new FileOutputStream(path);
             workbook.write(fileOut);

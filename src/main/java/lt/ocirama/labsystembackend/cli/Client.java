@@ -12,11 +12,6 @@ public class Client {
 
 
         ss.MenuSelect();
-
-
-
-        //test a = new test();
-        //a.makeDate();
     }
 }
 

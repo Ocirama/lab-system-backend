@@ -27,11 +27,10 @@ public class GeneralMoistureRepository {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
-            String padeklas;
             Date date = FileControllerService.dateInput();
             for (int i = 1; i < 5000; i++) {
-                System.out.println("Skenuokitę padėklą:");
-                padeklas = UserInputService.NumberOrEndInput();
+                System.out.println(">>>>> Skenuokitę padėklą: <<<<<");
+                String padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -39,17 +38,16 @@ public class GeneralMoistureRepository {
                     query.setParameter("tray", padeklas);
                     query.setParameter("current_date", date);
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
-                    String indukas;
                     List<GeneralMoistureEntity> list = new ArrayList<>();
                     GeneralMoistureEntity gme;
                     for (int j = 1; j <= 2; j++) {
                         gme = new GeneralMoistureEntity();
-                        System.out.println("Bendrosios drėgmės svėrimas mėginiui : " + tray.getSample().getSampleId());
-                        System.out.println("Skenuokite " + j + "-ojo induko barkodą mėginiui  " + tray.getSample().getSampleId());
-                        indukas = UserInputService.NumberInput();
+                        System.out.println(">>>>> Bendrosios drėgmės svėrimas" + tray.getSample().getOrder().getProtocolId() + " protokolo mėginiui : " + tray.getSample().getSampleId() + " <<<<<");
+                        System.out.println(">>>>> Skenuokite " + j + "-ojo induko barkodą mėginiui  " + tray.getSample().getSampleId() + " <<<<<");
+                        String indukas = UserInputService.NumberInput();
                         gme.setTray(tray);
                         list.add(gme);
-                        System.out.println("Sverkite induką " + indukas);
+                        System.out.println(">>>>> Sverkite induką " + indukas + " <<<<<");
                         gme.setJarId(indukas);
                         Double jarWeight = FileControllerService.sverimoPrograma("On");
                         gme.setJarWeight(jarWeight);
@@ -57,7 +55,7 @@ public class GeneralMoistureRepository {
                     }
                     for (int k = 0; k <= 1; k++) {
                         gme = list.get(k);
-                        System.out.println("Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + gme.getJarId() + " induką ir sverkite:");
+                        System.out.println(">>>>> Įdėkitę " + gme.getTray().getSample().getSampleId() + " mėginį į " + gme.getJarId() + " induką ir sverkite: <<<<<");
                         Double trayWeight2 = FileControllerService.sverimoPrograma("On");
                         gme.setJarAndSampleWeightBefore(trayWeight2);
                         em.persist(gme);
@@ -79,20 +77,19 @@ public class GeneralMoistureRepository {
 
         try {
             for (int i = 1; i < 5000; i++) {
-                System.out.println("Skenuokitę induką:");
+                System.out.println(">>>>> Skenuokitę induką: <<<<<");
                 String padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date-:laikas ");
+                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("laikas", 2);
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
-                    System.out.println("Sverkite  induką po džiovinimo: ");
+                    System.out.println(">>>>> Sverkite induką po džiovinimo: <<<<<");
                     Double trayWeight = FileControllerService.sverimoPrograma("On");
                     gme.setJarAndSampleWeightAfter(trayWeight);
-                    double x = FileControllerService.getRandomNumberInRange(0.0001, 0.0003);
-                    gme.setJarAndSampleWeightAfterPlus(trayWeight - x);
+                    double dryingValue = FileControllerService.getRandomNumberInRange(0.0001, 0.0003);
+                    gme.setJarAndSampleWeightAfterPlus(trayWeight - dryingValue);
                     em.persist(gme);
                     ExcelService.GeneralMoistureExcelUpdate(gme, gme.getTray().getSample().getOrder().getProtocolId(), 2);
                     transaction.commit();

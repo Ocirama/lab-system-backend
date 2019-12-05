@@ -24,10 +24,10 @@ public class MenuService {
     public void MenuSelect() {
         int function;
         do {
-            System.out.println("Pasirinkite funkciją:");
-            System.out.println("1 - Užsakymo registravimas\n2 - Mėginių masės svėrimas\n3 - Padėklo priskyrimas mėginiui\n" +
-                    "4 - Visuminės drėgmės matavimas\n5 - Pamatinio padėklo registravimas\n6 - Bendrosios drėgmės matavimas\n7 - Peleningumo matavimas\n" +
-                    "8 - Antrasis dienos svėrimas\n9 - Padėklų svorio kalibracija\n10 - Kokybės kontrolė\n11 - Exit");
+            System.out.println(">>>>> Pasirinkite funkciją: <<<<<");
+            System.out.println("---->  \033[1m1\033[0m - Užsakymo registravimas\n---->  \033[1m2\033[0m - Mėginių masės svėrimas\n---->  \033[1m3\033[0m - Padėklo priskyrimas mėginiui\n" +
+                    "---->  \033[1m4\033[0m - Visuminės drėgmės matavimas\n---->  \033[1m5\033[0m - Pamatinio padėklo registravimas\n---->  \033[1m6\033[0m - Bendrosios drėgmės matavimas\n---->  \033[1m7\033[0m - Peleningumo matavimas\n" +
+                    "---->  \033[1m8\033[0m - Antrasis dienos svėrimas\n---->  \033[1m9\033[0m - Padėklų svorio kalibracija\n----> \033[1m10\033[0m - Kokybės kontrolė\n----> \033[1m11\033[0m - Exit");
 
             function = sc.nextInt();
             switch (function) {
@@ -53,7 +53,7 @@ public class MenuService {
                     ar.AshLogGenerate();
                     break;
                 case 8:
-                    System.out.println("Kurį bandymą atliekate?\n1 - Visumine Dregme\n2 - Bendroji Dregme\n3 - Peleningumas\n4 - Pamatinis padeklas\n5 - Kokybės kontrolė\n6 - Exit");
+                    System.out.println(">>>>> Kurį bandymą atliekate? <<<<< \n----> \033[1m1\033[0m - Visumine Dregme\n----> \033[1m2\033[0m - Bendroji Dregme\n----> \033[1m3\033[0m - Peleningumas\n----> \033[1m4\033[0m - Pamatinis padeklas\n----> \033[1m5\033[0m - Kokybės kontrolė\n----> \033[1m6\033[0m - Exit");
                     int x = sc.nextInt();
                     if (x == 1) {
                         tmr.TotalMoistureSecondGenerate();
@@ -70,7 +70,7 @@ public class MenuService {
                     }
                     break;
                 case 9:
-                    System.out.println("Ką norite daryti? \n 1 - Padėklų svorio priskyrimas\n 2 - Padėklų svorio kalibracija\n 3- exit");
+                    System.out.println(">>>>> Ką norite daryti? <<<<<\n----> \033[1m1\033[0m - Padėklų svorio priskyrimas\n----> \033[1m2\033[0m - Padėklų svorio kalibracija\n----> \033[1m3\033[0m - Exit");
                     int y = sc.nextInt();
                     if (y == 1) {
                         twr.TrayWeightAsign();

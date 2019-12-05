@@ -22,15 +22,13 @@ public class TrayWeightRepository {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         for (int i = 1; i < 5000; i++) {
-            System.out.println("Skenuokitę padėklą:");
+            System.out.println(">>>>> Skenuokitę padėklą: <<<<<");
             String padeklas = UserInputService.NumberOrEndInput();
             if (!padeklas.equals("Baigta")) {
-
-
                 TrayWeightEntity twe = new TrayWeightEntity();
                 twe.setTrayId(padeklas);
 
-                System.out.println("Sverkite padėklą " + twe.getTrayId() + ":");
+                System.out.println(">>>>> Sverkite padėklą " + twe.getTrayId() + ": <<<<<");
                 Double trayWeight = FileControllerService.sverimoPrograma("On");
                 twe.setTrayWeight(trayWeight);
                 transaction.begin();
@@ -46,7 +44,7 @@ public class TrayWeightRepository {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         for (int i = 1; i < 5000; i++) {
-            System.out.println("Skenuokitę padėklą kalibravimui:");
+            System.out.println(">>>>> Skenuokitę padėklą kalibravimui: <<<<<");
             String padeklas = UserInputService.NumberOrEndInput();
             if (!padeklas.equals("Baigta")) {
                 transaction.begin();
@@ -54,7 +52,7 @@ public class TrayWeightRepository {
                 Query query = session.createQuery("Select twe.trayId from TrayWeightEntity twe where twe.trayId=:padeklas");
                 query.setParameter("padeklas", padeklas);
                 TrayWeightEntity twe = (TrayWeightEntity) query.getSingleResult();
-                System.out.println("Sverkite " + twe.getTrayId() + "padėklą kalibravimui");
+                System.out.println(">>>>> Sverkite " + twe.getTrayId() + "padėklą kalibravimui <<<<<");
                 Double trayWeight = FileControllerService.sverimoPrograma("Om");
                 twe.setTrayWeight(trayWeight);
                 em.merge(twe);

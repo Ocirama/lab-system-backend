@@ -31,10 +31,10 @@ public class TotalMoistureRepository {
         EntityTransaction transaction = em.getTransaction();
         try {
             for (int i = 1; i < 5000; i++) {
-                System.out.println("Naujo protokolo visuminės drėgmės svėrimas: Taip/Ne");
+                System.out.println(">>>>> Naujo protokolo visuminės drėgmės svėrimas: Taip/Ne <<<<<");
                 if (UserInputService.YesOrNoInput().equals("Taip")) {
                     transaction.begin();
-                    System.out.println("Užsakymo numeris ?");
+                    System.out.println(">>>>> Užsakymo numeris: <<<<<");
                     String protocol = UserInputService.NumberInput();
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select ol.samples from OrderEntity ol where ol.protocolId=:protocol");
@@ -43,14 +43,13 @@ public class TotalMoistureRepository {
                     for (SampleEntity sampleEntity : samples) {
                         String padeklas;
                         String sampleName = sampleEntity.getSampleId();
-                        System.out.println("Visuminės drėgmės svėrimas mėginiui : " + sampleName);
+                        System.out.println(">>>>> Visuminės drėgmės svėrimas mėginiui : " + sampleName + " <<<<<");
                         List<TotalMoistureEntity> list = new ArrayList<>();
-                        TotalMoistureEntity tme;
-                        TrayEntity te;
+
                         for (int j = 0; j <= 1; j++) {
-                            tme = new TotalMoistureEntity();
-                            te = new TrayEntity();
-                            System.out.println("Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į padėklą ir sverkite:");
+                            TotalMoistureEntity tme = new TotalMoistureEntity();
+                             TrayEntity te = new TrayEntity();
+                            System.out.println(">>>>> Įdėkitę " + tme.getTray().getSample().getSampleId() + " mėginį į padėklą ir sverkite: <<<<<");
                             padeklas = UserInputService.NumberInput();
                             if (padeklas.equals("Kitas")){
                                 break;
@@ -93,7 +92,7 @@ public class TotalMoistureRepository {
             String padeklas;
             Date date =FileControllerService.dateInput();
             for (int i = 1; i < 5000; i++) {
-                System.out.println("Fiksuokite padėklo numerį ir svorį:");
+                System.out.println(">>>>> Fiksuokite padėklo numerį ir svorį: <<<<<");
                 padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
@@ -103,7 +102,7 @@ public class TotalMoistureRepository {
                     query.setParameter("current_date", date);
 
                     TrayEntity te = (TrayEntity) query.getSingleResult();
-                    System.out.println("Padėklo svoris po džiovinimo: ");
+                    System.out.println(">>>>> Padėklo svoris po džiovinimo: <<<<<");
                     Double trayWeight = FileControllerService.sverimoPrograma("Off");
                     List<TotalMoistureEntity> tmeList = te.getTotalMoistureEntities();
                     for (TotalMoistureEntity tme : tmeList) {
@@ -114,9 +113,9 @@ public class TotalMoistureRepository {
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();
                         ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), date);
                         if (te.getId() % 2 == 0) {
-                            System.out.println("Galite išpilti mėginį");
+                            System.out.println(">>>>> Galite išpilti mėginį <<<<<");
                         } else if (te.getId() % 2 != 0) {
-                            System.out.println("Dėkite mėginį prie " + te.getSample().getOrder().getProtocolId() + " protokolo");
+                            System.out.println(">>>>> Dėkite mėginį prie " + te.getSample().getOrder().getProtocolId() + " protokolo <<<<<");
                         }
                         transaction.commit();
 

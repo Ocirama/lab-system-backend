@@ -25,7 +25,7 @@ public class ReferenceTrayRepository {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            System.out.println("Fiskuokite padėklo numerį ir svorį");
+            System.out.println(">>>>> Fiskuokite padėklo numerį ir svorį <<<<<");
             String padeklas = UserInputService.NumberInput();
             ReferenceTrayEntity rte = new ReferenceTrayEntity();
             rte.setReferenceTrayId(padeklas);
@@ -48,13 +48,13 @@ public class ReferenceTrayRepository {
         try {
             String padeklas;
             transaction.begin();
-            System.out.println("Fiskuokite padėklo numerį ir svorį:");
+            System.out.println(">>>>> Fiskuokite padėklo numerį ir svorį: <<<<<");
             padeklas = UserInputService.NumberInput();
             Session session = em.unwrap(Session.class);
             Query query = session.createQuery("from ReferenceTrayEntity  where referenceTrayId=:padeklas");
             query.setParameter("padeklas", padeklas);
             ReferenceTrayEntity rte = (ReferenceTrayEntity) query.getSingleResult();
-            System.out.println("Sverkite padėklą po džiovinimo: ");
+            System.out.println(">>>>> Padėklo svoris po džiovinimo: <<<<<");
             Double trayWeight = FileControllerService.sverimoPrograma("Off");
             rte.setReferenceTrayWeightAfter(trayWeight);
             em.persist(rte);
