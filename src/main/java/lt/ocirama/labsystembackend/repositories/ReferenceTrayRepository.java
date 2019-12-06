@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ReferenceTrayRepository {
@@ -45,6 +46,8 @@ public class ReferenceTrayRepository {
         EntityManager em = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         Date date = FileControllerService.dateInput();
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        String  ndate = sdf2.format(date);
         try {
             String padeklas;
             transaction.begin();
@@ -58,7 +61,7 @@ public class ReferenceTrayRepository {
             Double trayWeight = FileControllerService.sverimoPrograma("Off");
             rte.setReferenceTrayWeightAfter(trayWeight);
             em.persist(rte);
-            ExcelService.ReferenceTrayExcelUpdate(rte, 2, date);
+            ExcelService.ReferenceTrayExcelUpdate(rte, 2, ndate);
             transaction.commit();
 
         } catch (Exception e) {

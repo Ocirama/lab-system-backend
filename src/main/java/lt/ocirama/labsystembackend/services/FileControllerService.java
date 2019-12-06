@@ -9,9 +9,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 public final class FileControllerService {
@@ -125,6 +128,7 @@ public final class FileControllerService {
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         java.util.Date theDate = null;
         try {
@@ -132,7 +136,6 @@ public final class FileControllerService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(theDate);
         return theDate;
     }
 }

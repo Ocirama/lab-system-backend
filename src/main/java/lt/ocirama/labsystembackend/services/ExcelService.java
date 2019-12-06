@@ -11,8 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 public final class ExcelService {
 
@@ -196,7 +194,7 @@ public final class ExcelService {
         }
     }
 
-    public static void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId, Date date) {
+    public static void TotalMoistureExcel(TrayEntity tray, TotalMoistureEntity tme, String protocol, int sverimoNumeris, String trayId, String date) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
         String path = excelSaveDirectory + date + " (VisumineDregme).xlsx";
@@ -246,7 +244,7 @@ public final class ExcelService {
 
     }
 
-    public static void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris,Date date) {
+    public static void ReferenceTrayExcelUpdate(ReferenceTrayEntity rte, int sverimoNumeris, String date) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;
         String path = excelSaveDirectory + date + " (VisumineDregme).xlsx";
@@ -287,6 +285,7 @@ public final class ExcelService {
             e.printStackTrace();
         }
     }
+
     public static void QualityControlExcelUpdate(QualityControlEntity qte, int sverimoNumeris, String tyrimas) {
         XSSFSheet sheet;
         XSSFWorkbook workbook;

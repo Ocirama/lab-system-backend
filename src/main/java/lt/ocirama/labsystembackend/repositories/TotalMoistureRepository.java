@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,6 +93,8 @@ public class TotalMoistureRepository {
         try {
             String padeklas;
             Date date =FileControllerService.dateInput();
+            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+            String  ndate = sdf2.format(date);
             for (int i = 1; i < 5000; i++) {
                 System.out.println(">>>>> Fiksuokite padėklo numerį ir svorį: <<<<<");
                 padeklas = UserInputService.NumberOrEndInput();
@@ -112,7 +115,7 @@ public class TotalMoistureRepository {
                         tme.setTrayAndSampleWeightAfterPlus(trayWeight + x);
                         em.persist(tme);
                         String protocol = tme.getTray().getSample().getOrder().getProtocolId();
-                        ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), date);
+                        ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 2, tme.getTray().getTrayId(), ndate);
                         if (te.getId() % 2 == 0) {
                             System.out.println(">>>>> Galite išpilti mėginį <<<<<");
                         } else if (te.getId() % 2 != 0) {
