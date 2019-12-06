@@ -10,10 +10,10 @@ import lt.ocirama.labsystembackend.utils.HibernateUtils;
 public class Client {
 
     public static void main(String[] args) {
-        //HibernateUtils.init(args[0], args[1], args[2]);
-       // MenuService ms = new MenuService();
-FileControllerService.dateInput();
-       // ms.MenuSelect();
+        HibernateUtils.init(args[0], args[1], args[2]);
+        MenuService ms = new MenuService();
+
+        ms.MenuSelect();
     }
 }
 

@@ -65,7 +65,7 @@ public class QualityControlRepository {
             String padeklas;
             for (int i = 1; i < 5000; i++) {
                 System.out.println("Skenuokite induko barkodą:");
-                padeklas = UserInputService.NumberInput();
+                padeklas = UserInputService.NumberOrEndInput();
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
@@ -73,7 +73,7 @@ public class QualityControlRepository {
                     query.setParameter("padeklas", padeklas);
                     QualityControlEntity qce = (QualityControlEntity) query.getSingleResult();
                     System.out.println("Sverkite induką po džiovinimo: ");
-                    Double trayWeight = FileControllerService.sverimoPrograma("Off");
+                    Double trayWeight = FileControllerService.sverimoPrograma("On");
                     qce.setQualityTrayWeightAfter(trayWeight);
                     em.persist(qce);
                     ExcelService.QualityControlExcelUpdate(qce, 2, qce.getTestType());

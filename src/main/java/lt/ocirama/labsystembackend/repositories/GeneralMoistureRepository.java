@@ -82,9 +82,8 @@ public class GeneralMoistureRepository {
                 if (!padeklas.equals("Baigta")) {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date - :laikas");
+                    Query query = session.createQuery("from GeneralMoistureEntity gme where gme.jarId=:padeklas AND gme.date=current_date");
                     query.setParameter("padeklas", padeklas);
-                    query.setParameter("laikas", 2);
                     GeneralMoistureEntity gme = (GeneralMoistureEntity) query.getSingleResult();
                     System.out.println(">>>>> Sverkite induką po džiovinimo: <<<<<");
                     Double trayWeight = FileControllerService.sverimoPrograma("On");
