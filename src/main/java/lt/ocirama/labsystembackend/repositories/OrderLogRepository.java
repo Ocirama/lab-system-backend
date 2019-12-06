@@ -35,7 +35,7 @@ public class OrderLogRepository {
                     String protokolas = UserInputService.NumberInput();
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
-                    Query query = session.createQuery("Select oe.protocolod_id from OrderEntity oe");
+                    Query query = session.createQuery("Select oe.protocolId from OrderEntity oe");
                     List<String> orders = query.getResultList();
                     if (orders.contains(protokolas)) {
                         System.out.println(">>>>> Toks protokolas jau užregistruotas <<<<<");

@@ -36,7 +36,7 @@ public class AshRepository {
                     transaction.begin();
                     Session session = em.unwrap(Session.class);
                     Query query = session.createQuery("Select te from TrayEntity te where te.trayId=:tray AND te.date=:current_date");
-                    Query query2 = session.createQuery("Select ae.trayId from AshEntity ae where ae.date = current_date");
+                    Query query2 = session.createQuery("Select ae.tray from AshEntity ae where ae.date = current_date");
                     query.setParameter("tray", padeklas);
                     query.setParameter("current_date", registrationDate);
                     TrayEntity tray = (TrayEntity) query.getSingleResult();
