@@ -28,8 +28,8 @@ public final class Validator {
         } else return true;
     }
 
-    public static boolean isValidNumOrEnd(String strNum) {
-        if ((Pattern.compile("[0-9]").matcher(strNum).find()) || strNum.equals("Baigta")) {
+    public static boolean isValidNumEndOrNext(String strNum) {
+        if ((Pattern.compile("[0-9]").matcher(strNum).find()) || strNum.equals("Baigta")|| strNum.equals("Kitas")) {
             return true;
         } else return false;
     }

@@ -11,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ReferenceTrayRepository {
@@ -35,7 +36,7 @@ public class ReferenceTrayRepository {
             rte.setReferenceTrayWeightBefore(trayWeight);
             em.persist(rte);
             transaction.commit();
-            ExcelService.ReferenceTrayExcelUpdate(rte, 1,null);
+            ExcelService.ReferenceTrayExcelUpdate(rte, 1, LocalDate.now().toString());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,8 +55,9 @@ public class ReferenceTrayRepository {
             System.out.println(">>>>> Fiskuokite padėklo numerį ir svorį: <<<<<");
             padeklas = UserInputService.NumberInput();
             Session session = em.unwrap(Session.class);
-            Query query = session.createQuery("from ReferenceTrayEntity  where referenceTrayId=:padeklas");
+            Query query = session.createQuery("from ReferenceTrayEntity  where referenceTrayId=:padeklas AND date=: currentDate");
             query.setParameter("padeklas", padeklas);
+            query.setParameter("currentDate", date);
             ReferenceTrayEntity rte = (ReferenceTrayEntity) query.getSingleResult();
             System.out.println(">>>>> Padėklo svoris po džiovinimo: <<<<<");
             Double trayWeight = FileControllerService.sverimoPrograma("Off");

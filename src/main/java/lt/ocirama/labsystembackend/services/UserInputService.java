@@ -38,12 +38,12 @@ public final class UserInputService {
         String validationInput;
         do {
             validationInput = sc.nextLine();
-            if (Validator.isValidNumOrEnd(validationInput)) {
+            if (Validator.isValidNumEndOrNext(validationInput)) {
                 return validationInput;
             } else {
-                System.out.println("!!!!! Galima tik skaičių įvestis arba komanda 'Baigta' !!!!!");
+                System.out.println("!!!!! Galima tik skaičių įvestis arba komandos 'Baigta' arba 'Kitas' !!!!!");
             }
-        } while (!Validator.isValidNumOrEnd(validationInput));
+        } while (!Validator.isValidNumEndOrNext(validationInput));
         return validationInput;
     }
     public static String CommandInput() {

@@ -14,17 +14,17 @@ public class ScaleService {
         SerialPort[] ports = SerialPort.getCommPorts();
         int i = 1;
 
-            for (SerialPort port : ports)
-                System.out.println(i++ + ": " + port.getSystemPortName());
+            //for (SerialPort port : ports)
+                //System.out.println(i++ + ": " + port.getSystemPortName());
 
         int chosenPort = 1;
         SerialPort serialPort = ports[chosenPort - 1];
 
-            if (serialPort.openPort()) {
+           /* if (serialPort.openPort()) {
                 System.out.println("Port opened successfully.");
             }else {
                 System.out.println("Unable to open the port.");
-            }
+            }*/
         serialPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
         serialPort.setComPortTimeouts(SerialPort.TIMEOUT_NONBLOCKING, 0, 0);
         serialPort.openPort();

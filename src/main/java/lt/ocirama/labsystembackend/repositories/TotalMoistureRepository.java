@@ -72,11 +72,12 @@ public class TotalMoistureRepository {
                             tme.setTrayAndSampleWeightBefore(trayWeight2);
                             em.merge(sampleEntity);
                             em.persist(tme);
-                            ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null, null);
+                            ExcelService.TotalMoistureExcel(tme.getTray(), tme, protocol, 1, null, LocalDate.now().toString());
                         }
+                        transaction.commit();
                     }
 
-                    transaction.commit();
+
                 } else {
                     break;
                 }

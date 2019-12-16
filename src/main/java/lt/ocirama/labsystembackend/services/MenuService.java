@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class MenuService {
 
-    GenericRepository<OrderEntity> gr = new GenericRepository<>(OrderEntity.class, HibernateUtils.getSessionFactory());
     OrderLogRepository olr = new OrderLogRepository(HibernateUtils.getSessionFactory());
     WeightLogRepository wlr = new WeightLogRepository(HibernateUtils.getSessionFactory());
     TrayRepository tr = new TrayRepository(HibernateUtils.getSessionFactory());

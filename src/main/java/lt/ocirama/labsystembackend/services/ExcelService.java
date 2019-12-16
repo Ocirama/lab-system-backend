@@ -308,17 +308,19 @@ public final class ExcelService {
             rowhead.createCell(1).setCellValue("Induko Nr.");
             rowhead.createCell(2).setCellValue("Induko svoris PRIEŠ");
             rowhead.createCell(3).setCellValue("Induko svoris PO");
+            rowhead.createCell(4).setCellValue("Data");
+
 
             if (sverimoNumeris == 1) {
                 Row row1 = sheet.createRow(sheet.getLastRowNum() + 1);
                 row1.createCell(0).setCellValue(qte.getTestType());
                 row1.createCell(1).setCellValue(qte.getQualityTrayId());
-                row1.createCell(3).setCellValue(qte.getQualityTrayWeightBefore());
-                row1.createCell(5).setCellValue(qte.getDate());
+                row1.createCell(2).setCellValue(qte.getQualityTrayWeightBefore());
+                row1.createCell(4).setCellValue(qte.getDate());
             }
             if (sverimoNumeris == 2) {
                 Row row = sheet.getRow(FileControllerService.findRow(workbook, qte.getQualityTrayId()));
-                row.createCell(4).setCellValue(qte.getQualityTrayWeightAfter());
+                row.createCell(3).setCellValue(qte.getQualityTrayWeightAfter());
             }
             FileOutputStream fileOut = new FileOutputStream(path);
             workbook.write(fileOut);
