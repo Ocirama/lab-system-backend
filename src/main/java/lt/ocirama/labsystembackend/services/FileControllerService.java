@@ -104,8 +104,8 @@ public final class FileControllerService {
     public static Double sverimoPrograma(String clearance) {
         double trayWeight = 0;
         if (clearance.equals("On")) {
-            System.out.println(">>>>> Spauskite sverti 'push' <<<<<");
-            if (UserInputService.CommandInput().equals("push")) {
+            System.out.println(">>>>> Spauskite 'Sverti' <<<<<");
+            if (UserInputService.CommandInput().equals("Sverti")) {
                 ScaleService ss = new ScaleService();
                 SerialPort serialPort = ss.SvarstykliuJungtis();
                 trayWeight = ss.Pasverti(serialPort);

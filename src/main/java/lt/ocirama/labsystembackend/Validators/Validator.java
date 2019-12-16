@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public final class Validator {
 
     public static boolean isValidCommand(String command) {
-        if (!(command.equals("push") || command.equals("Baigta"))) {
+        if (!(command.equals("Sverti") || command.equals("Baigta"))) {
             return false;
         } else return true;
     }
